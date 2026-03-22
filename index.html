@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#ffffff">
+<title>Dispatch Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+:root {
+  --white:#ffffff; --bg:#f5f5f7; --bg2:#ebebed; --border:#e4e4e8; --border2:#d0d0d6;
+  --text:#111114; --text2:#6b6b78; --text3:#a0a0ac;
+  --blue:#1a56db; --blue-l:#eff3ff; --blue-m:#c7d7fc;
+  --green:#057a55; --green-l:#f0fdf4; --green-m:#a7f3d0;
+  --amber:#92400e; --amber-l:#fffbeb; --amber-m:#fcd34d;
+  --red:#c81e1e; --red-l:#fff5f5; --red-m:#fecaca;
+  --purple:#5521b5; --purple-l:#f5f3ff; --purple-m:#ddd6fe;
+  --teal:#0e7490; --teal-l:#f0fdfa; --teal-m:#a5f3fc;
+  --r:8px; --rl:14px; --rxl:20px;
+  --sh-sm:0 1px 3px rgba(0,0,0,0.08),0 1px 2px rgba(0,0,0,0.04);
+  --sh:0 4px 12px rgba(0,0,0,0.08),0 2px 4px rgba(0,0,0,0.04);
+  --sh-lg:0 12px 32px rgba(0,0,0,0.12),0 4px 8px rgba(0,0,0,0.06);
+  --font:'Plus Jakarta Sans',sans-serif; --mono:'JetBrains Mono',monospace;
+  --t:0.14s ease;
+}
+html,body{height:100%;background:var(--bg);}
+body{font-family:var(--font);font-size:14px;color:var(--text);line-height:1.5;overflow-x:hidden;}
+/* LOGIN */
+#ls{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;background:var(--white);}
+.ll{width:48px;height:48px;background:var(--blue);border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;}
+.ll svg{width:24px;height:24px;color:white;}
+.lco{font-size:11px;font-weight:600;color:var(--text3);letter-spacing:.07em;text-transform:uppercase;margin-bottom:6px;}
+.lti{font-size:22px;font-weight:700;color:var(--text);margin-bottom:32px;letter-spacing:-.3px;}
+.lc{width:100%;max-width:380px;background:var(--white);border:1px solid var(--border);border-radius:var(--rxl);padding:28px 24px;box-shadow:var(--sh);}
+.lsl{font-size:11px;font-weight:600;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px;}
+.rl{display:flex;flex-direction:column;gap:8px;margin-bottom:24px;}
+.ri{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:var(--r);border:1.5px solid var(--border);background:var(--white);cursor:pointer;transition:all var(--t);}
+.ri:hover{border-color:var(--blue-m);background:var(--blue-l);}
+.ri.sel{border-color:var(--blue);background:var(--blue-l);}
+.rd{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;}
+.rn{font-size:13px;font-weight:600;color:var(--text);}
+.rde{font-size:11px;color:var(--text2);margin-top:1px;}
+.rck{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--border2);flex-shrink:0;transition:all var(--t);}
+.ri.sel .rck{background:var(--blue);border-color:var(--blue);display:flex;align-items:center;justify-content:center;}
+.ri.sel .rck::after{content:'';width:6px;height:6px;background:white;border-radius:50%;}
+.btn-lo{width:100%;padding:13px;background:var(--blue);color:white;border:none;border-radius:var(--r);font-family:var(--font);font-size:14px;font-weight:600;cursor:pointer;transition:all var(--t);letter-spacing:-.1px;}
+.btn-lo:hover{background:#1647c8;}
+.btn-lo:active{transform:scale(.99);}
+/* APP */
+#app{display:none;flex-direction:column;min-height:100vh;}
+#app.on{display:flex;}
+.ah{background:var(--white);border-bottom:1px solid var(--border);padding:0 16px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.ahl{display:flex;align-items:center;gap:10px;}
+.alo{width:28px;height:28px;background:var(--blue);border-radius:7px;display:flex;align-items:center;justify-content:center;}
+.alo svg{width:14px;height:14px;color:white;}
+.aln{font-size:14px;font-weight:700;color:var(--text);letter-spacing:-.2px;}
+.ahr{display:flex;align-items:center;gap:8px;}
+.rtg{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;letter-spacing:.02em;}
+.ib{width:32px;height:32px;border-radius:var(--r);border:1px solid var(--border);background:var(--white);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--t);color:var(--text2);}
+.ib:hover{background:var(--bg);border-color:var(--border2);color:var(--text);}
+.ac{flex:1;padding:0 0 72px 0;overflow-y:auto;}
+/* NAV */
+.an{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1px solid var(--border);display:flex;padding-bottom:env(safe-area-inset-bottom);z-index:100;}
+.nt{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 4px 8px;cursor:pointer;color:var(--text3);transition:color var(--t);position:relative;-webkit-user-select:none;user-select:none;}
+.nt.on{color:var(--blue);}
+.nt svg{width:20px;height:20px;}
+.ntl{font-size:10px;font-weight:600;letter-spacing:.01em;}
+.nb{position:absolute;top:7px;right:calc(50% - 16px);background:var(--red);color:white;font-size:9px;font-weight:700;font-family:var(--mono);min-width:15px;height:15px;border-radius:8px;padding:0 3px;display:flex;align-items:center;justify-content:center;border:1.5px solid white;}
+/* VIEWS */
+.vw{display:none;} .vw.on{display:block;}
+.ph{padding:18px 16px 14px;background:var(--white);border-bottom:1px solid var(--border);}
+.ph-row{display:flex;align-items:flex-start;justify-content:space-between;}
+.pt{font-size:18px;font-weight:700;color:var(--text);letter-spacing:-.4px;}
+.ps{font-size:12px;color:var(--text2);margin-top:2px;}
+/* STATS */
+.sr{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:16px;}
+.sb{background:var(--white);border:1px solid var(--border);border-radius:var(--rl);padding:14px 12px;}
+.sv{font-size:26px;font-weight:700;letter-spacing:-.5px;line-height:1;margin-bottom:5px;}
+.sk{font-size:11px;color:var(--text2);font-weight:500;}
+/* PIPELINE */
+.pg{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px 16px;}
+.pt2{background:var(--white);border:1px solid var(--border);border-radius:var(--rl);padding:16px;cursor:pointer;transition:all var(--t);display:flex;flex-direction:column;gap:10px;}
+.pt2:hover{border-color:var(--border2);box-shadow:var(--sh-sm);}
+.pt2:active{transform:scale(.98);}
+.ptt{display:flex;align-items:center;justify-content:space-between;}
+.pi{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;}
+.pn{font-size:28px;font-weight:700;letter-spacing:-.5px;line-height:1;}
+.pm{font-size:12px;font-weight:500;color:var(--text2);}
+/* SECTION */
+.sec{padding:16px;}
+.sec+.sec{padding-top:0;}
+.sl{font-size:11px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.sc{background:var(--bg2);color:var(--text2);font-family:var(--mono);font-size:10px;padding:1px 6px;border-radius:4px;}
+/* ORDER CARDS */
+.ol{display:flex;flex-direction:column;gap:8px;}
+.oc{background:var(--white);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;cursor:pointer;transition:all var(--t);box-shadow:var(--sh-sm);}
+.oc:hover{border-color:var(--border2);box-shadow:var(--sh);}
+.oc:active{transform:scale(.99);}
+.cs{height:3px;}
+.cb{padding:14px 16px;}
+.ct{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:10px;}
+.ci{font-family:var(--mono);font-size:10px;color:var(--text3);margin-bottom:3px;}
+.cc{font-size:15px;font-weight:600;color:var(--text);letter-spacing:-.2px;}
+.cm{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px;}
+.mt{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:500;color:var(--text2);background:var(--bg);border:1px solid var(--border);padding:3px 8px;border-radius:5px;}
+.mt svg{width:10px;height:10px;}
+.ca{display:flex;gap:8px;padding:10px 16px 14px;border-top:1px solid var(--border);background:#fafafa;}
+/* BADGES */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:5px;font-size:11px;font-weight:600;white-space:nowrap;flex-shrink:0;}
+.badge::before{content:'';width:5px;height:5px;border-radius:50%;flex-shrink:0;}
+.bg{background:var(--bg2);color:var(--text2);}.bg::before{background:var(--text3);}
+.bb{background:var(--blue-l);color:var(--blue);}.bb::before{background:var(--blue);}
+.ba{background:var(--amber-l);color:var(--amber);}.ba::before{background:var(--amber);}
+.bgr{background:var(--green-l);color:var(--green);}.bgr::before{background:var(--green);}
+.br{background:var(--red-l);color:var(--red);}.br::before{background:var(--red);}
+.bp{background:var(--purple-l);color:var(--purple);}.bp::before{background:var(--purple);}
+.bt{background:var(--teal-l);color:var(--teal);}.bt::before{background:var(--teal);}
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:var(--r);font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;transition:all var(--t);border:1px solid transparent;letter-spacing:-.1px;white-space:nowrap;}
+.btn svg{width:13px;height:13px;flex-shrink:0;}
+.btn:active{transform:scale(.98);}
+.btn-p{background:var(--blue);color:white;border-color:var(--blue);}.btn-p:hover{background:#1647c8;}
+.btn-s{background:var(--green);color:white;border-color:var(--green);}.btn-s:hover{background:#046844;}
+.btn-d{background:var(--white);color:var(--red);border-color:var(--red-m);}.btn-d:hover{background:var(--red-l);}
+.btn-o{background:var(--white);color:var(--text);border-color:var(--border2);}.btn-o:hover{background:var(--bg);}
+.btn-g{background:transparent;color:var(--text2);border-color:var(--border);}.btn-g:hover{background:var(--bg);color:var(--text);}
+.btn-bl{width:100%;justify-content:center;padding:12px;font-size:13px;}
+/* SHEET */
+.sov{position:fixed;inset:0;background:rgba(0,0,0,0.3);z-index:200;display:none;align-items:flex-end;}
+.sov.on{display:flex;}
+.sh{background:var(--white);width:100%;max-width:520px;margin:0 auto;border-radius:20px 20px 0 0;max-height:94vh;display:flex;flex-direction:column;animation:shi .24s cubic-bezier(.32,.72,0,1);}
+@keyframes shi{from{transform:translateY(100%);}to{transform:translateY(0);}}
+.shd{width:36px;height:4px;background:var(--border2);border-radius:2px;margin:12px auto 0;flex-shrink:0;}
+.shh{padding:16px 20px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.sht{font-size:16px;font-weight:700;color:var(--text);letter-spacing:-.3px;}
+.shc{width:28px;height:28px;border-radius:50%;background:var(--bg);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text2);transition:all var(--t);}
+.shc:hover{background:var(--bg2);}
+.shb{padding:20px;overflow-y:auto;flex:1;}
+.shf{padding:14px 20px calc(14px + env(safe-area-inset-bottom));border-top:1px solid var(--border);display:flex;gap:10px;flex-shrink:0;background:var(--white);}
+/* FORM */
+.fg{margin-bottom:18px;}
+.fl{display:block;font-size:12px;font-weight:600;color:var(--text);margin-bottom:7px;}
+.fr{color:var(--red);margin-left:2px;}
+.fh{font-size:11px;color:var(--text3);font-weight:400;margin-left:4px;}
+.fi{width:100%;background:var(--white);border:1px solid var(--border2);border-radius:var(--r);padding:10px 12px;color:var(--text);font-family:var(--font);font-size:14px;transition:border-color var(--t),box-shadow var(--t);outline:none;-webkit-appearance:none;}
+.fi:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,86,219,.1);}
+.fi::placeholder{color:var(--text3);}
+.fsel{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23a0a0ac' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:32px;}
+/* CAT CHIPS */
+.cc2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.cci{padding:11px 12px;border:1.5px solid var(--border);border-radius:var(--r);background:var(--white);cursor:pointer;transition:all var(--t);display:flex;align-items:center;gap:10px;}
+.cci:hover{border-color:var(--blue-m);background:var(--blue-l);}
+.cci.on{border-color:var(--blue);background:var(--blue-l);}
+.ccii{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.ccin{font-size:12px;font-weight:600;color:var(--text);}
+/* TOGGLE */
+.ti{display:flex;align-items:center;justify-content:space-between;padding:13px 14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--r);margin-bottom:8px;}
+.ttn{font-size:13px;font-weight:600;}
+.ttd{font-size:11px;color:var(--text2);margin-top:1px;}
+.tos{position:relative;width:44px;height:26px;flex-shrink:0;}
+.tos input{opacity:0;width:0;height:0;}
+.tosl{position:absolute;inset:0;background:var(--border2);border-radius:13px;cursor:pointer;transition:background .2s;}
+.tosl::before{content:'';position:absolute;width:20px;height:20px;border-radius:50%;background:white;top:3px;left:3px;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2);}
+.tos input:checked+.tosl{background:var(--blue);}
+.tos input:checked+.tosl::before{transform:translateX(18px);}
+/* UPLOAD */
+.ub{border:1.5px dashed var(--border2);border-radius:var(--r);padding:20px 16px;text-align:center;cursor:pointer;transition:all var(--t);background:var(--bg);}
+.ub:hover{border-color:var(--blue);background:var(--blue-l);}
+.ubi{font-size:24px;margin-bottom:6px;}
+.ubt{font-size:12px;color:var(--text2);}
+.ubt b{color:var(--blue);}
+.ubf{font-size:11px;color:var(--green);margin-top:6px;font-weight:500;}
+input[type="file"]{display:none;}
+.div{border:none;border-top:1px solid var(--border);margin:18px 0;}
+/* WEIGHT */
+.wp{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.wu{font-size:11px;color:var(--text3);margin-top:5px;text-align:center;}
+/* DETAIL */
+.dig{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;margin-bottom:16px;}
+.dc{padding:12px 14px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);}
+.dc:nth-child(2n){border-right:none;}
+.dc:nth-last-child(-n+2){border-bottom:none;}
+.dk{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;}
+.dv{font-size:13px;font-weight:500;color:var(--text);}
+.dv.mo{font-family:var(--mono);font-size:11px;}
+.dsh{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin:18px 0 10px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.ar{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);}
+.ar:last-child{border-bottom:none;}
+.ak{font-size:12px;color:var(--text2);}
+.av{font-size:12px;font-weight:600;color:var(--text);font-family:var(--mono);}
+/* STEPPER */
+.stp{display:flex;align-items:center;overflow-x:auto;padding:16px 0 4px;margin-bottom:4px;gap:0;-ms-overflow-style:none;scrollbar-width:none;}
+.stp::-webkit-scrollbar{display:none;}
+.sno{display:flex;flex-direction:column;align-items:center;flex-shrink:0;gap:5px;}
+.sci{width:26px;height:26px;border-radius:50%;border:2px solid var(--border2);background:var(--white);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;font-family:var(--mono);color:var(--text3);transition:all .2s;}
+.sci.dn{border-color:var(--green);background:var(--green);color:white;}
+.sci.dn svg{width:10px;height:10px;stroke:white;stroke-width:3;}
+.sci.ac{border-color:var(--blue);background:var(--blue-l);color:var(--blue);}
+.snm{font-size:9px;font-weight:500;color:var(--text3);white-space:nowrap;}
+.snm.ac{color:var(--blue);font-weight:600;}
+.sli{flex:1;min-width:16px;height:2px;background:var(--border2);margin-bottom:20px;flex-shrink:0;}
+.sli.dn{background:var(--green);}
+/* PHOTOS */
+.phg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
+.pht{aspect-ratio:1;border-radius:8px;background:var(--bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--text3);cursor:pointer;overflow:hidden;position:relative;transition:all var(--t);}
+.pht:hover{border-color:var(--blue);}
+.phl{position:absolute;bottom:4px;left:4px;background:rgba(0,0,0,.55);color:white;font-size:8px;font-weight:600;padding:2px 5px;border-radius:3px;letter-spacing:.03em;}
+/* ALERTS */
+.hal{background:var(--red-l);border:1px solid var(--red-m);border-radius:var(--r);padding:12px 14px;margin-bottom:14px;font-size:12px;color:var(--red);line-height:1.5;}
+.hal strong{display:block;font-weight:700;margin-bottom:3px;}
+.ial{background:var(--blue-l);border:1px solid var(--blue-m);border-radius:var(--r);padding:12px 14px;margin-bottom:14px;font-size:12px;color:var(--blue);line-height:1.5;}
+.eal{background:var(--green-l);border:1px solid var(--green-m);border-radius:var(--r);padding:12px 14px;margin-bottom:14px;font-size:12px;color:var(--green);line-height:1.5;}
+/* EMPTY */
+.eb{padding:40px 20px;text-align:center;color:var(--text3);}
+.eb svg{width:36px;height:36px;margin-bottom:12px;opacity:.35;}
+.et{font-size:14px;font-weight:600;color:var(--text2);margin-bottom:4px;}
+.es{font-size:12px;}
+/* PDF CHIP */
+.pc{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;background:var(--blue-l);border:1px solid var(--blue-m);border-radius:6px;font-size:11px;font-weight:600;color:var(--blue);cursor:pointer;transition:all var(--t);}
+.pc:hover{background:var(--blue);color:white;}
+.pc svg{width:12px;height:12px;}
+/* TOAST */
+.toast{position:fixed;left:12px;right:12px;bottom:calc(68px + env(safe-area-inset-bottom));max-width:480px;margin:0 auto;padding:12px 16px;border-radius:var(--rl);font-size:13px;font-weight:500;display:flex;align-items:center;gap:10px;z-index:999;opacity:0;transform:translateY(8px);pointer-events:none;transition:all .22s cubic-bezier(.34,1.4,.64,1);box-shadow:var(--sh-lg);}
+.toast.on{opacity:1;transform:translateY(0);}
+.ts{background:var(--green);color:white;}
+.te{background:var(--red);color:white;}
+.ti2{background:var(--text);color:white;}
+/* FAB */
+.fab{position:fixed;right:16px;bottom:calc(76px + env(safe-area-inset-bottom));width:44px;height:44px;background:var(--white);border:1px solid var(--border2);border-radius:50%;display:none;align-items:center;justify-content:center;cursor:pointer;box-shadow:var(--sh);color:var(--text2);transition:all var(--t);z-index:90;}
+.fab:hover{background:var(--blue);color:white;border-color:var(--blue);box-shadow:var(--sh-lg);}
+.fab svg{width:18px;height:18px;}
+/* HOLD CARD */
+.hc{background:var(--white);border:1px solid var(--red-m);border-radius:var(--rl);overflow:hidden;box-shadow:var(--sh-sm);}
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
+</style>
+</head>
+<body>
+
+<div id="ls">
+  <div class="ll"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 7H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg></div>
+  <div class="lco">D.M. Impex / D.M. Engineering Co.</div>
+  <div class="lti">Dispatch Tracker</div>
+  <div class="lc">
+    <div class="lsl">Select your role</div>
+    <div class="rl">
+      <div class="ri sel" data-role="admin" onclick="pickRole(this)"><div class="rd" style="background:#eff3ff">🛡️</div><div class="ri-info"><div class="rn">Admin</div><div class="rde">Full access &amp; system control</div></div><div class="rck"></div></div>
+      <div class="ri" data-role="office" onclick="pickRole(this)"><div class="rd" style="background:#f0fdf4">✅</div><div class="ri-info"><div class="rn">Office</div><div class="rde">Approvals &amp; quality gates</div></div><div class="rck"></div></div>
+      <div class="ri" data-role="accounts" onclick="pickRole(this)"><div class="rd" style="background:#fffbeb">📋</div><div class="ri-info"><div class="rn">Accounts</div><div class="rde">Order intake &amp; billing</div></div><div class="rck"></div></div>
+      <div class="ri" data-role="dispatch" onclick="pickRole(this)"><div class="rd" style="background:#f5f3ff">📦</div><div class="ri-info"><div class="rn">Dispatch</div><div class="rde">Picking &amp; packing floor</div></div><div class="rck"></div></div>
+    </div>
+    <button class="btn-lo" onclick="doLogin()">Continue to Dashboard</button>
+  </div>
+</div>
+
+<div id="app">
+  <header class="ah">
+    <div class="ahl"><div class="alo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 7H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg></div><span class="aln">Dispatch Tracker</span></div>
+    <div class="ahr"><span id="rtag" class="rtg"></span><div class="ib" onclick="doLogout()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg></div></div>
+  </header>
+
+  <div class="ac">
+    <!-- DASHBOARD -->
+    <div class="vw" id="v-dashboard">
+      <div class="ph"><div class="pt">Pipeline Overview</div><div class="ps">Live factory status — today</div></div>
+      <div class="sr">
+        <div class="sb"><div class="sv" style="color:var(--blue)" id="s-active">4</div><div class="sk">Active</div></div>
+        <div class="sb"><div class="sv" style="color:var(--amber)" id="s-action">2</div><div class="sk">Need Action</div></div>
+        <div class="sb"><div class="sv" style="color:var(--green)">7</div><div class="sk">Dispatched</div></div>
+      </div>
+      <div class="pg">
+        <div class="pt2" onclick="go('v-new-orders')"><div class="ptt"><div class="pi" style="background:var(--bg2)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--text2)" stroke-width="2" stroke-linecap="round"><path d="M20 7H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg></div><div class="pn" style="color:var(--text2)">2</div></div><div class="pm">Intake</div></div>
+        <div class="pt2" onclick="go('v-approvals')"><div class="ptt"><div class="pi" style="background:var(--amber-l)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="pn" style="color:var(--amber)" id="d-app">2</div></div><div class="pm">Pending Approval</div></div>
+        <div class="pt2" onclick="go('v-picking')"><div class="ptt"><div class="pi" style="background:var(--blue-l)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div><div class="pn" style="color:var(--blue)" id="d-pick">1</div></div><div class="pm">Picking</div></div>
+        <div class="pt2" onclick="go('v-packing')"><div class="ptt"><div class="pi" style="background:var(--purple-l)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="2" stroke-linecap="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg></div><div class="pn" style="color:var(--purple)" id="d-pack">1</div></div><div class="pm">Packing</div></div>
+        <div class="pt2" onclick="go('v-billing')"><div class="ptt"><div class="pi" style="background:var(--teal-l)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div class="pn" style="color:var(--teal)" id="d-bill">3</div></div><div class="pm">Billing</div></div>
+        <div class="pt2" onclick="go('v-hold')" style="border-color:var(--red-m)"><div class="ptt"><div class="pi" style="background:var(--red-l)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg></div><div class="pn" style="color:var(--red)" id="d-hold">1</div></div><div class="pm" style="color:var(--red)">On Hold</div></div>
+      </div>
+      <div class="sec"><div class="sl">Recent Orders</div><div class="ol" id="l-dash"></div></div>
+    </div>
+    <!-- NEW ORDERS -->
+    <div class="vw" id="v-new-orders">
+      <div class="ph ph-row"><div><div class="pt">New Orders</div><div class="ps">Create and manage order intake</div></div><button class="btn btn-p" style="margin-top:4px" onclick="openSh('sh-no')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>New Order</button></div>
+      <div class="sec"><div class="sl">SO Pending <span class="sc" id="c-cre">0</span></div><div class="ol" id="l-cre"></div></div>
+      <div class="sec"><div class="sl">Awaiting Office Approval <span class="sc" id="c-pen">0</span></div><div class="ol" id="l-pen"></div></div>
+    </div>
+    <!-- APPROVALS -->
+    <div class="vw" id="v-approvals">
+      <div class="ph"><div class="pt">Approvals Inbox</div><div class="ps">Orders waiting for your decision</div></div>
+      <div class="sec"><div class="sl">SO Approval <span class="sc" id="c-so">0</span></div><div class="ol" id="l-so"></div></div>
+      <div class="sec"><div class="sl">Goods Verification <span class="sc" id="c-gd">0</span></div><div class="ol" id="l-gd"></div></div>
+      <div class="sec"><div class="sl">Invoice Approval <span class="sc" id="c-ia">0</span></div><div class="ol" id="l-ia"></div></div>
+    </div>
+    <!-- PICKING -->
+    <div class="vw" id="v-picking">
+      <div class="ph"><div class="pt">Picking List</div><div class="ps">Orders ready for warehouse floor</div></div>
+      <div class="sec"><div class="ol" id="l-pick"></div></div>
+    </div>
+    <!-- PACKING -->
+    <div class="vw" id="v-packing">
+      <div class="ph"><div class="pt">Packing Station</div><div class="ps">Seal boxes and log weight</div></div>
+      <div class="sec"><div class="sl">Approved — Ready to Pack <span class="sc" id="c-pack">0</span></div><div class="ol" id="l-pack"></div></div>
+      <div class="sec"><div class="sl" style="color:var(--text3)">Waiting for Office Approval <span class="sc" id="c-rev">0</span></div><div class="ol" id="l-rev"></div></div>
+    </div>
+    <!-- BILLING -->
+    <div class="vw" id="v-billing">
+      <div class="ph"><div class="pt">Billing &amp; Dispatch</div><div class="ps">Link invoices and courier handoff</div></div>
+      <div class="sec"><div class="ol" id="l-bill"></div></div>
+    </div>
+    <!-- HOLD -->
+    <div class="vw" id="v-hold">
+      <div class="ph"><div class="pt">Hold Desk</div><div class="ps">Exceptions requiring investigation</div></div>
+      <div class="sec"><div class="ol" id="l-hold"></div></div>
+    </div>
+    <!-- HISTORY -->
+    <div class="vw" id="v-history">
+      <div class="ph"><div class="pt">Dispatch History</div><div class="ps">Completed and cancelled orders</div></div>
+      <div class="sec"><div class="ol" id="l-hist"></div></div>
+    </div>
+  </div>
+  <nav class="an" id="an"></nav>
+</div>
+
+<div class="fab" id="fab" onclick="doSync()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg></div>
+
+<!-- NEW ORDER SHEET -->
+<div class="sov" id="sh-no">
+  <div class="sh">
+    <div class="shd"></div>
+    <div class="shh"><div class="sht">Create New Order</div><button class="shc" onclick="closeSh('sh-no')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div class="shb">
+      <div class="fg"><label class="fl">Dispatch Category <span class="fr">*</span></label>
+        <div class="cc2" id="cc2">
+          <div class="cci on" data-cat="Courier" onclick="pickCat(this)"><div class="ccii" style="background:#eff3ff">🚚</div><div class="ccin">Courier</div></div>
+          <div class="cci" data-cat="RRToolStore" onclick="pickCat(this)"><div class="ccii" style="background:#f0fdf4">🛒</div><div class="ccin">RRToolStore</div></div>
+          <div class="cci" data-cat="Builty" onclick="pickCat(this)"><div class="ccii" style="background:#fffbeb">🚛</div><div class="ccin">Builty</div></div>
+          <div class="cci" data-cat="Local" onclick="pickCat(this)"><div class="ccii" style="background:#f5f3ff">🏪</div><div class="ccin">Local</div></div>
+        </div>
+      </div>
+      <div class="fg" id="fg-sh" style="display:none"><label class="fl">Shopify Order ID <span class="fr">*</span></label><input type="text" class="fi" id="f-sh" placeholder="#1234"></div>
+      <div class="fg"><label class="fl">Client Name <span class="fr">*</span></label><input type="text" class="fi" id="f-cl" placeholder="e.g. M/S Shaurya Industrial"></div>
+      <div class="fg"><label class="fl">Order Category <span class="fr">*</span></label>
+        <select class="fi fsel" id="f-cat"><option value="">Select category</option><option>Machine Tools</option><option>Carbide Endmills/Drills</option><option>Carbide Inserts</option><option>Indexable Tools</option></select>
+      </div>
+      <div class="fg"><label class="fl">Linked Sales Order <span class="fh">(optional — link now or later)</span></label>
+        <select class="fi fsel" id="f-so"><option value="">— Select from available files —</option><option value="so1">SO/406/DE/25-26 — M/S Dhankot Traders</option><option value="so2">SO/631/DE/25-26 — M/S Versatile Tools</option><option value="so3">12323/DI/25-26 — M/S Shaurya Industrial</option></select>
+        <div style="font-size:11px;color:var(--text3);margin-top:5px">Showing Allocation Pending files only</div>
+      </div>
+      <div class="fg"><label class="fl">WhatsApp Order Screenshot</label>
+        <div class="ub" onclick="document.getElementById('f-wa').click()"><div class="ubi">📎</div><div class="ubt"><b>Tap to attach</b> or take photo</div><div class="ubf" id="f-wa-n"></div></div>
+        <input type="file" id="f-wa" accept="image/*" onchange="showU('f-wa','f-wa-n')">
+      </div>
+      <div class="div"></div>
+      <div class="fg"><label class="fl">Special Requirements</label>
+        <div class="ti"><div><div class="ttn">Scanning Required</div><div class="ttd">Dispatcher must link Delivery Challan</div></div><label class="tos"><input type="checkbox" id="f-sc"><span class="tosl"></span></label></div>
+        <div class="ti"><div><div class="ttn">Stock Transfer Required</div><div class="ttd">Dispatcher must link Stock Journal Voucher</div></div><label class="tos"><input type="checkbox" id="f-st"><span class="tosl"></span></label></div>
+      </div>
+    </div>
+    <div class="shf"><button class="btn btn-g" onclick="closeSh('sh-no')">Cancel</button><button class="btn btn-p" style="flex:1;justify-content:center" onclick="createOrder()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Create Order</button></div>
+  </div>
+</div>
+
+<!-- DETAIL SHEET -->
+<div class="sov" id="sh-det">
+  <div class="sh">
+    <div class="shd"></div>
+    <div class="shh"><div><div class="sht" id="d-ti"></div><div id="d-ba" style="margin-top:4px"></div></div><button class="shc" onclick="closeSh('sh-det')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div class="shb" id="d-bo"></div>
+    <div class="shf" id="d-fo"></div>
+  </div>
+</div>
+
+<!-- PACKING SHEET -->
+<div class="sov" id="sh-pack">
+  <div class="sh">
+    <div class="shd"></div>
+    <div class="shh"><div><div class="sht" id="pk-ti">Packing Station</div><div style="font-size:12px;color:var(--text2);margin-top:2px" id="pk-su"></div></div><button class="shc" onclick="closeSh('sh-pack')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div class="shb">
+      <div class="eal">Goods approved by Office. Enter weight and packet count before sealing the box.</div>
+      <div class="fg"><label class="fl">Weight <span class="fr">*</span></label>
+        <div class="wp"><div><input type="number" class="fi" id="pk-kg" placeholder="0" min="0" inputmode="numeric"><div class="wu">Kilograms</div></div><div><input type="number" class="fi" id="pk-gm" placeholder="0" min="0" max="999" inputmode="numeric"><div class="wu">Grams (0–999)</div></div></div>
+      </div>
+      <div class="fg"><label class="fl">Packet Count <span class="fr">*</span></label><input type="number" class="fi" id="pk-ct" placeholder="e.g. 2" min="1" inputmode="numeric"></div>
+      <div class="fg"><label class="fl">Semi-Packed Photo</label>
+        <div class="ub" onclick="document.getElementById('pk-ph').click()"><div class="ubi">📦</div><div class="ubt"><b>Photo of open box</b> before sealing</div><div class="ubf" id="pk-ph-n"></div></div>
+        <input type="file" id="pk-ph" accept="image/*" onchange="showU('pk-ph','pk-ph-n')">
+      </div>
+    </div>
+    <div class="shf"><button class="btn btn-g" onclick="closeSh('sh-pack')">Cancel</button><button class="btn btn-s" style="flex:1;justify-content:center" onclick="sealBox()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>Box Sealed — Ready for Bill</button></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const SM = {
+  'Created':{l:'Created',c:'bg',s:'#d1d5db'},
+  'SO Linked':{l:'SO Linked',c:'bb',s:'#1a56db'},
+  'Pending SO Approval':{l:'Awaiting SO Approval',c:'ba',s:'#b45309'},
+  'In Dispatch Queue':{l:'In Dispatch Queue',c:'bb',s:'#1a56db'},
+  'Picked Pending Review':{l:'Pending Review',c:'ba',s:'#b45309'},
+  'Approved For Packing':{l:'Approved — Pack',c:'bgr',s:'#057a55'},
+  'Packed Pending Invoice':{l:'Packed — Invoice',c:'bt',s:'#0e7490'},
+  'Invoiced - Pending Approval':{l:'Invoice Approval',c:'ba',s:'#b45309'},
+  'Approved - Ready for Dispatch':{l:'Ready to Ship',c:'bgr',s:'#057a55'},
+  'Dispatched':{l:'Dispatched',c:'bgr',s:'#057a55'},
+  'Hold - Exception':{l:'On Hold',c:'br',s:'#c81e1e'},
+  'Cancelled':{l:'Cancelled',c:'bg',s:'#9ca3af'},
+};
+const CI={'Courier':'🚚','RRToolStore':'🛒','Builty':'🚛','Local':'🏪'};
+let orders=[
+  {id:'d1a736ef',dt:'2026-03-09',cl:'MD Trader',cat:'Machine Tools',dc:'Courier',st:'Created',so:null,sndr:'D.M. Impex',sc:false,stk:false,wt:null,pk:null,ph:0,hr:null,cby:'Manan',soby:null,piby:null,gaby:null,paby:null,ivby:null,iaby:null},
+  {id:'0a0f1d93',dt:'2026-03-09',cl:'Unitech Tooling',cat:'Carbide Inserts',dc:'Builty',st:'SO Linked',so:'SO/406/DE/25-26',sndr:'D.M. Engineering',sc:true,stk:false,wt:null,pk:null,ph:0,hr:null,cby:'Manan',soby:null,piby:null,gaby:null,paby:null,ivby:null,iaby:null},
+  {id:'231d1743',dt:'2026-03-10',cl:'MD Trader',cat:'Machine Tools',dc:'Courier',st:'Pending SO Approval',so:'12323/DI/25-26',sndr:'D.M. Impex',sc:false,stk:false,wt:null,pk:null,ph:0,hr:null,cby:'Manan',soby:null,piby:null,gaby:null,paby:null,ivby:null,iaby:null},
+  {id:'a1b2c3d4',dt:'2026-03-18',cl:'Shaurya Industrial',cat:'Carbide Endmills',dc:'RRToolStore',st:'Picked Pending Review',so:'SO/631/DE/25-26',sndr:'D.M. Engineering',sc:false,stk:false,wt:null,pk:null,ph:3,hr:null,cby:'Sunny',soby:'Ayush',piby:'Desraj',gaby:null,paby:null,ivby:null,iaby:null},
+  {id:'e5f6g7h8',dt:'2026-03-19',cl:'Dhankot Traders',cat:'Indexable Tools',dc:'Courier',st:'Approved For Packing',so:'SO/406/DE/25-26',sndr:'D.M. Engineering',sc:false,stk:false,wt:null,pk:null,ph:2,hr:null,cby:'Sunny',soby:'Ayush',piby:'Desraj',gaby:'Ayush',paby:null,ivby:null,iaby:null},
+  {id:'i9j0k1l2',dt:'2026-03-20',cl:'Versatile Tools',cat:'Machine Tools',dc:'Builty',st:'Hold - Exception',so:'SO/631/DE/25-26',sndr:'D.M. Impex',sc:true,stk:false,wt:null,pk:null,ph:0,hr:'Stock shortage — 10 pcs endmill not available in Bin 4B.',cby:'Manan',soby:'Ayush',piby:null,gaby:null,paby:null,ivby:null,iaby:null},
+  {id:'m3n4o5p6',dt:'2026-03-21',cl:'Tanya Enterprises',cat:'Carbide Inserts',dc:'Local',st:'Dispatched',so:'12323/DI/25-26',sndr:'D.M. Impex',sc:false,stk:false,wt:3.05,pk:2,ph:4,hr:null,cby:'Sunny',soby:'Ayush',piby:'Desraj',gaby:'Ayush',paby:'Desraj',ivby:'Sunny',iaby:'Ayush'},
+];
+let role='admin', pkId=null;
+const ROLES={
+  admin:{l:'Admin',tb:'#eff3ff',tc:'#1a56db',nav:[{id:'v-dashboard',lbl:'Dashboard',ic:'grid'},{id:'v-approvals',lbl:'Approvals',ic:'check',bd:'app'},{id:'v-picking',lbl:'Picking',ic:'list'},{id:'v-hold',lbl:'Hold',ic:'alert',bd:'hold'},{id:'v-history',lbl:'History',ic:'arch'}]},
+  office:{l:'Office',tb:'#f0fdf4',tc:'#057a55',nav:[{id:'v-approvals',lbl:'Inbox',ic:'check',bd:'app'},{id:'v-dashboard',lbl:'Pipeline',ic:'grid'},{id:'v-hold',lbl:'Hold Desk',ic:'alert',bd:'hold'},{id:'v-history',lbl:'History',ic:'arch'}]},
+  accounts:{l:'Accounts',tb:'#fffbeb',tc:'#92400e',nav:[{id:'v-new-orders',lbl:'Orders',ic:'inbox'},{id:'v-billing',lbl:'Billing',ic:'file'}]},
+  dispatch:{l:'Dispatch',tb:'#f5f3ff',tc:'#5521b5',nav:[{id:'v-picking',lbl:'Picking',ic:'list'},{id:'v-packing',lbl:'Packing',ic:'pkg'}]},
+};
+const ICS={
+  grid:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',
+  check:'<polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>',
+  list:'<line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>',
+  alert:'<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>',
+  arch:'<polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5" rx="1"/><line x1="10" y1="12" x2="14" y2="12"/>',
+  inbox:'<polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/>',
+  file:'<path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/>',
+  pkg:'<path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/>',
+};
+let chosenRole='admin';
+function pickRole(el){document.querySelectorAll('.ri').forEach(r=>r.classList.remove('sel'));el.classList.add('sel');chosenRole=el.dataset.role;}
+function doLogin(){
+  role=chosenRole;
+  document.getElementById('ls').style.display='none';
+  document.getElementById('app').classList.add('on');
+  const r=ROLES[role];
+  const t=document.getElementById('rtag');
+  t.textContent=r.l;t.style.background=r.tb;t.style.color=r.tc;
+  buildNav();renderAll();go(r.nav[0].id);
+  document.getElementById('fab').style.display=(role==='accounts'||role==='admin')?'flex':'none';
+}
+function doLogout(){document.getElementById('app').classList.remove('on');document.getElementById('ls').style.display='flex';document.getElementById('fab').style.display='none';['sh-det','sh-no','sh-pack'].forEach(closeSh);}
+function getBd(t){if(!t)return 0;if(t==='app')return orders.filter(o=>['Pending SO Approval','Picked Pending Review','Invoiced - Pending Approval'].includes(o.st)).length;if(t==='hold')return orders.filter(o=>o.st==='Hold - Exception').length;return 0;}
+function buildNav(){
+  const nav=document.getElementById('an');
+  nav.innerHTML=ROLES[role].nav.map(it=>{const b=getBd(it.bd);return`<div class="nt" id="nt-${it.id}" onclick="go('${it.id}')">${b>0?`<span class="nb">${b}</span>`:''}<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><g>${ICS[it.ic]||''}</g></svg><span class="ntl">${it.lbl}</span></div>`;}).join('');
+}
+function go(id){document.querySelectorAll('.vw').forEach(v=>v.classList.remove('on'));const el=document.getElementById(id);if(el){el.classList.add('on');}document.querySelectorAll('.nt').forEach(t=>t.classList.remove('on'));const nt=document.getElementById('nt-'+id);if(nt)nt.classList.add('on');}
+function bdg(st){const s=SM[st]||{l:st,c:'bg'};return`<span class="badge ${s.c}">${s.l}</span>`;}
+function card(o,acts){
+  const s=SM[o.st]||{s:'#d1d5db'};
+  const m=[
+    `<span class="mt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>${o.dt}</span>`,
+    `<span class="mt">${CI[o.dc]||'📦'} ${o.dc}</span>`,
+    o.cat?`<span class="mt">${o.cat}</span>`:'',
+    o.so?`<span class="mt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>${o.so}</span>`:'',
+    o.ph>0?`<span class="mt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>${o.ph} photos</span>`:'',
+  ].filter(Boolean).join('');
+  return`<div class="oc" onclick="openDet('${o.id}')"><div class="cs" style="background:${s.s}"></div><div class="cb"><div class="ct"><div><div class="ci">#${o.id.toUpperCase()}</div><div class="cc">${o.cl}</div></div>${bdg(o.st)}</div><div class="cm">${m}</div></div>${acts?`<div class="ca" onclick="event.stopPropagation()">${acts}</div>`:''}</div>`;
+}
+function emp(m,s){return`<div class="eb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/></svg><div class="et">${m}</div>${s?`<div class="es">${s}</div>`:''}</div>`;}
+function sl(id,h){const el=document.getElementById(id);if(el)el.innerHTML=h||'';}
+function sc2(id,n){const el=document.getElementById(id);if(el)el.textContent=n;}
+function renderAll(){
+  const app=orders.filter(o=>['Pending SO Approval','Picked Pending Review','Invoiced - Pending Approval'].includes(o.st)).length;
+  const hold=orders.filter(o=>o.st==='Hold - Exception').length;
+  sc2('s-action',app);sc2('d-app',app);sc2('d-hold',hold);
+  sc2('d-pick',orders.filter(o=>o.st==='In Dispatch Queue').length);
+  sc2('d-pack',orders.filter(o=>o.st==='Approved For Packing').length);
+  sc2('d-bill',orders.filter(o=>['Packed Pending Invoice','Invoiced - Pending Approval','Approved - Ready for Dispatch'].includes(o.st)).length);
+  sl('l-dash',[...orders].sort((a,b)=>b.dt.localeCompare(a.dt)).slice(0,6).map(o=>card(o,'')).join('')||emp('No orders yet'));
+  const cre=orders.filter(o=>o.st==='Created');
+  const pen=orders.filter(o=>['SO Linked','Pending SO Approval'].includes(o.st));
+  sc2('c-cre',cre.length);sc2('c-pen',pen.length);
+  sl('l-cre',cre.map(o=>card(o,`<button class="btn btn-p" onclick="reqApp('${o.id}');event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>Request SO Approval</button>`)).join('')||emp('No orders awaiting SO','Create a new order above'));
+  sl('l-pen',pen.map(o=>card(o,'')).join('')||emp('Nothing awaiting approval','All clear'));
+  const so=orders.filter(o=>o.st==='Pending SO Approval');
+  const gd=orders.filter(o=>o.st==='Picked Pending Review');
+  const ia=orders.filter(o=>o.st==='Invoiced - Pending Approval');
+  sc2('c-so',so.length);sc2('c-gd',gd.length);sc2('c-ia',ia.length);
+  sl('l-so',so.map(o=>card(o,`<button class="btn btn-s" onclick="appSO('${o.id}');event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>Approve &amp; Send to Dispatch</button><button class="btn btn-d" onclick="rejSO('${o.id}');event.stopPropagation()">Reject</button>`)).join('')||emp('No SO approvals pending'));
+  sl('l-gd',gd.map(o=>card(o,`<button class="btn btn-s" onclick="appGd('${o.id}');event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>Approve Packing</button><button class="btn btn-d" onclick="rejGd('${o.id}');event.stopPropagation()">Send for Recount</button>`)).join('')||emp('No goods awaiting verification'));
+  sl('l-ia',ia.map(o=>card(o,`<button class="btn btn-s" onclick="appBill('${o.id}');event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>Approve Invoice</button>`)).join('')||emp('No invoice approvals pending','All invoices cleared'));
+  const pick=orders.filter(o=>o.st==='In Dispatch Queue');
+  sl('l-pick',pick.map(o=>card(o,`<button class="btn btn-p" onclick="addPhoto('${o.id}');event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>Add Photo</button><button class="btn btn-o" onclick="subRev('${o.id}');event.stopPropagation()">Submit for Review</button>`)).join('')||emp('No orders in picking queue','Check back shortly'));
+  const pack=orders.filter(o=>o.st==='Approved For Packing');
+  const rev=orders.filter(o=>o.st==='Picked Pending Review');
+  sc2('c-pack',pack.length);sc2('c-rev',rev.length);
+  sl('l-pack',pack.map(o=>card(o,`<button class="btn btn-p" onclick="openPack('${o.id}');event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>Enter Weight &amp; Seal</button>`)).join('')||emp('No approved orders to pack'));
+  sl('l-rev',rev.map(o=>card(o,`<button class="btn btn-g" onclick="revPick('${o.id}');event.stopPropagation()">↩ Revert to Picking</button>`)).join('')||emp('None waiting for approval'));
+  const bill=orders.filter(o=>['Packed Pending Invoice','Invoiced - Pending Approval','Approved - Ready for Dispatch'].includes(o.st));
+  sl('l-bill',bill.map(o=>{let a='';if(o.st==='Packed Pending Invoice')a=`<button class="btn btn-p" onclick="linkInv('${o.id}');event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Link Invoice</button>`;if(o.st==='Approved - Ready for Dispatch')a=`<button class="btn btn-s" onclick="markDisp('${o.id}');event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="1" y="3" width="15" height="13" rx="2"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>Mark Dispatched</button>`;return card(o,a);}).join('')||emp('Billing queue is clear'));
+  const hld=orders.filter(o=>o.st==='Hold - Exception');
+  sl('l-hold',hld.map(o=>{const s=SM[o.st];return`<div class="hc" onclick="openDet('${o.id}')"><div class="cs" style="background:${s.s}"></div><div class="cb"><div class="ct"><div><div class="ci">#${o.id.toUpperCase()}</div><div class="cc">${o.cl}</div></div>${bdg(o.st)}</div>${o.hr?`<div class="hal"><strong>Hold Reason</strong>${o.hr}</div>`:''}<div class="cm"><span class="mt">${CI[o.dc]} ${o.dc}</span><span class="mt">${o.dt}</span></div></div><div class="ca" onclick="event.stopPropagation()"><button class="btn btn-s" onclick="relHold('${o.id}')">↩ Release to Queue</button><button class="btn btn-d" onclick="canOrd('${o.id}')">Cancel Order</button></div></div>`;}).join('')||emp('No exceptions on hold','All orders are flowing normally'));
+  const hist=orders.filter(o=>['Dispatched','Cancelled'].includes(o.st));
+  sl('l-hist',hist.map(o=>card(o,'')).join('')||emp('No completed orders yet'));
+  buildNav();
+}
+const SN=['Created','SO Linked','In Queue','Picked','Packing','Invoice','Dispatched'];
+const SIDX={'Created':0,'SO Linked':1,'Pending SO Approval':1,'In Dispatch Queue':2,'Picked Pending Review':3,'Approved For Packing':4,'Packed Pending Invoice':4,'Invoiced - Pending Approval':5,'Approved - Ready for Dispatch':5,'Dispatched':6};
+function openDet(id){
+  const o=orders.find(x=>x.id===id);if(!o)return;
+  document.getElementById('d-ti').textContent=o.cl;
+  document.getElementById('d-ba').innerHTML=bdg(o.st);
+  const si=SIDX[o.st]??0;
+  const stpH=SN.map((nm,i)=>{const dn=i<si,ac=i===si;return(i>0?`<div class="sli ${i<=si?'dn':''}"></div>`:'')+(dn?`<div class="sno"><div class="sci dn"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div><span class="snm">${nm}</span></div>`:`<div class="sno"><div class="sci ${ac?'ac':''}">${i+1}</div><span class="snm ${ac?'ac':''}">${nm}</span></div>`);}).join('');
+  const ig=[['Order ID',`<span class="dv mo">#${o.id.toUpperCase()}</span>`],['Date',o.dt],['Category',o.cat],['Dispatch Via',`${CI[o.dc]} ${o.dc}`],['Sender',o.sndr],o.so?['Sales Order',`<span class="pc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="12" height="12"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>${o.so}</span>`]:['Sales Order','—'],o.wt?['Weight',`${o.wt.toFixed(3)} kg`]:null,o.pk?['Packets',`${o.pk} pkt`]:null,o.sc?['Scanning Req.',`<span style="color:var(--amber);font-weight:600">Yes</span>`]:null,o.stk?['Stock Transfer',`<span style="color:var(--amber);font-weight:600">Yes</span>`]:null].filter(Boolean);
+  const au=[['Created by',o.cby],['SO Approved by',o.soby],['Picked by',o.piby],['Goods Approved by',o.gaby],['Packed by',o.paby],['Invoiced by',o.ivby],['Inv. Approved by',o.iaby]].filter(r=>r[1]);
+  document.getElementById('d-bo').innerHTML=`<div class="stp">${stpH}</div>${o.hr?`<div class="hal"><strong>Hold Reason</strong>${o.hr}</div>`:''}<div class="dig">${ig.map(([k,v])=>`<div class="dc"><div class="dk">${k}</div><div class="dv">${v}</div></div>`).join('')}</div>${o.ph>0?`<div class="dsh">Inspection Photos (${o.ph})</div><div class="phg">${Array.from({length:Math.min(o.ph,6)},(_,i)=>`<div class="pht">📷<div class="phl">${i<2?'SO':'Goods'}</div></div>`).join('')}</div>`:''} ${au.length?`<div class="dsh">Audit Trail</div>${au.map(([k,v])=>`<div class="ar"><span class="ak">${k}</span><span class="av">${v}</span></div>`).join('')}`:''}`;
+  let fo='';const r=role;
+  if((r==='accounts'||r==='admin')&&(o.st==='Created'||o.st==='SO Linked'))fo=`<button class="btn btn-g" onclick="closeSh('sh-det')">Close</button><button class="btn btn-p" style="flex:1;justify-content:center" onclick="reqApp('${o.id}');closeSh('sh-det')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>Request SO Approval</button>`;
+  else if((r==='office'||r==='admin')&&o.st==='Pending SO Approval')fo=`<button class="btn btn-d" onclick="rejSO('${o.id}')">Reject</button><button class="btn btn-s" style="flex:1;justify-content:center" onclick="appSO('${o.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>Approve &amp; Send</button>`;
+  else if((r==='office'||r==='admin')&&o.st==='Picked Pending Review')fo=`<button class="btn btn-d" onclick="rejGd('${o.id}')">Recount</button><button class="btn btn-s" style="flex:1;justify-content:center" onclick="appGd('${o.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>Approve Packing</button>`;
+  else if((r==='office'||r==='admin')&&o.st==='Invoiced - Pending Approval')fo=`<button class="btn btn-g" onclick="closeSh('sh-det')">Close</button><button class="btn btn-s" style="flex:1;justify-content:center" onclick="appBill('${o.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>Approve Invoice</button>`;
+  else if((r==='dispatch'||r==='admin')&&o.st==='In Dispatch Queue')fo=`<button class="btn btn-o" onclick="addPhoto('${o.id}')">Add Photo</button><button class="btn btn-p" style="flex:1;justify-content:center" onclick="subRev('${o.id}')">Submit for Review</button>`;
+  else if((r==='dispatch'||r==='admin')&&o.st==='Approved For Packing')fo=`<button class="btn btn-g" onclick="closeSh('sh-det')">Close</button><button class="btn btn-p" style="flex:1;justify-content:center" onclick="openPack('${o.id}')">Enter Weights &amp; Seal</button>`;
+  else if((r==='accounts'||r==='admin')&&o.st==='Packed Pending Invoice')fo=`<button class="btn btn-g" onclick="closeSh('sh-det')">Close</button><button class="btn btn-p" style="flex:1;justify-content:center" onclick="linkInv('${o.id}')">Link Invoice</button>`;
+  else if((r==='accounts'||r==='admin')&&o.st==='Approved - Ready for Dispatch')fo=`<button class="btn btn-g" onclick="closeSh('sh-det')">Close</button><button class="btn btn-s" style="flex:1;justify-content:center" onclick="markDisp('${o.id}')">Mark Dispatched</button>`;
+  else fo=`<button class="btn btn-o btn-bl" onclick="closeSh('sh-det')">Close</button>`;
+  document.getElementById('d-fo').innerHTML=fo;
+  openSh('sh-det');
+}
+function g(id){return orders.find(x=>x.id===id);}
+function rf(m,t){renderAll();if(m)toast(m,t||'s');}
+function reqApp(id){const o=g(id);if(!o.so){toast('Link a Sales Order first','e');return;}o.st='Pending SO Approval';closeSh('sh-det');rf('Order sent to Office for SO approval');}
+function appSO(id){const o=g(id);o.st='In Dispatch Queue';o.soby=role==='office'?'Ayush':'Manan';closeSh('sh-det');rf('SO approved — sent to dispatch floor');}
+function rejSO(id){const o=g(id);o.st='Created';closeSh('sh-det');rf('Order rejected — returned to Accounts','i');}
+function appGd(id){const o=g(id);o.st='Approved For Packing';o.gaby='Ayush';closeSh('sh-det');rf('Goods approved — packing authorized');}
+function rejGd(id){const o=g(id);o.st='In Dispatch Queue';closeSh('sh-det');rf('Sent back for recount','i');}
+function addPhoto(id){const o=g(id);o.ph=(o.ph||0)+1;closeSh('sh-det');rf(`Photo added (${o.ph} total)`,'i');}
+function subRev(id){const o=g(id);if(!o.ph||o.ph<1){toast('Upload at least one photo first','e');return;}o.st='Picked Pending Review';o.piby='Desraj';closeSh('sh-det');rf('Submitted for Office review');}
+function revPick(id){const o=g(id);o.st='In Dispatch Queue';rf('Reverted to picking queue','i');}
+function openPack(id){pkId=id;const o=g(id);document.getElementById('pk-ti').textContent=o.cl;document.getElementById('pk-su').textContent='#'+o.id.toUpperCase()+' · '+o.cat;['pk-kg','pk-gm','pk-ct'].forEach(i=>document.getElementById(i).value='');document.getElementById('pk-ph-n').textContent='';closeSh('sh-det');openSh('sh-pack');}
+function sealBox(){const kg=parseFloat(document.getElementById('pk-kg').value)||0,gm=parseFloat(document.getElementById('pk-gm').value)||0,ct=parseInt(document.getElementById('pk-ct').value)||0;if(kg===0&&gm===0){toast('Enter weight before sealing','e');return;}if(ct<1){toast('Enter packet count','e');return;}const o=g(pkId);o.wt=kg+gm/1000;o.pk=ct;o.st='Packed Pending Invoice';o.paby='Desraj';closeSh('sh-pack');rf(`Box sealed — ${o.wt.toFixed(3)} kg, ${ct} packet(s)`);}
+function linkInv(id){const o=g(id);o.st='Invoiced - Pending Approval';o.ivby='Sunny';closeSh('sh-det');rf('Invoice linked — awaiting Office approval','i');}
+function appBill(id){const o=g(id);o.st='Approved - Ready for Dispatch';o.iaby='Ayush';closeSh('sh-det');rf('Invoice approved — ready for courier');}
+function markDisp(id){const o=g(id);o.st='Dispatched';closeSh('sh-det');rf('Order marked as dispatched!');}
+function relHold(id){const o=g(id);o.st='In Dispatch Queue';o.hr=null;rf('Order released to dispatch queue');}
+function canOrd(id){const o=g(id);o.st='Cancelled';rf('Order cancelled','i');}
+let selCat='Courier';
+function pickCat(el){document.querySelectorAll('.cci').forEach(c=>c.classList.remove('on'));el.classList.add('on');selCat=el.dataset.cat;document.getElementById('fg-sh').style.display=selCat==='RRToolStore'?'block':'none';}
+function createOrder(){const cl=document.getElementById('f-cl').value.trim(),cat=document.getElementById('f-cat').value;if(!cl){toast('Enter client name','e');return;}if(!cat){toast('Select order category','e');return;}const sv=document.getElementById('f-so').value;const soText=sv?document.getElementById('f-so').options[document.getElementById('f-so').selectedIndex].text.split(' — ')[0]:null;const o={id:Math.random().toString(36).substr(2,8),dt:new Date().toISOString().split('T')[0],cl,cat,dc:selCat,st:sv?'SO Linked':'Created',so:soText,sndr:'D.M. Impex',sc:document.getElementById('f-sc').checked,stk:document.getElementById('f-st').checked,wt:null,pk:null,ph:0,hr:null,cby:role==='admin'?'Manan':'Sunny',soby:null,piby:null,gaby:null,paby:null,ivby:null,iaby:null};orders.unshift(o);closeSh('sh-no');['f-cl','f-so'].forEach(i=>document.getElementById(i).value='');document.getElementById('f-cat').value='';['f-sc','f-st'].forEach(i=>document.getElementById(i).checked=false);rf('Order created successfully');}
+function openSh(id){document.getElementById(id).classList.add('on');document.body.style.overflow='hidden';}
+function closeSh(id){document.getElementById(id).classList.remove('on');document.body.style.overflow='';}
+document.querySelectorAll('.sov').forEach(ov=>ov.addEventListener('click',e=>{if(e.target===ov)closeSh(ov.id);}));
+function showU(inp,lbl){const f=document.getElementById(inp).files[0];if(f)document.getElementById(lbl).textContent='✓ '+f.name;}
+let toastTm;
+function toast(m,t='s'){const el=document.getElementById('toast');el.textContent=m;el.className=`toast on t${t}`;clearTimeout(toastTm);toastTm=setTimeout(()=>el.classList.remove('on'),3000);}
+function doSync(){let r=0;const sv=document.getElementById('fab').querySelector('svg');const id=setInterval(()=>{r+=15;sv.style.transform=`rotate(${r}deg)`;if(r>=360){clearInterval(id);sv.style.transform='';}},20);toast('Syncing Drive files…','i');setTimeout(()=>toast('2 new files found and processed'),2000);}
+</script>
+</body>
+</html>

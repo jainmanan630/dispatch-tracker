@@ -2,562 +2,1798 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#ffffff">
-<title>Dispatch Tracker</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<title>Dispatch Tracker — D.M. Impex</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-:root {
-  --white:#ffffff; --bg:#f5f5f7; --bg2:#ebebed; --border:#e4e4e8; --border2:#d0d0d6;
-  --text:#111114; --text2:#6b6b78; --text3:#a0a0ac;
-  --blue:#1a56db; --blue-l:#eff3ff; --blue-m:#c7d7fc;
-  --green:#057a55; --green-l:#f0fdf4; --green-m:#a7f3d0;
-  --amber:#92400e; --amber-l:#fffbeb; --amber-m:#fcd34d;
-  --red:#c81e1e; --red-l:#fff5f5; --red-m:#fecaca;
-  --purple:#5521b5; --purple-l:#f5f3ff; --purple-m:#ddd6fe;
-  --teal:#0e7490; --teal-l:#f0fdfa; --teal-m:#a5f3fc;
-  --r:8px; --rl:14px; --rxl:20px;
-  --sh-sm:0 1px 3px rgba(0,0,0,0.08),0 1px 2px rgba(0,0,0,0.04);
-  --sh:0 4px 12px rgba(0,0,0,0.08),0 2px 4px rgba(0,0,0,0.04);
-  --sh-lg:0 12px 32px rgba(0,0,0,0.12),0 4px 8px rgba(0,0,0,0.06);
-  --font:'Plus Jakarta Sans',sans-serif; --mono:'JetBrains Mono',monospace;
-  --t:0.14s ease;
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+:root{
+  --w:#fff;--bg:#f4f4f6;--bg2:#eaeaec;--bd:#e2e2e6;--bd2:#ccccd4;
+  --t1:#0f0f12;--t2:#64646e;--t3:#9d9da8;
+  --blue:#1a56db;--bl:#eff3ff;--bm:#c7d7fc;
+  --green:#046c4e;--gl:#f0fdf4;--gm:#a7f3d0;
+  --amber:#92400e;--al:#fffbeb;--am:#fcd34d;
+  --red:#be1d1d;--rl:#fff5f5;--rm:#fecaca;
+  --purple:#5521b5;--pl:#f5f3ff;--pm:#ddd6fe;
+  --teal:#0e7490;--tl:#f0fdfa;--tm:#a5f3fc;
+  --r:8px;--rl2:14px;--rxl:20px;
+  --s1:0 1px 3px rgba(0,0,0,.07),0 1px 2px rgba(0,0,0,.04);
+  --s2:0 4px 16px rgba(0,0,0,.08),0 2px 4px rgba(0,0,0,.04);
+  --s3:0 12px 40px rgba(0,0,0,.14),0 4px 8px rgba(0,0,0,.06);
+  --fn:'Plus Jakarta Sans',sans-serif;--mo:'JetBrains Mono',monospace;
+  --ease:.15s ease;
 }
 html,body{height:100%;background:var(--bg);}
-body{font-family:var(--font);font-size:14px;color:var(--text);line-height:1.5;overflow-x:hidden;}
-/* LOGIN */
-#ls{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;background:var(--white);}
-.ll{width:48px;height:48px;background:var(--blue);border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;}
-.ll svg{width:24px;height:24px;color:white;}
-.lco{font-size:11px;font-weight:600;color:var(--text3);letter-spacing:.07em;text-transform:uppercase;margin-bottom:6px;}
-.lti{font-size:22px;font-weight:700;color:var(--text);margin-bottom:32px;letter-spacing:-.3px;}
-.lc{width:100%;max-width:380px;background:var(--white);border:1px solid var(--border);border-radius:var(--rxl);padding:28px 24px;box-shadow:var(--sh);}
-.lsl{font-size:11px;font-weight:600;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px;}
-.rl{display:flex;flex-direction:column;gap:8px;margin-bottom:24px;}
-.ri{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:var(--r);border:1.5px solid var(--border);background:var(--white);cursor:pointer;transition:all var(--t);}
-.ri:hover{border-color:var(--blue-m);background:var(--blue-l);}
-.ri.sel{border-color:var(--blue);background:var(--blue-l);}
-.rd{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;}
-.rn{font-size:13px;font-weight:600;color:var(--text);}
-.rde{font-size:11px;color:var(--text2);margin-top:1px;}
-.rck{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--border2);flex-shrink:0;transition:all var(--t);}
-.ri.sel .rck{background:var(--blue);border-color:var(--blue);display:flex;align-items:center;justify-content:center;}
-.ri.sel .rck::after{content:'';width:6px;height:6px;background:white;border-radius:50%;}
-.btn-lo{width:100%;padding:13px;background:var(--blue);color:white;border:none;border-radius:var(--r);font-family:var(--font);font-size:14px;font-weight:600;cursor:pointer;transition:all var(--t);letter-spacing:-.1px;}
-.btn-lo:hover{background:#1647c8;}
-.btn-lo:active{transform:scale(.99);}
-/* APP */
+body{font-family:var(--fn);font-size:14px;color:var(--t1);line-height:1.5;overflow-x:hidden;}
+
+/* ══ LOGIN SCREEN ══ */
+#login-screen{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;background:var(--w);}
+.ls-logo{width:52px;height:52px;background:var(--blue);border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;box-shadow:0 4px 14px rgba(26,86,219,.28);}
+.ls-logo svg{width:26px;height:26px;color:#fff;}
+.ls-co{font-size:11px;font-weight:600;color:var(--t3);letter-spacing:.07em;text-transform:uppercase;margin-bottom:6px;}
+.ls-title{font-size:24px;font-weight:700;letter-spacing:-.4px;margin-bottom:32px;}
+.ls-card{width:100%;max-width:380px;border:1px solid var(--bd);border-radius:var(--rxl);padding:28px 24px;box-shadow:var(--s2);}
+.ls-label{font-size:11px;font-weight:600;color:var(--t3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px;}
+.ls-error{font-size:12px;color:var(--red);background:var(--rl);border:1px solid var(--rm);border-radius:var(--r);padding:10px 12px;margin-bottom:14px;display:none;}
+.ls-error.show{display:block;}
+
+/* ══ APP SHELL ══ */
 #app{display:none;flex-direction:column;min-height:100vh;}
 #app.on{display:flex;}
-.ah{background:var(--white);border-bottom:1px solid var(--border);padding:0 16px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
-.ahl{display:flex;align-items:center;gap:10px;}
-.alo{width:28px;height:28px;background:var(--blue);border-radius:7px;display:flex;align-items:center;justify-content:center;}
-.alo svg{width:14px;height:14px;color:white;}
-.aln{font-size:14px;font-weight:700;color:var(--text);letter-spacing:-.2px;}
-.ahr{display:flex;align-items:center;gap:8px;}
-.rtg{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;letter-spacing:.02em;}
-.ib{width:32px;height:32px;border-radius:var(--r);border:1px solid var(--border);background:var(--white);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--t);color:var(--text2);}
-.ib:hover{background:var(--bg);border-color:var(--border2);color:var(--text);}
-.ac{flex:1;padding:0 0 72px 0;overflow-y:auto;}
+.hdr{background:var(--w);border-bottom:1px solid var(--bd);height:52px;padding:0 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;}
+.hdr-l{display:flex;align-items:center;gap:10px;}
+.hdr-logo{width:28px;height:28px;background:var(--blue);border-radius:7px;display:flex;align-items:center;justify-content:center;}
+.hdr-logo svg{width:14px;height:14px;color:#fff;}
+.hdr-name{font-size:14px;font-weight:700;letter-spacing:-.2px;}
+.hdr-r{display:flex;align-items:center;gap:8px;}
+.role-pill{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;}
+.user-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;cursor:pointer;flex-shrink:0;}
+.icon-btn{width:32px;height:32px;border-radius:var(--r);border:1px solid var(--bd);background:var(--w);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--t2);transition:all var(--ease);}
+.icon-btn:hover{background:var(--bg);color:var(--t1);}
+.main{flex:1;padding-bottom:68px;overflow-y:auto;}
+
 /* NAV */
-.an{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1px solid var(--border);display:flex;padding-bottom:env(safe-area-inset-bottom);z-index:100;}
-.nt{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 4px 8px;cursor:pointer;color:var(--text3);transition:color var(--t);position:relative;-webkit-user-select:none;user-select:none;}
-.nt.on{color:var(--blue);}
-.nt svg{width:20px;height:20px;}
-.ntl{font-size:10px;font-weight:600;letter-spacing:.01em;}
-.nb{position:absolute;top:7px;right:calc(50% - 16px);background:var(--red);color:white;font-size:9px;font-weight:700;font-family:var(--mono);min-width:15px;height:15px;border-radius:8px;padding:0 3px;display:flex;align-items:center;justify-content:center;border:1.5px solid white;}
+.nav{position:fixed;bottom:0;left:0;right:0;background:var(--w);border-top:1px solid var(--bd);display:flex;padding-bottom:env(safe-area-inset-bottom);z-index:50;}
+.nav-tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 4px 8px;cursor:pointer;color:var(--t3);transition:color var(--ease);position:relative;user-select:none;}
+.nav-tab.on{color:var(--blue);}
+.nav-tab svg{width:20px;height:20px;}
+.nav-tab-lbl{font-size:10px;font-weight:600;}
+.nav-badge{position:absolute;top:7px;right:calc(50% - 16px);background:var(--red);color:#fff;font-size:9px;font-weight:700;font-family:var(--mo);min-width:15px;height:15px;border-radius:8px;padding:0 3px;display:flex;align-items:center;justify-content:center;border:1.5px solid var(--w);}
+
 /* VIEWS */
-.vw{display:none;} .vw.on{display:block;}
-.ph{padding:18px 16px 14px;background:var(--white);border-bottom:1px solid var(--border);}
+.view{display:none;}.view.on{display:block;}
+.ph{padding:18px 16px 14px;background:var(--w);border-bottom:1px solid var(--bd);}
 .ph-row{display:flex;align-items:flex-start;justify-content:space-between;}
-.pt{font-size:18px;font-weight:700;color:var(--text);letter-spacing:-.4px;}
-.ps{font-size:12px;color:var(--text2);margin-top:2px;}
+.pt{font-size:18px;font-weight:700;letter-spacing:-.4px;}
+.ps{font-size:12px;color:var(--t2);margin-top:2px;}
+.sec{padding:16px;}.sec+.sec{padding-top:0;}
+.sl{font-size:11px;font-weight:600;color:var(--t3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.sc{background:var(--bg2);color:var(--t2);font-family:var(--mo);font-size:10px;padding:1px 6px;border-radius:4px;}
+
 /* STATS */
-.sr{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:16px;}
-.sb{background:var(--white);border:1px solid var(--border);border-radius:var(--rl);padding:14px 12px;}
-.sv{font-size:26px;font-weight:700;letter-spacing:-.5px;line-height:1;margin-bottom:5px;}
-.sk{font-size:11px;color:var(--text2);font-weight:500;}
-/* PIPELINE */
-.pg{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px 16px;}
-.pt2{background:var(--white);border:1px solid var(--border);border-radius:var(--rl);padding:16px;cursor:pointer;transition:all var(--t);display:flex;flex-direction:column;gap:10px;}
-.pt2:hover{border-color:var(--border2);box-shadow:var(--sh-sm);}
-.pt2:active{transform:scale(.98);}
-.ptt{display:flex;align-items:center;justify-content:space-between;}
-.pi{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;}
-.pn{font-size:28px;font-weight:700;letter-spacing:-.5px;line-height:1;}
-.pm{font-size:12px;font-weight:500;color:var(--text2);}
-/* SECTION */
-.sec{padding:16px;}
-.sec+.sec{padding-top:0;}
-.sl{font-size:11px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
-.sc{background:var(--bg2);color:var(--text2);font-family:var(--mono);font-size:10px;padding:1px 6px;border-radius:4px;}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:16px;}
+.stat-box{background:var(--w);border:1px solid var(--bd);border-radius:var(--rl2);padding:14px 12px;}
+.stat-val{font-size:26px;font-weight:700;letter-spacing:-.5px;line-height:1;margin-bottom:5px;}
+.stat-lbl{font-size:11px;color:var(--t2);font-weight:500;}
+.pipe-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px 16px;}
+.pipe-tile{background:var(--w);border:1px solid var(--bd);border-radius:var(--rl2);padding:14px 16px;cursor:pointer;transition:all var(--ease);}
+.pipe-tile:active{transform:scale(.98);}
+.ptt{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.p-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;}
+.p-num{font-size:28px;font-weight:700;letter-spacing:-.5px;line-height:1;}
+.p-lbl{font-size:12px;font-weight:500;color:var(--t2);}
+
 /* ORDER CARDS */
 .ol{display:flex;flex-direction:column;gap:8px;}
-.oc{background:var(--white);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;cursor:pointer;transition:all var(--t);box-shadow:var(--sh-sm);}
-.oc:hover{border-color:var(--border2);box-shadow:var(--sh);}
+.oc{background:var(--w);border:1px solid var(--bd);border-radius:var(--rl2);overflow:hidden;cursor:pointer;transition:all var(--ease);box-shadow:var(--s1);}
 .oc:active{transform:scale(.99);}
-.cs{height:3px;}
-.cb{padding:14px 16px;}
-.ct{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:10px;}
-.ci{font-family:var(--mono);font-size:10px;color:var(--text3);margin-bottom:3px;}
-.cc{font-size:15px;font-weight:600;color:var(--text);letter-spacing:-.2px;}
-.cm{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px;}
-.mt{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:500;color:var(--text2);background:var(--bg);border:1px solid var(--border);padding:3px 8px;border-radius:5px;}
-.mt svg{width:10px;height:10px;}
-.ca{display:flex;gap:8px;padding:10px 16px 14px;border-top:1px solid var(--border);background:#fafafa;}
+.c-stripe{height:3px;}
+.c-body{padding:14px 16px;}
+.c-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:9px;}
+.c-id{font-family:var(--mo);font-size:10px;color:var(--t3);margin-bottom:3px;}
+.c-name{font-size:15px;font-weight:600;letter-spacing:-.2px;}
+.c-sys{font-size:11px;color:var(--t2);font-style:italic;margin-top:1px;}
+.c-meta{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:3px;}
+.mtag{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:500;color:var(--t2);background:var(--bg);border:1px solid var(--bd);padding:2px 8px;border-radius:5px;}
+.mtag svg{width:10px;height:10px;}
+.c-acts{display:flex;gap:8px;padding:10px 16px 13px;border-top:1px solid var(--bd);background:#fafafa;flex-wrap:wrap;}
+
 /* BADGES */
 .badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:5px;font-size:11px;font-weight:600;white-space:nowrap;flex-shrink:0;}
 .badge::before{content:'';width:5px;height:5px;border-radius:50%;flex-shrink:0;}
-.bg{background:var(--bg2);color:var(--text2);}.bg::before{background:var(--text3);}
-.bb{background:var(--blue-l);color:var(--blue);}.bb::before{background:var(--blue);}
-.ba{background:var(--amber-l);color:var(--amber);}.ba::before{background:var(--amber);}
-.bgr{background:var(--green-l);color:var(--green);}.bgr::before{background:var(--green);}
-.br{background:var(--red-l);color:var(--red);}.br::before{background:var(--red);}
-.bp{background:var(--purple-l);color:var(--purple);}.bp::before{background:var(--purple);}
-.bt{background:var(--teal-l);color:var(--teal);}.bt::before{background:var(--teal);}
+.b-gray{background:var(--bg2);color:var(--t2);}.b-gray::before{background:var(--t3);}
+.b-blue{background:var(--bl);color:var(--blue);}.b-blue::before{background:var(--blue);}
+.b-amber{background:var(--al);color:var(--amber);}.b-amber::before{background:var(--amber);}
+.b-green{background:var(--gl);color:var(--green);}.b-green::before{background:var(--green);}
+.b-red{background:var(--rl);color:var(--red);}.b-red::before{background:var(--red);}
+.b-purple{background:var(--pl);color:var(--purple);}.b-purple::before{background:var(--purple);}
+.b-teal{background:var(--tl);color:var(--teal);}.b-teal::before{background:var(--teal);}
+
 /* BUTTONS */
-.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:var(--r);font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;transition:all var(--t);border:1px solid transparent;letter-spacing:-.1px;white-space:nowrap;}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:var(--r);font-family:var(--fn);font-size:12px;font-weight:600;cursor:pointer;transition:all var(--ease);border:1px solid transparent;letter-spacing:-.1px;white-space:nowrap;}
 .btn svg{width:13px;height:13px;flex-shrink:0;}
 .btn:active{transform:scale(.98);}
-.btn-p{background:var(--blue);color:white;border-color:var(--blue);}.btn-p:hover{background:#1647c8;}
-.btn-s{background:var(--green);color:white;border-color:var(--green);}.btn-s:hover{background:#046844;}
-.btn-d{background:var(--white);color:var(--red);border-color:var(--red-m);}.btn-d:hover{background:var(--red-l);}
-.btn-o{background:var(--white);color:var(--text);border-color:var(--border2);}.btn-o:hover{background:var(--bg);}
-.btn-g{background:transparent;color:var(--text2);border-color:var(--border);}.btn-g:hover{background:var(--bg);color:var(--text);}
-.btn-bl{width:100%;justify-content:center;padding:12px;font-size:13px;}
-/* SHEET */
-.sov{position:fixed;inset:0;background:rgba(0,0,0,0.3);z-index:200;display:none;align-items:flex-end;}
+.btn-p{background:var(--blue);color:#fff;border-color:var(--blue);}
+.btn-p:hover{background:#1647c8;}
+.btn-s{background:var(--green);color:#fff;border-color:var(--green);}
+.btn-s:hover{background:#035c41;}
+.btn-d{background:var(--w);color:var(--red);border-color:var(--rm);}
+.btn-d:hover{background:var(--rl);}
+.btn-o{background:var(--w);color:var(--t1);border-color:var(--bd2);}
+.btn-o:hover{background:var(--bg);}
+.btn-g{background:transparent;color:var(--t2);border-color:var(--bd);}
+.btn-g:hover{background:var(--bg);color:var(--t1);}
+.btn-amber{background:var(--amber);color:#fff;}
+.btn-block{width:100%;justify-content:center;padding:12px;font-size:13px;}
+
+/* BOTTOM SHEET */
+.sov{position:fixed;inset:0;background:rgba(0,0,0,.32);z-index:200;display:none;align-items:flex-end;}
 .sov.on{display:flex;}
-.sh{background:var(--white);width:100%;max-width:520px;margin:0 auto;border-radius:20px 20px 0 0;max-height:94vh;display:flex;flex-direction:column;animation:shi .24s cubic-bezier(.32,.72,0,1);}
-@keyframes shi{from{transform:translateY(100%);}to{transform:translateY(0);}}
-.shd{width:36px;height:4px;background:var(--border2);border-radius:2px;margin:12px auto 0;flex-shrink:0;}
-.shh{padding:16px 20px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
-.sht{font-size:16px;font-weight:700;color:var(--text);letter-spacing:-.3px;}
-.shc{width:28px;height:28px;border-radius:50%;background:var(--bg);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text2);transition:all var(--t);}
-.shc:hover{background:var(--bg2);}
-.shb{padding:20px;overflow-y:auto;flex:1;}
-.shf{padding:14px 20px calc(14px + env(safe-area-inset-bottom));border-top:1px solid var(--border);display:flex;gap:10px;flex-shrink:0;background:var(--white);}
+.sheet{background:var(--w);width:100%;max-width:520px;margin:0 auto;border-radius:20px 20px 0 0;max-height:94vh;display:flex;flex-direction:column;animation:sup .24s cubic-bezier(.32,.72,0,1);}
+@keyframes sup{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.s-handle{width:36px;height:4px;background:var(--bd2);border-radius:2px;margin:12px auto 0;flex-shrink:0;}
+.s-hdr{padding:15px 20px 13px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.s-title{font-size:16px;font-weight:700;letter-spacing:-.3px;}
+.s-sub{font-size:12px;color:var(--t2);margin-top:2px;}
+.s-close{width:28px;height:28px;border-radius:50%;background:var(--bg);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--t2);}
+.s-body{padding:20px;overflow-y:auto;flex:1;}
+.s-footer{padding:14px 20px calc(14px + env(safe-area-inset-bottom));border-top:1px solid var(--bd);display:flex;gap:10px;flex-shrink:0;background:var(--w);}
+
 /* FORM */
 .fg{margin-bottom:18px;}
-.fl{display:block;font-size:12px;font-weight:600;color:var(--text);margin-bottom:7px;}
-.fr{color:var(--red);margin-left:2px;}
-.fh{font-size:11px;color:var(--text3);font-weight:400;margin-left:4px;}
-.fi{width:100%;background:var(--white);border:1px solid var(--border2);border-radius:var(--r);padding:10px 12px;color:var(--text);font-family:var(--font);font-size:14px;transition:border-color var(--t),box-shadow var(--t);outline:none;-webkit-appearance:none;}
+.fl{display:block;font-size:12px;font-weight:600;color:var(--t1);margin-bottom:7px;}
+.req{color:var(--red);margin-left:2px;}
+.hint{font-size:11px;color:var(--t3);font-weight:400;margin-left:4px;}
+.fi{width:100%;background:var(--w);border:1px solid var(--bd2);border-radius:var(--r);padding:10px 12px;color:var(--t1);font-family:var(--fn);font-size:14px;outline:none;transition:all var(--ease);-webkit-appearance:none;}
 .fi:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,86,219,.1);}
-.fi::placeholder{color:var(--text3);}
-.fsel{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23a0a0ac' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:32px;}
-/* CAT CHIPS */
-.cc2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-.cci{padding:11px 12px;border:1.5px solid var(--border);border-radius:var(--r);background:var(--white);cursor:pointer;transition:all var(--t);display:flex;align-items:center;gap:10px;}
-.cci:hover{border-color:var(--blue-m);background:var(--blue-l);}
-.cci.on{border-color:var(--blue);background:var(--blue-l);}
-.ccii{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
-.ccin{font-size:12px;font-weight:600;color:var(--text);}
-/* TOGGLE */
-.ti{display:flex;align-items:center;justify-content:space-between;padding:13px 14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--r);margin-bottom:8px;}
-.ttn{font-size:13px;font-weight:600;}
-.ttd{font-size:11px;color:var(--text2);margin-top:1px;}
-.tos{position:relative;width:44px;height:26px;flex-shrink:0;}
-.tos input{opacity:0;width:0;height:0;}
-.tosl{position:absolute;inset:0;background:var(--border2);border-radius:13px;cursor:pointer;transition:background .2s;}
-.tosl::before{content:'';position:absolute;width:20px;height:20px;border-radius:50%;background:white;top:3px;left:3px;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2);}
-.tos input:checked+.tosl{background:var(--blue);}
-.tos input:checked+.tosl::before{transform:translateX(18px);}
-/* UPLOAD */
-.ub{border:1.5px dashed var(--border2);border-radius:var(--r);padding:20px 16px;text-align:center;cursor:pointer;transition:all var(--t);background:var(--bg);}
-.ub:hover{border-color:var(--blue);background:var(--blue-l);}
-.ubi{font-size:24px;margin-bottom:6px;}
-.ubt{font-size:12px;color:var(--text2);}
-.ubt b{color:var(--blue);}
-.ubf{font-size:11px;color:var(--green);margin-top:6px;font-weight:500;}
+.fi::placeholder{color:var(--t3);}
+.fi:disabled,.fi[readonly]{background:var(--bg);color:var(--t2);cursor:default;}
+.fi-sel{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%239d9da8' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:32px;}
+.fi-ro-wrap{position:relative;}
+.fi-ro-lock{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--t3);}
+/* dispatch cat */
+.dcat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.dcat{padding:11px 12px;border:1.5px solid var(--bd);border-radius:var(--r);background:var(--w);cursor:pointer;transition:all var(--ease);display:flex;align-items:center;gap:10px;}
+.dcat:hover{border-color:var(--bm);background:var(--bl);}
+.dcat.on{border-color:var(--blue);background:var(--bl);}
+.dcat-icon{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.dcat-name{font-size:12px;font-weight:600;}
+/* multi chips */
+.mchips{display:flex;flex-wrap:wrap;gap:7px;}
+.mchip{padding:7px 13px;border:1.5px solid var(--bd);border-radius:20px;background:var(--w);cursor:pointer;font-size:12px;font-weight:500;color:var(--t2);transition:all var(--ease);}
+.mchip:hover{border-color:var(--bm);color:var(--blue);}
+.mchip.on{border-color:var(--blue);background:var(--bl);color:var(--blue);font-weight:600;}
+/* SO picker */
+.so-list{border:1px solid var(--bd2);border-radius:var(--r);overflow:hidden;max-height:220px;overflow-y:auto;}
+.so-item{padding:11px 14px;border-bottom:1px solid var(--bd);cursor:pointer;transition:background var(--ease);}
+.so-item:last-child{border-bottom:none;}
+.so-item:hover{background:var(--bl);}
+.so-item.on{background:var(--bl);border-left:3px solid var(--blue);}
+.so-doc{font-family:var(--mo);font-size:11px;color:var(--blue);font-weight:500;}
+.so-party{font-size:13px;font-weight:600;margin-top:2px;}
+.so-meta{font-size:11px;color:var(--t2);margin-top:1px;display:flex;align-items:center;gap:8px;}
+.so-pdf-btn{font-size:10px;font-weight:600;color:var(--blue);background:var(--bl);border:1px solid var(--bm);padding:1px 7px;border-radius:4px;cursor:pointer;text-decoration:none;}
+/* toggle */
+.tog-row{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--bg);border:1px solid var(--bd);border-radius:var(--r);margin-bottom:8px;}
+.tog-name{font-size:13px;font-weight:600;}
+.tog-desc{font-size:11px;color:var(--t2);margin-top:1px;}
+.ios-tog{position:relative;width:44px;height:26px;flex-shrink:0;}
+.ios-tog input{opacity:0;width:0;height:0;}
+.ios-track{position:absolute;inset:0;background:var(--bd2);border-radius:13px;cursor:pointer;transition:background .2s;}
+.ios-track::before{content:'';position:absolute;width:20px;height:20px;border-radius:50%;background:#fff;top:3px;left:3px;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2);}
+.ios-tog input:checked+.ios-track{background:var(--blue);}
+.ios-tog input:checked+.ios-track::before{transform:translateX(18px);}
+/* photo upload */
+.upl-area{border:1.5px dashed var(--bd2);border-radius:var(--r);padding:18px 16px;text-align:center;cursor:pointer;transition:all var(--ease);background:var(--bg);}
+.upl-area:hover{border-color:var(--blue);background:var(--bl);}
+.upl-icon{font-size:24px;margin-bottom:6px;}
+.upl-text{font-size:12px;color:var(--t2);}
+.upl-text b{color:var(--blue);}
 input[type="file"]{display:none;}
-.div{border:none;border-top:1px solid var(--border);margin:18px 0;}
-/* WEIGHT */
-.wp{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.wu{font-size:11px;color:var(--text3);margin-top:5px;text-align:center;}
-/* DETAIL */
-.dig{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;margin-bottom:16px;}
-.dc{padding:12px 14px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);}
-.dc:nth-child(2n){border-right:none;}
-.dc:nth-last-child(-n+2){border-bottom:none;}
-.dk{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;}
-.dv{font-size:13px;font-weight:500;color:var(--text);}
-.dv.mo{font-family:var(--mono);font-size:11px;}
-.dsh{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin:18px 0 10px;padding-bottom:8px;border-bottom:1px solid var(--border);}
-.ar{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);}
-.ar:last-child{border-bottom:none;}
-.ak{font-size:12px;color:var(--text2);}
-.av{font-size:12px;font-weight:600;color:var(--text);font-family:var(--mono);}
-/* STEPPER */
-.stp{display:flex;align-items:center;overflow-x:auto;padding:16px 0 4px;margin-bottom:4px;gap:0;-ms-overflow-style:none;scrollbar-width:none;}
-.stp::-webkit-scrollbar{display:none;}
-.sno{display:flex;flex-direction:column;align-items:center;flex-shrink:0;gap:5px;}
-.sci{width:26px;height:26px;border-radius:50%;border:2px solid var(--border2);background:var(--white);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;font-family:var(--mono);color:var(--text3);transition:all .2s;}
-.sci.dn{border-color:var(--green);background:var(--green);color:white;}
-.sci.dn svg{width:10px;height:10px;stroke:white;stroke-width:3;}
-.sci.ac{border-color:var(--blue);background:var(--blue-l);color:var(--blue);}
-.snm{font-size:9px;font-weight:500;color:var(--text3);white-space:nowrap;}
+/* photo previews */
+.photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px;}
+.pthumb{position:relative;aspect-ratio:1;border-radius:8px;overflow:hidden;border:1px solid var(--bd);}
+.pthumb img{width:100%;height:100%;object-fit:cover;}
+.pthumb-del{position:absolute;top:3px;right:3px;width:18px;height:18px;background:rgba(0,0,0,.55);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;font-size:10px;}
+.pthumb-lbl{position:absolute;bottom:3px;left:3px;background:rgba(0,0,0,.6);color:#fff;font-size:8px;font-weight:600;padding:1px 5px;border-radius:3px;}
+.divider{border:none;border-top:1px solid var(--bd);margin:18px 0;}
+.weight-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.wunit{font-size:11px;color:var(--t3);text-align:center;margin-top:5px;}
+/* alerts */
+.a-info{background:var(--bl);border:1px solid var(--bm);border-radius:var(--r);padding:11px 14px;font-size:12px;color:#1e40af;line-height:1.55;margin-bottom:14px;}
+.a-succ{background:var(--gl);border:1px solid var(--gm);border-radius:var(--r);padding:11px 14px;font-size:12px;color:#065f46;line-height:1.55;margin-bottom:14px;}
+.a-warn{background:var(--al);border:1px solid var(--am);border-radius:var(--r);padding:11px 14px;font-size:12px;color:var(--amber);line-height:1.55;margin-bottom:14px;}
+.a-err{background:var(--rl);border:1px solid var(--rm);border-radius:var(--r);padding:11px 14px;font-size:12px;color:var(--red);line-height:1.55;margin-bottom:14px;}
+.a-err strong,.a-warn strong{display:block;font-weight:700;margin-bottom:3px;}
+
+/* DETAIL INFO */
+.info-grid{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--bd);border-radius:var(--rl2);overflow:hidden;margin-bottom:16px;}
+.ic{padding:11px 14px;border-bottom:1px solid var(--bd);border-right:1px solid var(--bd);}
+.ic:nth-child(2n){border-right:none;}
+.ic:nth-last-child(-n+2){border-bottom:none;}
+.ik{font-size:10px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px;}
+.iv{font-size:13px;font-weight:500;}
+.iv.mo{font-family:var(--mo);font-size:11px;}
+.dsec{font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;padding-bottom:8px;border-bottom:1px solid var(--bd);margin:18px 0 10px;}
+.arow{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bd);}
+.arow:last-child{border-bottom:none;}
+.ak{font-size:12px;color:var(--t2);}
+.av{font-size:12px;font-weight:600;font-family:var(--mo);}
+/* stepper */
+.stepper{display:flex;align-items:center;overflow-x:auto;padding:16px 0 4px;scrollbar-width:none;}
+.stepper::-webkit-scrollbar{display:none;}
+.sn{display:flex;flex-direction:column;align-items:center;flex-shrink:0;gap:5px;}
+.sc2{width:26px;height:26px;border-radius:50%;border:2px solid var(--bd2);background:var(--w);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;font-family:var(--mo);color:var(--t3);transition:all .2s;}
+.sc2.dn{border-color:var(--green);background:var(--green);color:#fff;}
+.sc2.ac{border-color:var(--blue);background:var(--bl);color:var(--blue);}
+.sc2.fl{border-color:var(--red);background:var(--rl);color:var(--red);}
+.sl2{flex:1;min-width:14px;height:2px;background:var(--bd2);margin-bottom:20px;flex-shrink:0;}
+.sl2.dn{background:var(--green);}
+.snm{font-size:9px;font-weight:500;color:var(--t3);white-space:nowrap;}
 .snm.ac{color:var(--blue);font-weight:600;}
-.sli{flex:1;min-width:16px;height:2px;background:var(--border2);margin-bottom:20px;flex-shrink:0;}
-.sli.dn{background:var(--green);}
-/* PHOTOS */
-.phg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
-.pht{aspect-ratio:1;border-radius:8px;background:var(--bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--text3);cursor:pointer;overflow:hidden;position:relative;transition:all var(--t);}
-.pht:hover{border-color:var(--blue);}
-.phl{position:absolute;bottom:4px;left:4px;background:rgba(0,0,0,.55);color:white;font-size:8px;font-weight:600;padding:2px 5px;border-radius:3px;letter-spacing:.03em;}
-/* ALERTS */
-.hal{background:var(--red-l);border:1px solid var(--red-m);border-radius:var(--r);padding:12px 14px;margin-bottom:14px;font-size:12px;color:var(--red);line-height:1.5;}
-.hal strong{display:block;font-weight:700;margin-bottom:3px;}
-.ial{background:var(--blue-l);border:1px solid var(--blue-m);border-radius:var(--r);padding:12px 14px;margin-bottom:14px;font-size:12px;color:var(--blue);line-height:1.5;}
-.eal{background:var(--green-l);border:1px solid var(--green-m);border-radius:var(--r);padding:12px 14px;margin-bottom:14px;font-size:12px;color:var(--green);line-height:1.5;}
-/* EMPTY */
-.eb{padding:40px 20px;text-align:center;color:var(--text3);}
-.eb svg{width:36px;height:36px;margin-bottom:12px;opacity:.35;}
-.et{font-size:14px;font-weight:600;color:var(--text2);margin-bottom:4px;}
-.es{font-size:12px;}
-/* PDF CHIP */
-.pc{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;background:var(--blue-l);border:1px solid var(--blue-m);border-radius:6px;font-size:11px;font-weight:600;color:var(--blue);cursor:pointer;transition:all var(--t);}
-.pc:hover{background:var(--blue);color:white;}
-.pc svg{width:12px;height:12px;}
-/* TOAST */
-.toast{position:fixed;left:12px;right:12px;bottom:calc(68px + env(safe-area-inset-bottom));max-width:480px;margin:0 auto;padding:12px 16px;border-radius:var(--rl);font-size:13px;font-weight:500;display:flex;align-items:center;gap:10px;z-index:999;opacity:0;transform:translateY(8px);pointer-events:none;transition:all .22s cubic-bezier(.34,1.4,.64,1);box-shadow:var(--sh-lg);}
-.toast.on{opacity:1;transform:translateY(0);}
-.ts{background:var(--green);color:white;}
-.te{background:var(--red);color:white;}
-.ti2{background:var(--text);color:white;}
-/* FAB */
-.fab{position:fixed;right:16px;bottom:calc(76px + env(safe-area-inset-bottom));width:44px;height:44px;background:var(--white);border:1px solid var(--border2);border-radius:50%;display:none;align-items:center;justify-content:center;cursor:pointer;box-shadow:var(--sh);color:var(--text2);transition:all var(--t);z-index:90;}
-.fab:hover{background:var(--blue);color:white;border-color:var(--blue);box-shadow:var(--sh-lg);}
-.fab svg{width:18px;height:18px;}
+
+/* PDF VIEWER inline */
+.pdf-chip{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;background:var(--bl);border:1px solid var(--bm);border-radius:6px;font-size:11px;font-weight:600;color:var(--blue);cursor:pointer;text-decoration:none;}
+.pdf-chip:hover{background:var(--blue);color:#fff;}
+.pdf-chip svg{width:12px;height:12px;}
+
+/* PHOTO VIEWER */
+#pv{position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:500;display:none;flex-direction:column;}
+#pv.on{display:flex;}
+.pv-hdr{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;flex-shrink:0;}
+.pv-title{color:rgba(255,255,255,.8);font-size:13px;font-weight:600;}
+.pv-cnt{color:rgba(255,255,255,.5);font-size:12px;}
+.pv-x{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.12);border:none;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.pv-main{flex:1;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;touch-action:pan-y;}
+.pv-img{max-width:100%;max-height:100%;object-fit:contain;padding:8px;border-radius:4px;}
+.pv-placeholder{color:rgba(255,255,255,.3);font-size:48px;}
+.pv-prev,.pv-next{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;background:rgba(255,255,255,.12);border:none;border-radius:50%;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;}
+.pv-prev{left:10px;}.pv-next{right:10px;}
+.pv-foot{padding:14px 16px calc(14px + env(safe-area-inset-bottom));flex-shrink:0;}
+.pv-lbl{color:rgba(255,255,255,.55);font-size:12px;text-align:center;margin-bottom:10px;}
+.pv-dots{display:flex;justify-content:center;gap:6px;margin-bottom:12px;}
+.pv-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.25);}
+.pv-dot.on{background:#fff;}
+.pv-acts{display:flex;gap:10px;}
+.pv-approve{flex:1;padding:13px;background:var(--green);color:#fff;border:none;border-radius:var(--r);font-family:var(--fn);font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
+.pv-reject{flex:.4;padding:13px;background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2);border-radius:var(--r);font-family:var(--fn);font-size:13px;font-weight:600;cursor:pointer;}
+.pv-next-btn{flex:1;padding:11px;background:rgba(255,255,255,.1);color:rgba(255,255,255,.75);border:none;border-radius:var(--r);font-family:var(--fn);font-size:13px;cursor:pointer;}
+
+/* AI CARD */
+.ai-card{border-radius:var(--r);overflow:hidden;margin-bottom:14px;border:1px solid;}
+.ai-card-hdr{padding:9px 14px;display:flex;align-items:center;gap:8px;}
+.ai-title{font-size:12px;font-weight:700;}
+.ai-body{padding:10px 14px;font-size:12px;line-height:1.6;}
+.ai-pass{border-color:var(--gm)}.ai-pass .ai-card-hdr{background:var(--gm)}.ai-pass .ai-title{color:#065f46;}
+.ai-flag{border-color:var(--rm)}.ai-flag .ai-card-hdr{background:var(--rm)}.ai-flag .ai-title{color:var(--red);}
+.ai-warn{border-color:var(--am)}.ai-warn .ai-card-hdr{background:var(--am)}.ai-warn .ai-title{color:var(--amber);}
+.ai-spin{display:flex;align-items:center;gap:10px;padding:13px;background:var(--bg);border-radius:var(--r);border:1px solid var(--bd);margin-bottom:14px;}
+.spinner{width:18px;height:18px;border:2px solid var(--bm);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite;flex-shrink:0;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.conf-bar{height:4px;border-radius:2px;background:var(--bd2);margin-top:6px;overflow:hidden;}
+.conf-fill{height:100%;border-radius:2px;}
+.disc-list{margin-top:8px;}
+.disc-item{display:flex;align-items:flex-start;gap:6px;padding:4px 0;border-bottom:1px solid var(--bd);font-size:11px;}
+.disc-item:last-child{border-bottom:none;}
+.disc-dot{width:6px;height:6px;border-radius:50%;background:var(--red);flex-shrink:0;margin-top:4px;}
+
 /* HOLD CARD */
-.hc{background:var(--white);border:1px solid var(--red-m);border-radius:var(--rl);overflow:hidden;box-shadow:var(--sh-sm);}
+.hold-card{background:var(--w);border:1px solid var(--rm);border-radius:var(--rl2);overflow:hidden;box-shadow:var(--s1);}
+
+/* EMAIL */
+.email-area{width:100%;min-height:130px;background:var(--w);border:1px solid var(--bd2);border-radius:var(--r);padding:10px 12px;font-family:var(--fn);font-size:13px;color:var(--t1);resize:vertical;outline:none;}
+.email-area:focus{border-color:var(--blue);}
+
+/* MASTER VIEW */
+.user-row{display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--w);border:1px solid var(--bd);border-radius:var(--rl2);margin-bottom:8px;box-shadow:var(--s1);}
+.u-avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0;}
+.u-info{flex:1;min-width:0;}
+.u-name{font-size:14px;font-weight:600;}
+.u-login{font-family:var(--mo);font-size:11px;color:var(--t2);margin-top:1px;}
+.u-roles{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px;}
+.u-actions{display:flex;gap:6px;flex-shrink:0;}
+.u-status-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:4px;}
+.role-chip{font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;}
+
+/* ROLE SELECT CHIPS (multi in user form) */
+.role-chips{display:flex;flex-wrap:wrap;gap:8px;}
+.role-chip-sel{padding:8px 14px;border:1.5px solid var(--bd);border-radius:20px;background:var(--w);cursor:pointer;font-size:12px;font-weight:500;color:var(--t2);transition:all var(--ease);}
+.role-chip-sel:hover{border-color:var(--bm);color:var(--blue);}
+.role-chip-sel.on{border-color:var(--blue);background:var(--bl);color:var(--blue);font-weight:600;}
+
+/* EMPTY */
+.empty{padding:40px 20px;text-align:center;color:var(--t3);}
+.empty svg{width:36px;height:36px;margin-bottom:12px;opacity:.3;}
+.empty-t{font-size:14px;font-weight:600;color:var(--t2);margin-bottom:4px;}
+.empty-s{font-size:12px;}
+
+/* TOAST */
+.toast{position:fixed;left:12px;right:12px;bottom:calc(70px + env(safe-area-inset-bottom));max-width:480px;margin:0 auto;padding:12px 16px;border-radius:var(--rl2);font-size:13px;font-weight:500;z-index:999;opacity:0;transform:translateY(8px);pointer-events:none;transition:all .22s cubic-bezier(.34,1.4,.64,1);box-shadow:var(--s3);}
+.toast.on{opacity:1;transform:translateY(0);}
+.t-s{background:var(--green);color:#fff;}
+.t-e{background:var(--red);color:#fff;}
+.t-i{background:var(--t1);color:#fff;}
+
 ::-webkit-scrollbar{width:3px;}
-::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
+::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:2px;}
 </style>
 </head>
 <body>
 
-<div id="ls">
-  <div class="ll"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 7H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg></div>
-  <div class="lco">D.M. Impex / D.M. Engineering Co.</div>
-  <div class="lti">Dispatch Tracker</div>
-  <div class="lc">
-    <div class="lsl">Select your role</div>
-    <div class="rl">
-      <div class="ri sel" data-role="admin" onclick="pickRole(this)"><div class="rd" style="background:#eff3ff">🛡️</div><div class="ri-info"><div class="rn">Admin</div><div class="rde">Full access &amp; system control</div></div><div class="rck"></div></div>
-      <div class="ri" data-role="office" onclick="pickRole(this)"><div class="rd" style="background:#f0fdf4">✅</div><div class="ri-info"><div class="rn">Office</div><div class="rde">Approvals &amp; quality gates</div></div><div class="rck"></div></div>
-      <div class="ri" data-role="accounts" onclick="pickRole(this)"><div class="rd" style="background:#fffbeb">📋</div><div class="ri-info"><div class="rn">Accounts</div><div class="rde">Order intake &amp; billing</div></div><div class="rck"></div></div>
-      <div class="ri" data-role="dispatch" onclick="pickRole(this)"><div class="rd" style="background:#f5f3ff">📦</div><div class="ri-info"><div class="rn">Dispatch</div><div class="rde">Picking &amp; packing floor</div></div><div class="rck"></div></div>
+<!-- ══════════════════ LOGIN SCREEN ══════════════════ -->
+<div id="login-screen">
+  <div class="ls-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 7H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg></div>
+  <div class="ls-co">D.M. Impex / D.M. Engineering Co.</div>
+  <div class="ls-title">Dispatch Tracker</div>
+  <div class="ls-card">
+    <div class="ls-label">Sign in to continue</div>
+    <div class="ls-error" id="login-error">Incorrect login ID or password. Please try again.</div>
+    <div class="fg">
+      <label class="fl">Login ID <span style="color:var(--t3);font-weight:400">(email or phone)</span></label>
+      <input type="text" class="fi" id="f-login-id" placeholder="e.g. ayush@dmimpex.com" autocomplete="username" onkeydown="if(event.key==='Enter')document.getElementById('f-password').focus()">
     </div>
-    <button class="btn-lo" onclick="doLogin()">Continue to Dashboard</button>
+    <div class="fg" style="margin-bottom:20px">
+      <label class="fl">Password</label>
+      <div style="position:relative">
+        <input type="password" class="fi" id="f-password" placeholder="Enter your password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
+        <div style="position:absolute;right:10px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--t3);font-size:12px" onclick="togglePwVis('f-password')">👁</div>
+      </div>
+    </div>
+    <button class="btn btn-p btn-block" onclick="doLogin()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" width="14" height="14"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg>
+      Sign In
+    </button>
+    <div style="font-size:11px;color:var(--t3);text-align:center;margin-top:14px">Contact Admin if you forgot your password</div>
   </div>
 </div>
 
+<!-- ══════════════════ APP ══════════════════ -->
 <div id="app">
-  <header class="ah">
-    <div class="ahl"><div class="alo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 7H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg></div><span class="aln">Dispatch Tracker</span></div>
-    <div class="ahr"><span id="rtag" class="rtg"></span><div class="ib" onclick="doLogout()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg></div></div>
+  <header class="hdr">
+    <div class="hdr-l">
+      <div class="hdr-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 7H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg></div>
+      <span class="hdr-name">Dispatch Tracker</span>
+    </div>
+    <div class="hdr-r">
+      <span id="role-pill" class="role-pill"></span>
+      <div class="icon-btn" title="Settings" onclick="openSheet('sh-config')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="14" height="14"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></div>
+      <div class="user-avatar" id="user-avatar" onclick="showUserMenu()" title="Account"></div>
+    </div>
   </header>
 
-  <div class="ac">
-    <!-- DASHBOARD -->
-    <div class="vw" id="v-dashboard">
-      <div class="ph"><div class="pt">Pipeline Overview</div><div class="ps">Live factory status — today</div></div>
-      <div class="sr">
-        <div class="sb"><div class="sv" style="color:var(--blue)" id="s-active">4</div><div class="sk">Active</div></div>
-        <div class="sb"><div class="sv" style="color:var(--amber)" id="s-action">2</div><div class="sk">Need Action</div></div>
-        <div class="sb"><div class="sv" style="color:var(--green)">7</div><div class="sk">Dispatched</div></div>
+  <div class="main">
+
+    <!-- PIPELINE (Admin) -->
+    <div class="view" id="v-pipeline">
+      <div class="ph"><div class="pt">Live Pipeline</div><div class="ps">Real-time order flow</div></div>
+      <div class="stats-row">
+        <div class="stat-box"><div class="stat-val" id="s-active" style="color:var(--blue)">0</div><div class="stat-lbl">Active</div></div>
+        <div class="stat-box"><div class="stat-val" id="s-needs" style="color:var(--amber)">0</div><div class="stat-lbl">Need Action</div></div>
+        <div class="stat-box"><div class="stat-val" id="s-done" style="color:var(--green)">0</div><div class="stat-lbl">Dispatched</div></div>
       </div>
-      <div class="pg">
-        <div class="pt2" onclick="go('v-new-orders')"><div class="ptt"><div class="pi" style="background:var(--bg2)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--text2)" stroke-width="2" stroke-linecap="round"><path d="M20 7H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg></div><div class="pn" style="color:var(--text2)">2</div></div><div class="pm">Intake</div></div>
-        <div class="pt2" onclick="go('v-approvals')"><div class="ptt"><div class="pi" style="background:var(--amber-l)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="pn" style="color:var(--amber)" id="d-app">2</div></div><div class="pm">Pending Approval</div></div>
-        <div class="pt2" onclick="go('v-picking')"><div class="ptt"><div class="pi" style="background:var(--blue-l)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div><div class="pn" style="color:var(--blue)" id="d-pick">1</div></div><div class="pm">Picking</div></div>
-        <div class="pt2" onclick="go('v-packing')"><div class="ptt"><div class="pi" style="background:var(--purple-l)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="2" stroke-linecap="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg></div><div class="pn" style="color:var(--purple)" id="d-pack">1</div></div><div class="pm">Packing</div></div>
-        <div class="pt2" onclick="go('v-billing')"><div class="ptt"><div class="pi" style="background:var(--teal-l)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div class="pn" style="color:var(--teal)" id="d-bill">3</div></div><div class="pm">Billing</div></div>
-        <div class="pt2" onclick="go('v-hold')" style="border-color:var(--red-m)"><div class="ptt"><div class="pi" style="background:var(--red-l)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg></div><div class="pn" style="color:var(--red)" id="d-hold">1</div></div><div class="pm" style="color:var(--red)">On Hold</div></div>
+      <div class="pipe-grid">
+        <div class="pipe-tile" onclick="go('v-inbox')"><div class="ptt"><div class="p-icon" style="background:var(--al)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2" stroke-linecap="round"><path d="M22 17H2a3 3 0 000 6h20a3 3 0 000-6zM5.45 5.11L2 12v6h20v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg></div><div class="p-num" id="p-inbox" style="color:var(--amber)">0</div></div><div class="p-lbl">Needs Approval</div></div>
+        <div class="pipe-tile" onclick="go('v-orders')"><div class="ptt"><div class="p-icon" style="background:var(--bg2)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--t2)" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div class="p-num" id="p-so" style="color:var(--t2)">0</div></div><div class="p-lbl">SO Stage</div></div>
+        <div class="pipe-tile"><div class="ptt"><div class="p-icon" style="background:var(--bl)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div><div class="p-num" id="p-pick" style="color:var(--blue)">0</div></div><div class="p-lbl">Picking</div></div>
+        <div class="pipe-tile"><div class="ptt"><div class="p-icon" style="background:var(--pl)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="2" stroke-linecap="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg></div><div class="p-num" id="p-pack" style="color:var(--purple)">0</div></div><div class="p-lbl">Packing</div></div>
+        <div class="pipe-tile"><div class="ptt"><div class="p-icon" style="background:var(--tl)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div><div class="p-num" id="p-inv" style="color:var(--teal)">0</div></div><div class="p-lbl">Invoice Stage</div></div>
+        <div class="pipe-tile" onclick="go('v-hold')" style="border-color:var(--rm)"><div class="ptt"><div class="p-icon" style="background:var(--rl)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg></div><div class="p-num" id="p-hold" style="color:var(--red)">0</div></div><div class="p-lbl" style="color:var(--red)">On Hold</div></div>
       </div>
-      <div class="sec"><div class="sl">Recent Orders</div><div class="ol" id="l-dash"></div></div>
+      <div class="sec"><div class="sl">Recent Orders</div><div class="ol" id="l-recent"></div></div>
     </div>
-    <!-- NEW ORDERS -->
-    <div class="vw" id="v-new-orders">
-      <div class="ph ph-row"><div><div class="pt">New Orders</div><div class="ps">Create and manage order intake</div></div><button class="btn btn-p" style="margin-top:4px" onclick="openSh('sh-no')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>New Order</button></div>
-      <div class="sec"><div class="sl">SO Pending <span class="sc" id="c-cre">0</span></div><div class="ol" id="l-cre"></div></div>
-      <div class="sec"><div class="sl">Awaiting Office Approval <span class="sc" id="c-pen">0</span></div><div class="ol" id="l-pen"></div></div>
+
+    <!-- APPROVAL INBOX (Admin) -->
+    <div class="view" id="v-inbox">
+      <div class="ph"><div class="pt">Approval Inbox</div><div class="ps">Everything waiting for your decision</div></div>
+      <div class="sec"><div class="sl">SO to Check <span class="sc" id="c-so-chk">0</span></div><div class="ol" id="l-so-chk"></div></div>
+      <div class="sec"><div class="sl">Goods Photos to Review <span class="sc" id="c-goods">0</span></div><div class="ol" id="l-goods"></div></div>
+      <div class="sec"><div class="sl">Invoice to Check <span class="sc" id="c-inv-chk">0</span></div><div class="ol" id="l-inv-chk"></div></div>
+      <div class="sec"><div class="sl">Email Drafts to Approve <span class="sc" id="c-email-app">0</span></div><div class="ol" id="l-email-app"></div></div>
     </div>
-    <!-- APPROVALS -->
-    <div class="vw" id="v-approvals">
-      <div class="ph"><div class="pt">Approvals Inbox</div><div class="ps">Orders waiting for your decision</div></div>
-      <div class="sec"><div class="sl">SO Approval <span class="sc" id="c-so">0</span></div><div class="ol" id="l-so"></div></div>
-      <div class="sec"><div class="sl">Goods Verification <span class="sc" id="c-gd">0</span></div><div class="ol" id="l-gd"></div></div>
-      <div class="sec"><div class="sl">Invoice Approval <span class="sc" id="c-ia">0</span></div><div class="ol" id="l-ia"></div></div>
+
+    <!-- ALL ORDERS (Admin + Office) -->
+    <div class="view" id="v-orders">
+      <div class="ph ph-row">
+        <div><div class="pt">Orders</div><div class="ps">Create and track all dispatch orders</div></div>
+        <button class="btn btn-p" style="margin-top:4px" onclick="openNewOrder()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" width="13" height="13"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>New Order
+        </button>
+      </div>
+      <div class="sec"><div class="sl">SO Pending <span class="sc" id="c-so-pend">0</span></div><div class="ol" id="l-so-pend"></div></div>
+      <div class="sec"><div class="sl">In Progress <span class="sc" id="c-inprog">0</span></div><div class="ol" id="l-inprog"></div></div>
+      <div class="sec"><div class="sl">Awaiting Action <span class="sc" id="c-await">0</span></div><div class="ol" id="l-await"></div></div>
     </div>
-    <!-- PICKING -->
-    <div class="vw" id="v-picking">
-      <div class="ph"><div class="pt">Picking List</div><div class="ps">Orders ready for warehouse floor</div></div>
-      <div class="sec"><div class="ol" id="l-pick"></div></div>
+
+    <!-- OFFICE TASK LIST -->
+    <div class="view" id="v-tasks">
+      <div class="ph"><div class="pt">My Tasks</div><div class="ps">Whoever is free picks the next task</div></div>
+      <div class="sec"><div class="sl">SO Creation <span class="sc" id="c-so-cr">0</span></div><div class="ol" id="l-so-cr"></div></div>
+      <div class="sec"><div class="sl">Carbide Picking <span class="sc" id="c-carb">0</span></div><div class="ol" id="l-carb"></div></div>
+      <div class="sec"><div class="sl">Invoice Generation <span class="sc" id="c-inv-g">0</span></div><div class="ol" id="l-inv-g"></div></div>
+      <div class="sec"><div class="sl">Courier Packing <span class="sc" id="c-cour-pk">0</span></div><div class="ol" id="l-cour-pk"></div></div>
+      <div class="sec"><div class="sl">Email Drafts <span class="sc" id="c-em-dr">0</span></div><div class="ol" id="l-em-dr"></div></div>
     </div>
-    <!-- PACKING -->
-    <div class="vw" id="v-packing">
-      <div class="ph"><div class="pt">Packing Station</div><div class="ps">Seal boxes and log weight</div></div>
-      <div class="sec"><div class="sl">Approved — Ready to Pack <span class="sc" id="c-pack">0</span></div><div class="ol" id="l-pack"></div></div>
-      <div class="sec"><div class="sl" style="color:var(--text3)">Waiting for Office Approval <span class="sc" id="c-rev">0</span></div><div class="ol" id="l-rev"></div></div>
+
+    <!-- DISPATCH PICKING -->
+    <div class="view" id="v-dp-pick">
+      <div class="ph"><div class="pt">Picking Queue</div><div class="ps">Machine tools, cutting tools, accessories</div></div>
+      <div class="sec"><div class="ol" id="l-dp-pick"></div></div>
     </div>
-    <!-- BILLING -->
-    <div class="vw" id="v-billing">
-      <div class="ph"><div class="pt">Billing &amp; Dispatch</div><div class="ps">Link invoices and courier handoff</div></div>
-      <div class="sec"><div class="ol" id="l-bill"></div></div>
+
+    <!-- DISPATCH PACKING -->
+    <div class="view" id="v-dp-pack">
+      <div class="ph"><div class="pt">Packing Station</div><div class="ps">Invoice approved — ready to pack and dispatch</div></div>
+      <div class="sec"><div class="sl">Ready to Pack <span class="sc" id="c-dp-pack">0</span></div><div class="ol" id="l-dp-pack"></div></div>
     </div>
-    <!-- HOLD -->
-    <div class="vw" id="v-hold">
-      <div class="ph"><div class="pt">Hold Desk</div><div class="ps">Exceptions requiring investigation</div></div>
+
+    <!-- HOLD DESK -->
+    <div class="view" id="v-hold">
+      <div class="ph"><div class="pt">Hold Desk</div><div class="ps">Orders with exceptions</div></div>
       <div class="sec"><div class="ol" id="l-hold"></div></div>
     </div>
+
     <!-- HISTORY -->
-    <div class="vw" id="v-history">
-      <div class="ph"><div class="pt">Dispatch History</div><div class="ps">Completed and cancelled orders</div></div>
-      <div class="sec"><div class="ol" id="l-hist"></div></div>
+    <div class="view" id="v-history">
+      <div class="ph"><div class="pt">Dispatch History</div><div class="ps">Completed orders</div></div>
+      <div class="sec"><div class="ol" id="l-history"></div></div>
     </div>
-  </div>
-  <nav class="an" id="an"></nav>
-</div>
 
-<div class="fab" id="fab" onclick="doSync()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg></div>
-
-<!-- NEW ORDER SHEET -->
-<div class="sov" id="sh-no">
-  <div class="sh">
-    <div class="shd"></div>
-    <div class="shh"><div class="sht">Create New Order</div><button class="shc" onclick="closeSh('sh-no')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
-    <div class="shb">
-      <div class="fg"><label class="fl">Dispatch Category <span class="fr">*</span></label>
-        <div class="cc2" id="cc2">
-          <div class="cci on" data-cat="Courier" onclick="pickCat(this)"><div class="ccii" style="background:#eff3ff">🚚</div><div class="ccin">Courier</div></div>
-          <div class="cci" data-cat="RRToolStore" onclick="pickCat(this)"><div class="ccii" style="background:#f0fdf4">🛒</div><div class="ccin">RRToolStore</div></div>
-          <div class="cci" data-cat="Builty" onclick="pickCat(this)"><div class="ccii" style="background:#fffbeb">🚛</div><div class="ccin">Builty</div></div>
-          <div class="cci" data-cat="Local" onclick="pickCat(this)"><div class="ccii" style="background:#f5f3ff">🏪</div><div class="ccin">Local</div></div>
+    <!-- MASTER (Admin only) -->
+    <div class="view" id="v-master">
+      <div class="ph ph-row">
+        <div><div class="pt">Master — Users</div><div class="ps">Manage login accounts and roles</div></div>
+        <button class="btn btn-p" style="margin-top:4px" onclick="openAddUser()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" width="13" height="13"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add User
+        </button>
+      </div>
+      <div class="sec" id="master-users-section"></div>
+      <div class="sec">
+        <div class="sl">System Info</div>
+        <div style="background:var(--w);border:1px solid var(--bd);border-radius:var(--rl2);padding:14px 16px;font-size:12px;color:var(--t2);line-height:1.8">
+          <div><strong style="color:var(--t1)">Google Sheets:</strong> <span id="gs-status-txt">Not connected</span></div>
+          <div><strong style="color:var(--t1)">AI Verification:</strong> <span id="ai-status-txt">No API key</span></div>
+          <div style="margin-top:8px"><button class="btn btn-o" style="font-size:11px;padding:6px 12px" onclick="openSheet('sh-config')">Open Settings</button></div>
         </div>
       </div>
-      <div class="fg" id="fg-sh" style="display:none"><label class="fl">Shopify Order ID <span class="fr">*</span></label><input type="text" class="fi" id="f-sh" placeholder="#1234"></div>
-      <div class="fg"><label class="fl">Client Name <span class="fr">*</span></label><input type="text" class="fi" id="f-cl" placeholder="e.g. M/S Shaurya Industrial"></div>
-      <div class="fg"><label class="fl">Order Category <span class="fr">*</span></label>
-        <select class="fi fsel" id="f-cat"><option value="">Select category</option><option>Machine Tools</option><option>Carbide Endmills/Drills</option><option>Carbide Inserts</option><option>Indexable Tools</option></select>
-      </div>
-      <div class="fg"><label class="fl">Linked Sales Order <span class="fh">(optional — link now or later)</span></label>
-        <select class="fi fsel" id="f-so"><option value="">— Select from available files —</option><option value="so1">SO/406/DE/25-26 — M/S Dhankot Traders</option><option value="so2">SO/631/DE/25-26 — M/S Versatile Tools</option><option value="so3">12323/DI/25-26 — M/S Shaurya Industrial</option></select>
-        <div style="font-size:11px;color:var(--text3);margin-top:5px">Showing Allocation Pending files only</div>
-      </div>
-      <div class="fg"><label class="fl">WhatsApp Order Screenshot</label>
-        <div class="ub" onclick="document.getElementById('f-wa').click()"><div class="ubi">📎</div><div class="ubt"><b>Tap to attach</b> or take photo</div><div class="ubf" id="f-wa-n"></div></div>
-        <input type="file" id="f-wa" accept="image/*" onchange="showU('f-wa','f-wa-n')">
-      </div>
-      <div class="div"></div>
-      <div class="fg"><label class="fl">Special Requirements</label>
-        <div class="ti"><div><div class="ttn">Scanning Required</div><div class="ttd">Dispatcher must link Delivery Challan</div></div><label class="tos"><input type="checkbox" id="f-sc"><span class="tosl"></span></label></div>
-        <div class="ti"><div><div class="ttn">Stock Transfer Required</div><div class="ttd">Dispatcher must link Stock Journal Voucher</div></div><label class="tos"><input type="checkbox" id="f-st"><span class="tosl"></span></label></div>
-      </div>
     </div>
-    <div class="shf"><button class="btn btn-g" onclick="closeSh('sh-no')">Cancel</button><button class="btn btn-p" style="flex:1;justify-content:center" onclick="createOrder()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Create Order</button></div>
+
+  </div>
+  <nav class="nav" id="nav"></nav>
+</div>
+
+<!-- ══ PHOTO VIEWER ══ -->
+<div id="pv">
+  <div class="pv-hdr"><div class="pv-title" id="pv-title">Photos</div><div class="pv-cnt" id="pv-cnt"></div><button class="pv-x" onclick="pvClose()">✕</button></div>
+  <div class="pv-main" id="pv-main"></div>
+  <div class="pv-foot">
+    <div class="pv-lbl" id="pv-lbl"></div>
+    <div class="pv-dots" id="pv-dots"></div>
+    <div class="pv-acts" id="pv-acts"></div>
   </div>
 </div>
 
-<!-- DETAIL SHEET -->
+<!-- ══ SHEET: NEW ORDER ══ -->
+<div class="sov" id="sh-new-order">
+<div class="sheet">
+  <div class="s-handle"></div>
+  <div class="s-hdr"><div><div class="s-title">New Dispatch Order</div><div class="s-sub">From client WhatsApp / email</div></div><button class="s-close" onclick="closeSheet('sh-new-order')">✕</button></div>
+  <div class="s-body">
+    <div class="fg"><label class="fl">WhatsApp / Mail Screenshot <span class="hint">for record</span></label>
+      <div class="upl-area" onclick="document.getElementById('f-wa-ss').click()"><div class="upl-icon">📎</div><div class="upl-text"><b>Tap to attach</b> screenshot</div><div class="photo-grid" id="wa-ss-prev"></div></div>
+      <input type="file" id="f-wa-ss" accept="image/*" onchange="singlePhoto(this,'wa-ss-prev','wa-ss-store')">
+      <input type="hidden" id="wa-ss-store">
+    </div>
+    <div class="fg"><label class="fl">Manual Client Name <span class="req">*</span> <span class="hint">your short form</span></label>
+      <input type="text" class="fi" id="f-manual" placeholder="e.g. MD Traders">
+    </div>
+    <div class="fg"><label class="fl">System Client Name <span class="hint">auto-filled when SO is linked</span></label>
+      <div class="fi-ro-wrap"><input type="text" class="fi" id="f-sys-client" placeholder="Will auto-fill from Sales Order…" readonly><span class="fi-ro-lock">🔒</span></div>
+      <div style="font-size:11px;color:var(--t3);margin-top:4px">Pulled from Party Name (Consignee) in DriveFiles</div>
+    </div>
+    <div class="fg"><label class="fl">Sender Company <span class="hint">auto-filled when SO is linked</span></label>
+      <div class="fi-ro-wrap"><input type="text" class="fi" id="f-sender" placeholder="Will auto-fill from Sales Order…" readonly><span class="fi-ro-lock">🔒</span></div>
+    </div>
+    <div class="fg"><label class="fl">Dispatch Category <span class="req">*</span></label>
+      <div class="dcat-grid" id="dcat-grid">
+        <div class="dcat on" data-cat="Courier" onclick="pickDCat(this)"><div class="dcat-icon" style="background:#eff3ff">🚚</div><div class="dcat-name">Courier</div></div>
+        <div class="dcat" data-cat="Builty" onclick="pickDCat(this)"><div class="dcat-icon" style="background:#fffbeb">🚛</div><div class="dcat-name">Builty</div></div>
+        <div class="dcat" data-cat="Local" onclick="pickDCat(this)"><div class="dcat-icon" style="background:#f0fdf4">🏪</div><div class="dcat-name">Local</div></div>
+        <div class="dcat" data-cat="RRToolStore" onclick="pickDCat(this)"><div class="dcat-icon" style="background:#f5f3ff">🛒</div><div class="dcat-name">RRToolStore</div></div>
+      </div>
+    </div>
+    <div class="fg" id="fg-shopify" style="display:none"><label class="fl">Shopify Order ID <span class="req">*</span></label>
+      <input type="text" class="fi" id="f-shopify" placeholder="#1234">
+    </div>
+    <div class="fg"><label class="fl">Order Categories <span class="req">*</span> <span class="hint">select all that apply</span></label>
+      <div class="mchips" id="ocat-chips">
+        <div class="mchip" data-c="Machine Tools" onclick="toggleCat(this)">Machine Tools</div>
+        <div class="mchip" data-c="Carbide Endmills/Drills" onclick="toggleCat(this)">Carbide Endmills/Drills</div>
+        <div class="mchip" data-c="Carbide Inserts" onclick="toggleCat(this)">Carbide Inserts</div>
+        <div class="mchip" data-c="Indexable Tools" onclick="toggleCat(this)">Indexable Tools</div>
+        <div class="mchip" data-c="Cutting Tools" onclick="toggleCat(this)">Cutting Tools</div>
+        <div class="mchip" data-c="Accessories" onclick="toggleCat(this)">Accessories</div>
+      </div>
+      <div id="pick-note" style="font-size:11px;color:var(--t2);margin-top:8px;padding:7px 10px;background:var(--bg);border-radius:6px;display:none"></div>
+    </div>
+    <div class="divider"></div>
+    <div class="fg"><label class="fl">Link Sales Order <span class="hint">optional — can link later via Upload SO</span></label>
+      <div style="font-size:11px;color:var(--t3);padding:10px;text-align:center;border:1px dashed var(--bd);border-radius:var(--r)" id="so-load-wrap">Loading files…</div>
+      <div class="so-list" id="no-so-list" style="display:none"></div>
+      <input type="hidden" id="f-so-id"><input type="hidden" id="f-so-text"><input type="hidden" id="f-so-link">
+    </div>
+    <div class="divider"></div>
+    <div class="fg"><label class="fl">Special Requirements</label>
+      <div class="tog-row"><div><div class="tog-name">Scanning Required</div><div class="tog-desc">Delivery Challan must be linked</div></div><label class="ios-tog"><input type="checkbox" id="f-scan"><span class="ios-track"></span></label></div>
+      <div class="tog-row"><div><div class="tog-name">Stock Transfer Required</div><div class="tog-desc">Stock Journal Voucher must be linked</div></div><label class="ios-tog"><input type="checkbox" id="f-stk"><span class="ios-track"></span></label></div>
+    </div>
+    <div class="fg"><label class="fl">Notes for Office <span class="hint">optional</span></label>
+      <textarea class="fi" id="f-notes" rows="2" style="resize:none" placeholder="Special instructions…"></textarea>
+    </div>
+  </div>
+  <div class="s-footer">
+    <button class="btn btn-g" onclick="closeSheet('sh-new-order')">Cancel</button>
+    <button class="btn btn-p" style="flex:1;justify-content:center" onclick="createOrder()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" width="13" height="13"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Create &amp; Assign to Office
+    </button>
+  </div>
+</div>
+</div>
+
+<!-- ══ SHEET: ORDER DETAIL ══ -->
 <div class="sov" id="sh-det">
-  <div class="sh">
-    <div class="shd"></div>
-    <div class="shh"><div><div class="sht" id="d-ti"></div><div id="d-ba" style="margin-top:4px"></div></div><button class="shc" onclick="closeSh('sh-det')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
-    <div class="shb" id="d-bo"></div>
-    <div class="shf" id="d-fo"></div>
-  </div>
+<div class="sheet">
+  <div class="s-handle"></div>
+  <div class="s-hdr"><div><div class="s-title" id="det-title">Order</div><div id="det-badge" style="margin-top:4px"></div></div><button class="s-close" onclick="closeSheet('sh-det')">✕</button></div>
+  <div class="s-body" id="det-body"></div>
+  <div class="s-footer" id="det-footer"></div>
+</div>
 </div>
 
-<!-- PACKING SHEET -->
-<div class="sov" id="sh-pack">
-  <div class="sh">
-    <div class="shd"></div>
-    <div class="shh"><div><div class="sht" id="pk-ti">Packing Station</div><div style="font-size:12px;color:var(--text2);margin-top:2px" id="pk-su"></div></div><button class="shc" onclick="closeSh('sh-pack')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
-    <div class="shb">
-      <div class="eal">Goods approved by Office. Enter weight and packet count before sealing the box.</div>
-      <div class="fg"><label class="fl">Weight <span class="fr">*</span></label>
-        <div class="wp"><div><input type="number" class="fi" id="pk-kg" placeholder="0" min="0" inputmode="numeric"><div class="wu">Kilograms</div></div><div><input type="number" class="fi" id="pk-gm" placeholder="0" min="0" max="999" inputmode="numeric"><div class="wu">Grams (0–999)</div></div></div>
-      </div>
-      <div class="fg"><label class="fl">Packet Count <span class="fr">*</span></label><input type="number" class="fi" id="pk-ct" placeholder="e.g. 2" min="1" inputmode="numeric"></div>
-      <div class="fg"><label class="fl">Semi-Packed Photo</label>
-        <div class="ub" onclick="document.getElementById('pk-ph').click()"><div class="ubi">📦</div><div class="ubt"><b>Photo of open box</b> before sealing</div><div class="ubf" id="pk-ph-n"></div></div>
-        <input type="file" id="pk-ph" accept="image/*" onchange="showU('pk-ph','pk-ph-n')">
+<!-- ══ SHEET: UPLOAD SO ══ -->
+<div class="sov" id="sh-uso">
+<div class="sheet">
+  <div class="s-handle"></div>
+  <div class="s-hdr"><div><div class="s-title">Upload Sales Order</div><div class="s-sub" id="uso-sub"></div></div><button class="s-close" onclick="closeSheet('sh-uso')">✕</button></div>
+  <div class="s-body">
+    <div class="a-info">Create SO in Busy Accounting → upload PDF to Drive → select it below. System Client Name and Sender will auto-fill from the SO.</div>
+    <div class="fg"><label class="fl">Select Sales Order PDF <span class="req">*</span></label>
+      <div class="so-list" id="uso-list"></div>
+      <input type="hidden" id="uso-so-id"><input type="hidden" id="uso-so-text"><input type="hidden" id="uso-so-link">
+      <input type="hidden" id="uso-so-party"><input type="hidden" id="uso-so-sender">
+    </div>
+    <div class="fg"><label class="fl">System Client Name <span class="hint">auto-filled</span></label>
+      <div class="fi-ro-wrap"><input type="text" class="fi" id="uso-party" readonly placeholder="Auto-fills when SO selected"><span class="fi-ro-lock">🔒</span></div>
+    </div>
+    <div class="fg"><label class="fl">Sender Company <span class="hint">auto-filled</span></label>
+      <div class="fi-ro-wrap"><input type="text" class="fi" id="uso-sender" readonly placeholder="Auto-fills when SO selected"><span class="fi-ro-lock">🔒</span></div>
+    </div>
+    <div class="fg"><label class="fl">Notes for Admin <span class="hint">optional</span></label>
+      <textarea class="fi" id="uso-notes" rows="2" style="resize:none" placeholder="Any notes…"></textarea>
+    </div>
+  </div>
+  <div class="s-footer">
+    <button class="btn btn-g" onclick="closeSheet('sh-uso')">Cancel</button>
+    <button class="btn btn-p" style="flex:1;justify-content:center" onclick="submitSO()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" width="13" height="13"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>Submit for Admin Check
+    </button>
+  </div>
+</div>
+</div>
+
+<!-- ══ SHEET: GOODS PHOTOS ══ -->
+<div class="sov" id="sh-gp">
+<div class="sheet">
+  <div class="s-handle"></div>
+  <div class="s-hdr"><div><div class="s-title">Upload Goods Photos</div><div class="s-sub" id="gp-sub"></div></div><button class="s-close" onclick="closeSheet('sh-gp')">✕</button></div>
+  <div class="s-body">
+    <div class="a-info" id="gp-info">Upload the corrected SO paper photo and goods photos. AI will cross-check them before sending to Admin.</div>
+    <div class="fg"><label class="fl">Corrected SO Photo <span class="req">*</span> <span class="hint">paper with red/blue pen marks</span></label>
+      <div class="upl-area" onclick="document.getElementById('f-so-ph').click()"><div class="upl-icon">📄</div><div class="upl-text"><b>Photograph</b> the marked-up SO</div><div class="photo-grid" id="so-ph-prev"></div></div>
+      <input type="file" id="f-so-ph" accept="image/*" onchange="singlePhoto(this,'so-ph-prev','so-ph-store')">
+      <input type="hidden" id="so-ph-store">
+    </div>
+    <div class="fg"><label class="fl">Goods Photos <span class="req">*</span> <span class="hint">photos of picked items</span></label>
+      <div class="upl-area" onclick="document.getElementById('f-gds-ph').click()"><div class="upl-icon">📦</div><div class="upl-text"><b>Add photos</b> — select multiple</div><div class="photo-grid" id="gds-ph-prev"></div></div>
+      <input type="file" id="f-gds-ph" accept="image/*" multiple onchange="multiPhoto(this,'gds-ph-prev','gds-ph-store','Goods')">
+      <input type="hidden" id="gds-ph-store" value="[]">
+    </div>
+  </div>
+  <div class="s-footer">
+    <button class="btn btn-g" onclick="closeSheet('sh-gp')">Cancel</button>
+    <button class="btn btn-p" style="flex:1;justify-content:center" onclick="submitGoodsPhotos()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" width="13" height="13"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Upload &amp; Run AI Check
+    </button>
+  </div>
+</div>
+</div>
+
+<!-- ══ SHEET: INVOICE ══ -->
+<div class="sov" id="sh-inv">
+<div class="sheet">
+  <div class="s-handle"></div>
+  <div class="s-hdr"><div><div class="s-title">Link Invoice</div><div class="s-sub" id="inv-sub"></div></div><button class="s-close" onclick="closeSheet('sh-inv')">✕</button></div>
+  <div class="s-body">
+    <div class="a-info">Generate invoice in Busy against corrected SO quantities. Upload PDF to Drive, then select it below. AI will verify it against the corrected SO.</div>
+    <div class="fg"><label class="fl">Select Invoice PDF <span class="req">*</span></label>
+      <div class="so-list" id="inv-list"></div>
+      <input type="hidden" id="inv-id"><input type="hidden" id="inv-text"><input type="hidden" id="inv-link">
+    </div>
+  </div>
+  <div class="s-footer">
+    <button class="btn btn-g" onclick="closeSheet('sh-inv')">Cancel</button>
+    <button class="btn btn-p" style="flex:1;justify-content:center" onclick="submitInvoice()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" width="13" height="13"><polyline points="20 6 9 17 4 12"/></svg>Link &amp; Run AI Verification
+    </button>
+  </div>
+</div>
+</div>
+
+<!-- ══ SHEET: COURIER PACKING ══ -->
+<div class="sov" id="sh-courier">
+<div class="sheet">
+  <div class="s-handle"></div>
+  <div class="s-hdr"><div><div class="s-title">Courier Packing</div><div class="s-sub" id="cp-sub"></div></div><button class="s-close" onclick="closeSheet('sh-courier')">✕</button></div>
+  <div class="s-body">
+    <div class="a-succ">Invoice approved. Bubble wrap → courier bag → insert invoice → print sticker → paste AWB → photograph.</div>
+    <div class="fg"><label class="fl">Weight <span class="req">*</span></label>
+      <div class="weight-pair">
+        <div><input type="number" class="fi" id="cp-kg" placeholder="0" min="0" inputmode="numeric"><div class="wunit">Kilograms</div></div>
+        <div><input type="number" class="fi" id="cp-gm" placeholder="0" min="0" max="999" inputmode="numeric"><div class="wunit">Grams (0–999)</div></div>
       </div>
     </div>
-    <div class="shf"><button class="btn btn-g" onclick="closeSh('sh-pack')">Cancel</button><button class="btn btn-s" style="flex:1;justify-content:center" onclick="sealBox()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>Box Sealed — Ready for Bill</button></div>
+    <div class="fg"><label class="fl">Packet Count <span class="req">*</span></label>
+      <input type="number" class="fi" id="cp-pkts" placeholder="e.g. 2" min="1" inputmode="numeric">
+    </div>
+    <div class="fg"><label class="fl">Final Courier Photo <span class="req">*</span> <span class="hint">show AWB label clearly — AI reads it</span></label>
+      <div class="upl-area" onclick="document.getElementById('f-cp-ph').click()"><div class="upl-icon">📷</div><div class="upl-text"><b>Photograph sealed parcel</b> with AWB visible</div><div class="photo-grid" id="cp-ph-prev"></div></div>
+      <input type="file" id="f-cp-ph" accept="image/*" onchange="singlePhoto(this,'cp-ph-prev','cp-ph-store');runAICourierCheck()">
+      <input type="hidden" id="cp-ph-store">
+    </div>
+    <div id="cp-ai-result"></div>
+    <div class="fg"><label class="fl">Courier Name <span class="hint">auto-filled by AI</span></label>
+      <input type="text" class="fi" id="cp-courier" placeholder="Auto-detected from label…">
+    </div>
+    <div class="fg"><label class="fl">AWB Number <span class="hint">auto-filled by AI</span></label>
+      <input type="text" class="fi" id="cp-awb" placeholder="Auto-detected from label…">
+    </div>
   </div>
+  <div class="s-footer">
+    <button class="btn btn-g" onclick="closeSheet('sh-courier')">Cancel</button>
+    <button class="btn btn-s" style="flex:1;justify-content:center" onclick="submitCourier()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" width="13" height="13"><rect x="1" y="3" width="15" height="13" rx="2"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>Confirm Dispatch
+    </button>
+  </div>
+</div>
+</div>
+
+<!-- ══ SHEET: BUILTY ══ -->
+<div class="sov" id="sh-builty">
+<div class="sheet">
+  <div class="s-handle"></div>
+  <div class="s-hdr"><div><div class="s-title">Builty Dispatch</div><div class="s-sub" id="bt-sub"></div></div><button class="s-close" onclick="closeSheet('sh-builty')">✕</button></div>
+  <div class="s-body">
+    <div class="a-succ">Invoice approved. Make cartons and write the mark on each box as follows.</div>
+    <div class="fg"><label class="fl">To — Consignee Name <span class="req">*</span></label><input type="text" class="fi" id="bt-to-name" placeholder="Client / firm name"></div>
+    <div class="fg"><label class="fl">To — Station / City <span class="req">*</span></label><input type="text" class="fi" id="bt-station" placeholder="e.g. Ludhiana, Punjab"></div>
+    <div class="fg"><label class="fl">Identification Number <span class="hint">per carton e.g. 1/2, 2/2</span></label><input type="text" class="fi" id="bt-id" placeholder="e.g. 1/2"></div>
+    <div class="fg"><label class="fl">From <span class="req">*</span></label>
+      <select class="fi fi-sel" id="bt-from"><option>D.M. Impex, Ludhiana</option><option>D.M. Engineering Co., Ludhiana</option></select>
+    </div>
+    <div class="fg"><label class="fl">No. of Cartons</label><input type="number" class="fi" id="bt-cartons" placeholder="e.g. 2" min="1" inputmode="numeric"></div>
+    <div class="divider"></div>
+    <div class="fg"><label class="fl">LR / GR Copy <span class="hint">upload when driver sends from Tempo Work group</span></label>
+      <div class="upl-area" onclick="document.getElementById('f-lr').click()"><div class="upl-icon">🚛</div><div class="upl-text"><b>Upload LR/GR copy</b> from driver</div><div class="photo-grid" id="lr-prev"></div></div>
+      <input type="file" id="f-lr" accept="image/*" onchange="singlePhoto(this,'lr-prev','lr-store')">
+      <input type="hidden" id="lr-store">
+    </div>
+  </div>
+  <div class="s-footer">
+    <button class="btn btn-g" onclick="closeSheet('sh-builty')">Cancel</button>
+    <button class="btn btn-s" style="flex:1;justify-content:center" onclick="submitBuilty()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" width="13" height="13"><polyline points="20 6 9 17 4 12"/></svg>Confirm Builty Dispatch
+    </button>
+  </div>
+</div>
+</div>
+
+<!-- ══ SHEET: EMAIL ══ -->
+<div class="sov" id="sh-email">
+<div class="sheet">
+  <div class="s-handle"></div>
+  <div class="s-hdr"><div><div class="s-title">Dispatch Email</div><div class="s-sub" id="em-sub"></div></div><button class="s-close" onclick="closeSheet('sh-email')">✕</button></div>
+  <div class="s-body">
+    <div class="a-info" id="em-info">Review and edit the auto-drafted email.</div>
+    <div class="fg"><label class="fl">To</label><input type="email" class="fi" id="em-to" placeholder="client@email.com"></div>
+    <div class="fg"><label class="fl">Subject</label><input type="text" class="fi" id="em-subj"></div>
+    <div class="fg"><label class="fl">Body</label><textarea class="email-area" id="em-body" rows="9"></textarea></div>
+  </div>
+  <div class="s-footer" id="em-footer"></div>
+</div>
+</div>
+
+<!-- ══ SHEET: HOLD REASON ══ -->
+<div class="sov" id="sh-hold">
+<div class="sheet" style="max-height:55vh">
+  <div class="s-handle"></div>
+  <div class="s-hdr"><div class="s-title">Flag Exception</div><button class="s-close" onclick="closeSheet('sh-hold')">✕</button></div>
+  <div class="s-body">
+    <div class="a-warn">Order will move to Hold Desk. Admin will be notified.</div>
+    <div class="fg"><label class="fl">Describe the issue <span class="req">*</span></label>
+      <textarea class="fi" id="hold-reason" rows="3" style="resize:none" placeholder="e.g. 10 pcs Endmill 8mm out of stock in Bin 4B"></textarea>
+    </div>
+  </div>
+  <div class="s-footer">
+    <button class="btn btn-g" onclick="closeSheet('sh-hold')">Cancel</button>
+    <button class="btn btn-d" style="flex:1;justify-content:center;background:var(--red);color:#fff;border-color:var(--red)" onclick="confirmHold()">Move to Hold Desk</button>
+  </div>
+</div>
+</div>
+
+<!-- ══ SHEET: ADD/EDIT USER ══ -->
+<div class="sov" id="sh-user">
+<div class="sheet">
+  <div class="s-handle"></div>
+  <div class="s-hdr"><div><div class="s-title" id="user-sheet-title">Add User</div></div><button class="s-close" onclick="closeSheet('sh-user')">✕</button></div>
+  <div class="s-body">
+    <div class="fg"><label class="fl">Full Name <span class="req">*</span></label><input type="text" class="fi" id="u-name" placeholder="e.g. Ayush Sharma"></div>
+    <div class="fg"><label class="fl">Login ID <span class="req">*</span> <span class="hint">email or phone number</span></label><input type="text" class="fi" id="u-login" placeholder="ayush@dmimpex.com or 9876543210"></div>
+    <div class="fg" id="u-pw-group"><label class="fl">Password <span class="req">*</span> <span class="hint">user can change after first login</span></label>
+      <div style="position:relative"><input type="password" class="fi" id="u-password" placeholder="Set initial password"><div style="position:absolute;right:10px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--t3);font-size:12px" onclick="togglePwVis('u-password')">👁</div></div>
+    </div>
+    <div class="fg"><label class="fl">Roles <span class="req">*</span> <span class="hint">select all that apply</span></label>
+      <div class="role-chips" id="u-role-chips">
+        <div class="role-chip-sel" data-role="admin" onclick="toggleURole(this)">Admin</div>
+        <div class="role-chip-sel" data-role="office" onclick="toggleURole(this)">Office</div>
+        <div class="role-chip-sel" data-role="dispatch" onclick="toggleURole(this)">Dispatch</div>
+      </div>
+    </div>
+    <div class="fg"><label class="fl">Status</label>
+      <div class="tog-row" style="margin-bottom:0"><div><div class="tog-name">Account Active</div><div class="tog-desc">Inactive users cannot log in</div></div><label class="ios-tog"><input type="checkbox" id="u-active" checked><span class="ios-track"></span></label></div>
+    </div>
+  </div>
+  <div class="s-footer">
+    <button class="btn btn-g" onclick="closeSheet('sh-user')">Cancel</button>
+    <button class="btn btn-p" style="flex:1;justify-content:center" onclick="saveUser()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" width="13" height="13"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Save User
+    </button>
+  </div>
+</div>
+</div>
+
+<!-- ══ SHEET: CHANGE PASSWORD ══ -->
+<div class="sov" id="sh-chpw">
+<div class="sheet" style="max-height:55vh">
+  <div class="s-handle"></div>
+  <div class="s-hdr"><div class="s-title">Change Password</div><button class="s-close" onclick="closeSheet('sh-chpw')">✕</button></div>
+  <div class="s-body">
+    <div class="fg"><label class="fl">Current Password</label><input type="password" class="fi" id="chpw-cur" placeholder="Enter current password"></div>
+    <div class="fg"><label class="fl">New Password <span class="req">*</span></label><input type="password" class="fi" id="chpw-new" placeholder="Min 6 characters"></div>
+    <div class="fg"><label class="fl">Confirm New Password <span class="req">*</span></label><input type="password" class="fi" id="chpw-conf" placeholder="Repeat new password"></div>
+  </div>
+  <div class="s-footer">
+    <button class="btn btn-g" onclick="closeSheet('sh-chpw')">Cancel</button>
+    <button class="btn btn-p" style="flex:1;justify-content:center" onclick="changePassword()">Update Password</button>
+  </div>
+</div>
+</div>
+
+<!-- ══ SHEET: SETTINGS ══ -->
+<div class="sov" id="sh-config">
+<div class="sheet">
+  <div class="s-handle"></div>
+  <div class="s-hdr"><div class="s-title">App Settings</div><button class="s-close" onclick="closeSheet('sh-config')">✕</button></div>
+  <div class="s-body">
+    <div style="font-size:13px;font-weight:700;margin-bottom:12px">Google Sheets Connection</div>
+    <div style="font-size:12px;color:var(--t2);margin-bottom:14px;line-height:1.6">Add a <code style="font-family:var(--mo);font-size:11px;background:var(--bg2);padding:1px 5px;border-radius:4px">doGet(e)</code> function to your Apps Script → Deploy as Web App → Anyone → paste URL below.</div>
+    <div class="fg"><label class="fl">Apps Script URL</label><input type="url" class="fi" id="cfg-gs" placeholder="https://script.google.com/macros/s/…/exec"></div>
+    <div id="cfg-gs-status" style="font-size:12px;margin-top:4px;display:none"></div>
+    <div class="divider"></div>
+    <div style="font-size:13px;font-weight:700;margin-bottom:12px">AI Verification (Claude API)</div>
+    <div style="font-size:12px;color:var(--t2);margin-bottom:14px">Get your key from <code style="font-family:var(--mo);font-size:11px;background:var(--bg2);padding:1px 5px;border-radius:4px">console.anthropic.com</code> — saved locally only.</div>
+    <div class="fg"><label class="fl">Anthropic API Key</label><input type="password" class="fi" id="cfg-api" placeholder="sk-ant-…"></div>
+    <div class="divider"></div>
+    <div style="font-size:13px;font-weight:700;margin-bottom:12px">Your Account</div>
+    <button class="btn btn-o" style="width:100%;justify-content:center;margin-bottom:8px" onclick="closeSheet('sh-config');openSheet('sh-chpw')">Change My Password</button>
+    <button class="btn btn-g" style="width:100%;justify-content:center" onclick="closeSheet('sh-config');doLogout()">Sign Out</button>
+  </div>
+  <div class="s-footer">
+    <button class="btn btn-g" onclick="closeSheet('sh-config')">Cancel</button>
+    <button class="btn btn-o" onclick="testGS()" style="flex:.5;justify-content:center">Test GS</button>
+    <button class="btn btn-p" style="flex:1;justify-content:center" onclick="saveConfig()">Save Settings</button>
+  </div>
+</div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-const SM = {
-  'Created':{l:'Created',c:'bg',s:'#d1d5db'},
-  'SO Linked':{l:'SO Linked',c:'bb',s:'#1a56db'},
-  'Pending SO Approval':{l:'Awaiting SO Approval',c:'ba',s:'#b45309'},
-  'In Dispatch Queue':{l:'In Dispatch Queue',c:'bb',s:'#1a56db'},
-  'Picked Pending Review':{l:'Pending Review',c:'ba',s:'#b45309'},
-  'Approved For Packing':{l:'Approved — Pack',c:'bgr',s:'#057a55'},
-  'Packed Pending Invoice':{l:'Packed — Invoice',c:'bt',s:'#0e7490'},
-  'Invoiced - Pending Approval':{l:'Invoice Approval',c:'ba',s:'#b45309'},
-  'Approved - Ready for Dispatch':{l:'Ready to Ship',c:'bgr',s:'#057a55'},
-  'Dispatched':{l:'Dispatched',c:'bgr',s:'#057a55'},
-  'Hold - Exception':{l:'On Hold',c:'br',s:'#c81e1e'},
-  'Cancelled':{l:'Cancelled',c:'bg',s:'#9ca3af'},
+// ════════════════════════════════════
+// USER MANAGEMENT
+// ════════════════════════════════════
+const ROLE_CFG = {
+  admin:   {label:'Admin',   bg:'#eff3ff', color:'#1a56db', avatarBg:'#1a56db'},
+  office:  {label:'Office',  bg:'#f0fdf4', color:'#046c4e', avatarBg:'#046c4e'},
+  dispatch:{label:'Dispatch',bg:'#f5f3ff', color:'#5521b5', avatarBg:'#5521b5'},
 };
-const CI={'Courier':'🚚','RRToolStore':'🛒','Builty':'🚛','Local':'🏪'};
-let orders=[
-  {id:'d1a736ef',dt:'2026-03-09',cl:'MD Trader',cat:'Machine Tools',dc:'Courier',st:'Created',so:null,sndr:'D.M. Impex',sc:false,stk:false,wt:null,pk:null,ph:0,hr:null,cby:'Manan',soby:null,piby:null,gaby:null,paby:null,ivby:null,iaby:null},
-  {id:'0a0f1d93',dt:'2026-03-09',cl:'Unitech Tooling',cat:'Carbide Inserts',dc:'Builty',st:'SO Linked',so:'SO/406/DE/25-26',sndr:'D.M. Engineering',sc:true,stk:false,wt:null,pk:null,ph:0,hr:null,cby:'Manan',soby:null,piby:null,gaby:null,paby:null,ivby:null,iaby:null},
-  {id:'231d1743',dt:'2026-03-10',cl:'MD Trader',cat:'Machine Tools',dc:'Courier',st:'Pending SO Approval',so:'12323/DI/25-26',sndr:'D.M. Impex',sc:false,stk:false,wt:null,pk:null,ph:0,hr:null,cby:'Manan',soby:null,piby:null,gaby:null,paby:null,ivby:null,iaby:null},
-  {id:'a1b2c3d4',dt:'2026-03-18',cl:'Shaurya Industrial',cat:'Carbide Endmills',dc:'RRToolStore',st:'Picked Pending Review',so:'SO/631/DE/25-26',sndr:'D.M. Engineering',sc:false,stk:false,wt:null,pk:null,ph:3,hr:null,cby:'Sunny',soby:'Ayush',piby:'Desraj',gaby:null,paby:null,ivby:null,iaby:null},
-  {id:'e5f6g7h8',dt:'2026-03-19',cl:'Dhankot Traders',cat:'Indexable Tools',dc:'Courier',st:'Approved For Packing',so:'SO/406/DE/25-26',sndr:'D.M. Engineering',sc:false,stk:false,wt:null,pk:null,ph:2,hr:null,cby:'Sunny',soby:'Ayush',piby:'Desraj',gaby:'Ayush',paby:null,ivby:null,iaby:null},
-  {id:'i9j0k1l2',dt:'2026-03-20',cl:'Versatile Tools',cat:'Machine Tools',dc:'Builty',st:'Hold - Exception',so:'SO/631/DE/25-26',sndr:'D.M. Impex',sc:true,stk:false,wt:null,pk:null,ph:0,hr:'Stock shortage — 10 pcs endmill not available in Bin 4B.',cby:'Manan',soby:'Ayush',piby:null,gaby:null,paby:null,ivby:null,iaby:null},
-  {id:'m3n4o5p6',dt:'2026-03-21',cl:'Tanya Enterprises',cat:'Carbide Inserts',dc:'Local',st:'Dispatched',so:'12323/DI/25-26',sndr:'D.M. Impex',sc:false,stk:false,wt:3.05,pk:2,ph:4,hr:null,cby:'Sunny',soby:'Ayush',piby:'Desraj',gaby:'Ayush',paby:'Desraj',ivby:'Sunny',iaby:'Ayush'},
+// Simple hash (not cryptographic, but sufficient for this use case)
+function hashPw(pw){let h=0;for(let i=0;i<pw.length;i++){h=(Math.imul(31,h)+pw.charCodeAt(i))|0;}return h.toString(16);}
+
+// Default users — loaded from localStorage or these defaults
+const DEFAULT_USERS = [
+  {id:'u1',name:'Manan (Admin)',loginId:'manan',roles:['admin'],pwHash:hashPw('admin123'),active:true,mustChangePw:false},
+  {id:'u2',name:'Rashmi (Admin)',loginId:'rashmi',roles:['admin'],pwHash:hashPw('admin123'),active:true,mustChangePw:false},
+  {id:'u3',name:'Ayush',loginId:'ayush',roles:['office'],pwHash:hashPw('office123'),active:true,mustChangePw:true},
+  {id:'u4',name:'Sunny',loginId:'sunny',roles:['office'],pwHash:hashPw('office123'),active:true,mustChangePw:true},
+  {id:'u5',name:'Desraj',loginId:'desraj',roles:['dispatch'],pwHash:hashPw('dispatch123'),active:true,mustChangePw:true},
 ];
-let role='admin', pkId=null;
-const ROLES={
-  admin:{l:'Admin',tb:'#eff3ff',tc:'#1a56db',nav:[{id:'v-dashboard',lbl:'Dashboard',ic:'grid'},{id:'v-approvals',lbl:'Approvals',ic:'check',bd:'app'},{id:'v-picking',lbl:'Picking',ic:'list'},{id:'v-hold',lbl:'Hold',ic:'alert',bd:'hold'},{id:'v-history',lbl:'History',ic:'arch'}]},
-  office:{l:'Office',tb:'#f0fdf4',tc:'#057a55',nav:[{id:'v-approvals',lbl:'Inbox',ic:'check',bd:'app'},{id:'v-dashboard',lbl:'Pipeline',ic:'grid'},{id:'v-hold',lbl:'Hold Desk',ic:'alert',bd:'hold'},{id:'v-history',lbl:'History',ic:'arch'}]},
-  accounts:{l:'Accounts',tb:'#fffbeb',tc:'#92400e',nav:[{id:'v-new-orders',lbl:'Orders',ic:'inbox'},{id:'v-billing',lbl:'Billing',ic:'file'}]},
-  dispatch:{l:'Dispatch',tb:'#f5f3ff',tc:'#5521b5',nav:[{id:'v-picking',lbl:'Picking',ic:'list'},{id:'v-packing',lbl:'Packing',ic:'pkg'}]},
-};
-const ICS={
+function loadUsers(){
+  const saved=localStorage.getItem('dt_users');
+  return saved?JSON.parse(saved):DEFAULT_USERS;
+}
+function saveUsers(users){localStorage.setItem('dt_users',JSON.stringify(users));}
+let users=loadUsers();
+let currentUser=null; // logged in user object
+let editingUserId=null;
+
+function doLogin(){
+  const lid=document.getElementById('f-login-id').value.trim().toLowerCase();
+  const pw=document.getElementById('f-password').value;
+  const errEl=document.getElementById('login-error');
+  const u=users.find(u=>u.loginId.toLowerCase()===lid&&u.active);
+  if(!u||u.pwHash!==hashPw(pw)){errEl.classList.add('show');return;}
+  errEl.classList.remove('show');
+  currentUser=u;
+  startSession();
+}
+
+function startSession(){
+  const u=currentUser;
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('app').classList.add('on');
+  // Set role pill — show primary role
+  const primaryRole=u.roles[0];
+  const rc=ROLE_CFG[primaryRole];
+  const pill=document.getElementById('role-pill');
+  pill.textContent=u.roles.map(r=>ROLE_CFG[r].label).join(' + ');
+  pill.style.background=rc.bg;pill.style.color=rc.color;
+  // Avatar
+  const av=document.getElementById('user-avatar');
+  av.textContent=u.name.charAt(0).toUpperCase();
+  av.style.background=rc.avatarBg;av.style.color='#fff';
+  // If must change password
+  if(u.mustChangePw){toast('Please change your initial password','i');setTimeout(()=>openSheet('sh-chpw'),800);}
+  // Load config
+  const gs=localStorage.getItem('dt_gs_url')||'';
+  const ak=localStorage.getItem('dt_api_key')||'';
+  if(gs){document.getElementById('cfg-gs').value=gs;gsUrl=gs;}
+  if(ak){document.getElementById('cfg-api').value=ak;apiKey=ak;}
+  buildNav();renderAll();
+  // go to first view
+  const navItems=getNavItems();
+  if(navItems.length)go(navItems[0].id);
+  if(gsUrl)loadDriveFiles();
+  // update system info
+  document.getElementById('gs-status-txt').textContent=gsUrl?'Connected ✓':'Not connected';
+  document.getElementById('ai-status-txt').textContent=apiKey?'API key set ✓':'No API key';
+}
+
+function doLogout(){
+  currentUser=null;
+  document.getElementById('app').classList.remove('on');
+  document.getElementById('login-screen').style.display='flex';
+  document.getElementById('f-password').value='';
+  document.getElementById('login-error').classList.remove('show');
+}
+
+function showUserMenu(){openSheet('sh-config');}
+function togglePwVis(id){const el=document.getElementById(id);el.type=el.type==='password'?'text':'password';}
+function changePassword(){
+  const cur=document.getElementById('chpw-cur').value;
+  const nw=document.getElementById('chpw-new').value;
+  const conf=document.getElementById('chpw-conf').value;
+  if(currentUser.pwHash!==hashPw(cur)&&!currentUser.mustChangePw){toast('Current password incorrect','e');return;}
+  if(nw.length<6){toast('Password must be at least 6 characters','e');return;}
+  if(nw!==conf){toast('Passwords do not match','e');return;}
+  currentUser.pwHash=hashPw(nw);currentUser.mustChangePw=false;
+  users=users.map(u=>u.id===currentUser.id?currentUser:u);
+  saveUsers(users);closeSheet('sh-chpw');toast('Password updated successfully');
+}
+
+// ── MASTER VIEW ──
+function hasRole(r){return currentUser&&currentUser.roles.includes(r);}
+function renderMaster(){
+  const el=document.getElementById('master-users-section');
+  if(!el)return;
+  el.innerHTML=`<div class="sl">All Users <span class="sc">${users.length}</span></div>`+
+  users.map(u=>{
+    const rc=ROLE_CFG[u.roles[0]]||ROLE_CFG.office;
+    const roleChips=u.roles.map(r=>`<span class="role-chip" style="background:${ROLE_CFG[r].bg};color:${ROLE_CFG[r].color}">${ROLE_CFG[r].label}</span>`).join('');
+    return`<div class="user-row">
+      <div class="u-avatar" style="background:${rc.avatarBg};color:#fff">${u.name.charAt(0)}</div>
+      <div class="u-info">
+        <div class="u-name">${u.name}</div>
+        <div class="u-login">${u.loginId}</div>
+        <div class="u-roles">${roleChips}${!u.active?'<span class="role-chip" style="background:var(--rl);color:var(--red)">Inactive</span>':''}</div>
+      </div>
+      <div class="u-actions">
+        <button class="btn btn-o" style="padding:5px 10px;font-size:11px" onclick="openEditUser('${u.id}')">Edit</button>
+        ${u.id!==currentUser.id?`<button class="btn btn-d" style="padding:5px 10px;font-size:11px" onclick="resetUserPw('${u.id}')">Reset PW</button>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+function openAddUser(){
+  editingUserId=null;
+  document.getElementById('user-sheet-title').textContent='Add User';
+  document.getElementById('u-name').value='';document.getElementById('u-login').value='';
+  document.getElementById('u-password').value='';document.getElementById('u-active').checked=true;
+  document.getElementById('u-pw-group').style.display='block';
+  document.querySelectorAll('#u-role-chips .role-chip-sel').forEach(c=>c.classList.remove('on'));
+  openSheet('sh-user');
+}
+function openEditUser(uid){
+  editingUserId=uid;
+  const u=users.find(x=>x.id===uid);if(!u)return;
+  document.getElementById('user-sheet-title').textContent='Edit User';
+  document.getElementById('u-name').value=u.name;
+  document.getElementById('u-login').value=u.loginId;
+  document.getElementById('u-password').value='';
+  document.getElementById('u-active').checked=u.active;
+  document.getElementById('u-pw-group').style.display='none'; // hide pw field on edit
+  document.querySelectorAll('#u-role-chips .role-chip-sel').forEach(c=>{
+    c.classList.toggle('on',u.roles.includes(c.dataset.role));
+  });
+  openSheet('sh-user');
+}
+function toggleURole(el){el.classList.toggle('on');}
+function saveUser(){
+  const name=document.getElementById('u-name').value.trim();
+  const loginId=document.getElementById('u-login').value.trim();
+  const roles=Array.from(document.querySelectorAll('#u-role-chips .role-chip-sel.on')).map(c=>c.dataset.role);
+  if(!name||!loginId){toast('Enter name and login ID','e');return;}
+  if(!roles.length){toast('Select at least one role','e');return;}
+  if(editingUserId){
+    users=users.map(u=>u.id===editingUserId?{...u,name,loginId,roles,active:document.getElementById('u-active').checked}:u);
+  }else{
+    const pw=document.getElementById('u-password').value;
+    if(!pw||pw.length<4){toast('Set an initial password (min 4 chars)','e');return;}
+    if(users.find(u=>u.loginId.toLowerCase()===loginId.toLowerCase())){toast('Login ID already exists','e');return;}
+    users.push({id:'u'+Date.now(),name,loginId,roles,pwHash:hashPw(pw),active:document.getElementById('u-active').checked,mustChangePw:true});
+  }
+  saveUsers(users);renderMaster();closeSheet('sh-user');
+  toast(editingUserId?'User updated':'User added — they must change password on first login');
+}
+function resetUserPw(uid){
+  const u=users.find(x=>x.id===uid);if(!u)return;
+  const newPw='reset'+Math.floor(Math.random()*9000+1000);
+  u.pwHash=hashPw(newPw);u.mustChangePw=true;
+  saveUsers(users);renderMaster();
+  toast(`Password reset to: ${newPw} — share privately`,'i');
+}
+
+// ════════════════════════════════════
+// NAV & ROLES
+// ════════════════════════════════════
+function getNavItems(){
+  if(!currentUser)return[];
+  const roles=currentUser.roles;
+  const items=[];
+  const added=new Set();
+  const add=(id,lbl,ic,bd)=>{if(!added.has(id)){items.push({id,lbl,ic,bd});added.add(id);}};
+  if(roles.includes('admin')){
+    add('v-pipeline','Pipeline','grid');
+    add('v-inbox','Inbox','inbox','inbox');
+    add('v-orders','Orders','list');
+    add('v-hold','Hold','alert','hold');
+    add('v-history','History','arch');
+    add('v-master','Master','master');
+  }
+  if(roles.includes('office')&&!roles.includes('admin')){
+    add('v-tasks','Tasks','tasks','tasks');
+    add('v-orders','Orders','list');
+    add('v-history','History','arch');
+  }
+  if(roles.includes('dispatch')&&!roles.includes('admin')&&!roles.includes('office')){
+    add('v-dp-pick','Picking','pick','dpick');
+    add('v-dp-pack','Packing','pack','dpack');
+  }
+  return items;
+}
+const ICONS={
   grid:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',
-  check:'<polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>',
+  inbox:'<polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/>',
   list:'<line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>',
   alert:'<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>',
   arch:'<polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5" rx="1"/><line x1="10" y1="12" x2="14" y2="12"/>',
-  inbox:'<polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/>',
-  file:'<path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/>',
-  pkg:'<path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/>',
+  tasks:'<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>',
+  pick:'<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>',
+  pack:'<path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/>',
+  master:'<path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/>',
 };
-let chosenRole='admin';
-function pickRole(el){document.querySelectorAll('.ri').forEach(r=>r.classList.remove('sel'));el.classList.add('sel');chosenRole=el.dataset.role;}
-function doLogin(){
-  role=chosenRole;
-  document.getElementById('ls').style.display='none';
-  document.getElementById('app').classList.add('on');
-  const r=ROLES[role];
-  const t=document.getElementById('rtag');
-  t.textContent=r.l;t.style.background=r.tb;t.style.color=r.tc;
-  buildNav();renderAll();go(r.nav[0].id);
-  document.getElementById('fab').style.display=(role==='accounts'||role==='admin')?'flex':'none';
+function getBadge(t){
+  if(!t)return 0;
+  if(t==='inbox')return orders.filter(o=>['SO_CREATED','GOODS_UPLOADED','INV_GENERATED','EMAIL_DRAFT'].includes(o.st)).length;
+  if(t==='hold')return orders.filter(o=>o.st==='HOLD').length;
+  if(t==='tasks')return orders.filter(o=>['SO_ASSIGNED','PICKING','PACKING_APPROVED','INV_APPROVED','DISPATCHED'].includes(o.st)).length;
+  if(t==='dpick')return orders.filter(o=>o.st==='IN_DISPATCH'&&hasMT(o)).length;
+  if(t==='dpack')return orders.filter(o=>o.st==='INV_APPROVED').length;
+  return 0;
 }
-function doLogout(){document.getElementById('app').classList.remove('on');document.getElementById('ls').style.display='flex';document.getElementById('fab').style.display='none';['sh-det','sh-no','sh-pack'].forEach(closeSh);}
-function getBd(t){if(!t)return 0;if(t==='app')return orders.filter(o=>['Pending SO Approval','Picked Pending Review','Invoiced - Pending Approval'].includes(o.st)).length;if(t==='hold')return orders.filter(o=>o.st==='Hold - Exception').length;return 0;}
 function buildNav(){
-  const nav=document.getElementById('an');
-  nav.innerHTML=ROLES[role].nav.map(it=>{const b=getBd(it.bd);return`<div class="nt" id="nt-${it.id}" onclick="go('${it.id}')">${b>0?`<span class="nb">${b}</span>`:''}<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><g>${ICS[it.ic]||''}</g></svg><span class="ntl">${it.lbl}</span></div>`;}).join('');
+  const items=getNavItems();
+  document.getElementById('nav').innerHTML=items.map(it=>{
+    const b=getBadge(it.bd);
+    return`<div class="nav-tab" id="nt-${it.id}" onclick="go('${it.id}')">
+      ${b>0?`<span class="nav-badge">${b}</span>`:''}
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><g>${ICONS[it.ic]||''}</g></svg>
+      <span class="nav-tab-lbl">${it.lbl}</span>
+    </div>`;
+  }).join('');
 }
-function go(id){document.querySelectorAll('.vw').forEach(v=>v.classList.remove('on'));const el=document.getElementById(id);if(el){el.classList.add('on');}document.querySelectorAll('.nt').forEach(t=>t.classList.remove('on'));const nt=document.getElementById('nt-'+id);if(nt)nt.classList.add('on');}
-function bdg(st){const s=SM[st]||{l:st,c:'bg'};return`<span class="badge ${s.c}">${s.l}</span>`;}
-function card(o,acts){
-  const s=SM[o.st]||{s:'#d1d5db'};
-  const m=[
-    `<span class="mt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>${o.dt}</span>`,
-    `<span class="mt">${CI[o.dc]||'📦'} ${o.dc}</span>`,
-    o.cat?`<span class="mt">${o.cat}</span>`:'',
-    o.so?`<span class="mt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>${o.so}</span>`:'',
-    o.ph>0?`<span class="mt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>${o.ph} photos</span>`:'',
-  ].filter(Boolean).join('');
-  return`<div class="oc" onclick="openDet('${o.id}')"><div class="cs" style="background:${s.s}"></div><div class="cb"><div class="ct"><div><div class="ci">#${o.id.toUpperCase()}</div><div class="cc">${o.cl}</div></div>${bdg(o.st)}</div><div class="cm">${m}</div></div>${acts?`<div class="ca" onclick="event.stopPropagation()">${acts}</div>`:''}</div>`;
+function go(id){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
+  const el=document.getElementById(id);if(el)el.classList.add('on');
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('on'));
+  const nt=document.getElementById('nt-'+id);if(nt)nt.classList.add('on');
+  if(id==='v-master')renderMaster();
 }
-function emp(m,s){return`<div class="eb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/></svg><div class="et">${m}</div>${s?`<div class="es">${s}</div>`:''}</div>`;}
-function sl(id,h){const el=document.getElementById(id);if(el)el.innerHTML=h||'';}
-function sc2(id,n){const el=document.getElementById(id);if(el)el.textContent=n;}
+
+// ════════════════════════════════════
+// STATUS & DATA
+// ════════════════════════════════════
+const S={
+  ORDER_RECEIVED:{l:'Order Received',c:'b-gray',s:'#9ca3af'},
+  SO_ASSIGNED:   {l:'SO Creation Assigned',c:'b-blue',s:'#1a56db'},
+  SO_CREATED:    {l:'SO Created — Pending Check',c:'b-amber',s:'#b45309'},
+  IN_DISPATCH:   {l:'In Dispatch Queue',c:'b-blue',s:'#1a56db'},
+  PICKING:       {l:'Picking In Progress',c:'b-purple',s:'#5521b5'},
+  GOODS_UPLOADED:{l:'Goods Uploaded — AI Check',c:'b-amber',s:'#b45309'},
+  PACKING_APPROVED:{l:'Packing Approved',c:'b-green',s:'#046c4e'},
+  CORRECTION_REQD:{l:'Correction Required',c:'b-red',s:'#be1d1d'},
+  INV_GENERATED: {l:'Invoice — Pending Check',c:'b-amber',s:'#b45309'},
+  INV_APPROVED:  {l:'Invoice Approved',c:'b-green',s:'#046c4e'},
+  DISPATCHED:    {l:'Dispatched',c:'b-green',s:'#046c4e'},
+  EMAIL_DRAFT:   {l:'Email Draft — Pending',c:'b-teal',s:'#0e7490'},
+  COMPLETE:      {l:'Complete',c:'b-green',s:'#046c4e'},
+  HOLD:          {l:'On Hold',c:'b-red',s:'#be1d1d'},
+  CANCELLED:     {l:'Cancelled',c:'b-gray',s:'#9ca3af'},
+};
+const CARB_CATS=['Carbide Endmills/Drills','Carbide Inserts'];
+const MT_CATS=['Machine Tools','Indexable Tools','Cutting Tools','Accessories'];
+const CI={Courier:'🚚',Builty:'🚛',Local:'🏪',RRToolStore:'🛒'};
+function hasMT(o){return (Array.isArray(o.cats)?o.cats:[o.cats]).some(c=>MT_CATS.includes(c));}
+function hasCarb(o){return (Array.isArray(o.cats)?o.cats:[o.cats]).some(c=>CARB_CATS.includes(c));}
+
+let orders=[
+  {id:'a1',dt:'2026-03-20',manualClient:'MD Traders',sysClient:'M/S Madhur Traders',dispCat:'Courier',cats:['Machine Tools'],st:'SO_CREATED',so:'SO/406/DE/25-26',soLink:'https://drive.google.com/file/d/demo1',sender:'D.M. Engineering',scanning:false,stk:false,wt:null,pkts:null,photos:[],aiCheck1:null,aiCheck2:null,aiCheck3:null,corrNote:null,holdReason:null,invoice:null,invoiceLink:null,awb:null,courierName:null,emailDraft:null,notes:'',waSS:null,cby:'Manan',soBy:'Ayush',pickedBy:null,goodsBy:null,packedBy:null,invBy:null,invAppBy:null,dispBy:null},
+  {id:'a2',dt:'2026-03-20',manualClient:'Unitech',sysClient:'M/S Unitech Tooling',dispCat:'Builty',cats:['Carbide Inserts','Machine Tools'],st:'IN_DISPATCH',so:'SO/631/DE/25-26',soLink:null,sender:'D.M. Impex',scanning:true,stk:false,wt:null,pkts:null,photos:[],aiCheck1:null,aiCheck2:null,aiCheck3:null,corrNote:null,holdReason:null,invoice:null,invoiceLink:null,awb:null,courierName:null,emailDraft:null,notes:'Mixed order',waSS:null,cby:'Rashmi',soBy:'Ayush',pickedBy:null,goodsBy:null,packedBy:null,invBy:null,invAppBy:null,dispBy:null},
+  {id:'a3',dt:'2026-03-21',manualClient:'Shaurya',sysClient:'M/S Shaurya Industrial',dispCat:'Courier',cats:['Carbide Endmills/Drills'],st:'PACKING_APPROVED',so:'12323/DI/25-26',soLink:null,sender:'D.M. Impex',scanning:false,stk:false,wt:null,pkts:null,photos:[{label:'Corrected SO',data:null},{label:'Goods - Office',data:null}],aiCheck1:{pass:true,confidence:92,summary:'All 8 line items match corrected SO quantities. 2 crossed-out items correctly excluded.',discrepancies:[]},aiCheck2:null,aiCheck3:null,corrNote:null,holdReason:null,invoice:null,invoiceLink:null,awb:null,courierName:null,emailDraft:null,notes:'',waSS:null,cby:'Manan',soBy:'Ayush',pickedBy:'Ayush',goodsBy:'Manan',packedBy:null,invBy:null,invAppBy:null,dispBy:null},
+  {id:'a4',dt:'2026-03-19',manualClient:'Versatile',sysClient:'M/S Versatile Tools',dispCat:'Courier',cats:['Machine Tools'],st:'HOLD',so:'SO/406/DE/25-26',soLink:null,sender:'D.M. Engineering',scanning:false,stk:false,wt:null,pkts:null,photos:[],aiCheck1:null,aiCheck2:null,aiCheck3:null,corrNote:null,holdReason:'10 pcs Endmill 8mm out of stock in Bin 4B.',invoice:null,invoiceLink:null,awb:null,courierName:null,emailDraft:null,notes:'',waSS:null,cby:'Manan',soBy:'Ayush',pickedBy:null,goodsBy:null,packedBy:null,invBy:null,invAppBy:null,dispBy:null},
+  {id:'a6',dt:'2026-03-22',manualClient:'Tanya Enterprises',sysClient:'M/S Tanya Enterprises Ltd.',dispCat:'Courier',cats:['Machine Tools','Carbide Endmills/Drills'],st:'SO_ASSIGNED',so:null,soLink:null,sender:null,scanning:false,stk:false,wt:null,pkts:null,photos:[],aiCheck1:null,aiCheck2:null,aiCheck3:null,corrNote:null,holdReason:null,invoice:null,invoiceLink:null,awb:null,courierName:null,emailDraft:null,notes:'Mixed — Office picks carbide, Dispatch picks M/C',waSS:null,cby:'Manan',soBy:null,pickedBy:null,goodsBy:null,packedBy:null,invBy:null,invAppBy:null,dispBy:null},
+];
+
+let currentOrderId=null,holdTargetId=null;
+let pvPhotos=[],pvIdx=0,pvOnApprove=null,pvOnReject=null;
+let selDCat='Courier',selOCats=[];
+let gsUrl='',apiKey='';
+let driveFiles=[];
+
+// ════════════════════════════════════
+// RENDER
+// ════════════════════════════════════
+function bdg(st){const s=S[st]||{l:st,c:'b-gray'};return`<span class="badge ${s.c}">${s.l}</span>`;}
+function ocats(o){return (Array.isArray(o.cats)?o.cats:[o.cats]).filter(Boolean).join(', ');}
+function setEl(id,h){const e=document.getElementById(id);if(e)e.innerHTML=h||'';}
+function setCnt(id,n){const e=document.getElementById(id);if(e)e.textContent=n;}
+
+const B={
+  chk:'<polyline points="20 6 9 17 4 12"/>',
+  x:'<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>',
+  cam:'<path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/>',
+  doc:'<path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/>',
+  send:'<line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>',
+  truck:'<rect x="1" y="3" width="15" height="13" rx="2"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>',
+  mail:'<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>',
+  flag:'<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/>',
+};
+function btn(cls,ico,txt,clk){return`<button class="btn ${cls}" onclick="${clk}">${ico?`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" width="13" height="13"><g>${ico}</g></svg>`:''}${txt}</button>`;}
+
+function card(o,acts=''){
+  const s=S[o.st]||{s:'#d1d5db'};
+  const soTag=o.so?`<span class="mtag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="10" height="10"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>${o.so}</span>`:'';
+  const phTag=o.photos&&o.photos.length?`<span class="mtag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="10" height="10"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>${o.photos.length} photos</span>`:'';
+  return`<div class="oc" onclick="openDet('${o.id}')">
+    <div class="c-stripe" style="background:${s.s}"></div>
+    <div class="c-body">
+      <div class="c-top">
+        <div>
+          <div class="c-id">#${o.id.toUpperCase()}</div>
+          <div class="c-name">${o.manualClient}</div>
+          ${o.sysClient&&o.sysClient!==o.manualClient?`<div class="c-sys">${o.sysClient}</div>`:''}
+        </div>${bdg(o.st)}
+      </div>
+      <div class="c-meta">
+        <span class="mtag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="10" height="10"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>${o.dt}</span>
+        <span class="mtag">${CI[o.dispCat]||'📦'} ${o.dispCat}</span>
+        ${ocats(o)?`<span class="mtag">${ocats(o)}</span>`:''}
+        ${soTag}${phTag}
+      </div>
+    </div>
+    ${acts?`<div class="c-acts" onclick="event.stopPropagation()">${acts}</div>`:''}
+  </div>`;
+}
+function emp(m,s=''){return`<div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/></svg><div class="empty-t">${m}</div>${s?`<div class="empty-s">${s}</div>`:''}</div>`;}
+
 function renderAll(){
-  const app=orders.filter(o=>['Pending SO Approval','Picked Pending Review','Invoiced - Pending Approval'].includes(o.st)).length;
-  const hold=orders.filter(o=>o.st==='Hold - Exception').length;
-  sc2('s-action',app);sc2('d-app',app);sc2('d-hold',hold);
-  sc2('d-pick',orders.filter(o=>o.st==='In Dispatch Queue').length);
-  sc2('d-pack',orders.filter(o=>o.st==='Approved For Packing').length);
-  sc2('d-bill',orders.filter(o=>['Packed Pending Invoice','Invoiced - Pending Approval','Approved - Ready for Dispatch'].includes(o.st)).length);
-  sl('l-dash',[...orders].sort((a,b)=>b.dt.localeCompare(a.dt)).slice(0,6).map(o=>card(o,'')).join('')||emp('No orders yet'));
-  const cre=orders.filter(o=>o.st==='Created');
-  const pen=orders.filter(o=>['SO Linked','Pending SO Approval'].includes(o.st));
-  sc2('c-cre',cre.length);sc2('c-pen',pen.length);
-  sl('l-cre',cre.map(o=>card(o,`<button class="btn btn-p" onclick="reqApp('${o.id}');event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>Request SO Approval</button>`)).join('')||emp('No orders awaiting SO','Create a new order above'));
-  sl('l-pen',pen.map(o=>card(o,'')).join('')||emp('Nothing awaiting approval','All clear'));
-  const so=orders.filter(o=>o.st==='Pending SO Approval');
-  const gd=orders.filter(o=>o.st==='Picked Pending Review');
-  const ia=orders.filter(o=>o.st==='Invoiced - Pending Approval');
-  sc2('c-so',so.length);sc2('c-gd',gd.length);sc2('c-ia',ia.length);
-  sl('l-so',so.map(o=>card(o,`<button class="btn btn-s" onclick="appSO('${o.id}');event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>Approve &amp; Send to Dispatch</button><button class="btn btn-d" onclick="rejSO('${o.id}');event.stopPropagation()">Reject</button>`)).join('')||emp('No SO approvals pending'));
-  sl('l-gd',gd.map(o=>card(o,`<button class="btn btn-s" onclick="appGd('${o.id}');event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>Approve Packing</button><button class="btn btn-d" onclick="rejGd('${o.id}');event.stopPropagation()">Send for Recount</button>`)).join('')||emp('No goods awaiting verification'));
-  sl('l-ia',ia.map(o=>card(o,`<button class="btn btn-s" onclick="appBill('${o.id}');event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>Approve Invoice</button>`)).join('')||emp('No invoice approvals pending','All invoices cleared'));
-  const pick=orders.filter(o=>o.st==='In Dispatch Queue');
-  sl('l-pick',pick.map(o=>card(o,`<button class="btn btn-p" onclick="addPhoto('${o.id}');event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>Add Photo</button><button class="btn btn-o" onclick="subRev('${o.id}');event.stopPropagation()">Submit for Review</button>`)).join('')||emp('No orders in picking queue','Check back shortly'));
-  const pack=orders.filter(o=>o.st==='Approved For Packing');
-  const rev=orders.filter(o=>o.st==='Picked Pending Review');
-  sc2('c-pack',pack.length);sc2('c-rev',rev.length);
-  sl('l-pack',pack.map(o=>card(o,`<button class="btn btn-p" onclick="openPack('${o.id}');event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>Enter Weight &amp; Seal</button>`)).join('')||emp('No approved orders to pack'));
-  sl('l-rev',rev.map(o=>card(o,`<button class="btn btn-g" onclick="revPick('${o.id}');event.stopPropagation()">↩ Revert to Picking</button>`)).join('')||emp('None waiting for approval'));
-  const bill=orders.filter(o=>['Packed Pending Invoice','Invoiced - Pending Approval','Approved - Ready for Dispatch'].includes(o.st));
-  sl('l-bill',bill.map(o=>{let a='';if(o.st==='Packed Pending Invoice')a=`<button class="btn btn-p" onclick="linkInv('${o.id}');event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Link Invoice</button>`;if(o.st==='Approved - Ready for Dispatch')a=`<button class="btn btn-s" onclick="markDisp('${o.id}');event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="1" y="3" width="15" height="13" rx="2"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>Mark Dispatched</button>`;return card(o,a);}).join('')||emp('Billing queue is clear'));
-  const hld=orders.filter(o=>o.st==='Hold - Exception');
-  sl('l-hold',hld.map(o=>{const s=SM[o.st];return`<div class="hc" onclick="openDet('${o.id}')"><div class="cs" style="background:${s.s}"></div><div class="cb"><div class="ct"><div><div class="ci">#${o.id.toUpperCase()}</div><div class="cc">${o.cl}</div></div>${bdg(o.st)}</div>${o.hr?`<div class="hal"><strong>Hold Reason</strong>${o.hr}</div>`:''}<div class="cm"><span class="mt">${CI[o.dc]} ${o.dc}</span><span class="mt">${o.dt}</span></div></div><div class="ca" onclick="event.stopPropagation()"><button class="btn btn-s" onclick="relHold('${o.id}')">↩ Release to Queue</button><button class="btn btn-d" onclick="canOrd('${o.id}')">Cancel Order</button></div></div>`;}).join('')||emp('No exceptions on hold','All orders are flowing normally'));
-  const hist=orders.filter(o=>['Dispatched','Cancelled'].includes(o.st));
-  sl('l-hist',hist.map(o=>card(o,'')).join('')||emp('No completed orders yet'));
+  if(!currentUser)return;
+  const active=orders.filter(o=>!['COMPLETE','CANCELLED'].includes(o.st));
+  const approvals=orders.filter(o=>['SO_CREATED','GOODS_UPLOADED','INV_GENERATED','EMAIL_DRAFT'].includes(o.st));
+  const done=orders.filter(o=>o.st==='COMPLETE');
+  const held=orders.filter(o=>o.st==='HOLD');
+  // stats
+  setCnt('s-active',active.length);setCnt('s-needs',approvals.length);setCnt('s-done',done.length);
+  setCnt('p-inbox',approvals.length);
+  setCnt('p-so',orders.filter(o=>['ORDER_RECEIVED','SO_ASSIGNED','SO_CREATED'].includes(o.st)).length);
+  // FIX: picking stage includes IN_DISPATCH (dispatched to floor) + PICKING
+  setCnt('p-pick',orders.filter(o=>['IN_DISPATCH','PICKING'].includes(o.st)).length);
+  setCnt('p-pack',orders.filter(o=>['GOODS_UPLOADED','PACKING_APPROVED','CORRECTION_REQD'].includes(o.st)).length);
+  setCnt('p-inv',orders.filter(o=>['INV_GENERATED','INV_APPROVED'].includes(o.st)).length);
+  setCnt('p-hold',held.length);
+  setEl('l-recent',[...orders].sort((a,b)=>b.dt.localeCompare(a.dt)).slice(0,5).map(o=>card(o)).join('')||emp('No orders yet'));
+
+  // ADMIN INBOX
+  const soChk=orders.filter(o=>o.st==='SO_CREATED');
+  const goodsRev=orders.filter(o=>o.st==='GOODS_UPLOADED');
+  const invChk=orders.filter(o=>o.st==='INV_GENERATED');
+  const emApp=orders.filter(o=>o.st==='EMAIL_DRAFT');
+  setCnt('c-so-chk',soChk.length);setCnt('c-goods',goodsRev.length);setCnt('c-inv-chk',invChk.length);setCnt('c-email-app',emApp.length);
+  setEl('l-so-chk',soChk.map(o=>{
+    const pdfBtn=o.soLink?`<a class="pdf-chip" href="${o.soLink}" target="_blank" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="12" height="12"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>View SO PDF</a>`:'';
+    return card(o,`${pdfBtn}`+btn('btn-s',B.chk,'Approve SO',`approveSO('${o.id}')`)+btn('btn-d',B.x,'Reject',`rejectSO('${o.id}')`));
+  }).join('')||emp('No SOs to check'));
+  setEl('l-goods',goodsRev.map(o=>{
+    const ai=o.aiCheck1;
+    const aiTag=ai?`<span class="badge ${ai.pass?'b-green':'b-red'}" style="font-size:10px">AI ${ai.pass?'✓':'✗'} ${ai.confidence}%</span> `:'';
+    return card(o,`${aiTag}`+btn('btn-p',B.cam,'Review Photos',`openGoodsViewer('${o.id}')`)+btn('btn-d','','🚨 Flag',`openHoldSheet('${o.id}')`));
+  }).join('')||emp('No goods photos to review'));
+  setEl('l-inv-chk',invChk.map(o=>{
+    const ai=o.aiCheck2;const aiTag=ai?`<span class="badge ${ai.pass?'b-green':'b-red'}" style="font-size:10px">AI ${ai.pass?'✓':'✗'} ${ai.confidence}%</span> `:'';
+    const pdfBtn=o.invoiceLink?`<a class="pdf-chip" href="${o.invoiceLink}" target="_blank" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="12" height="12"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>View Invoice</a> `:'';
+    return card(o,`${aiTag}${pdfBtn}`+btn('btn-s',B.chk,'Approve Invoice',`approveInvoice('${o.id}')`)+btn('btn-d',B.x,'Reject',`rejectInvoice('${o.id}')`));
+  }).join('')||emp('No invoices to check'));
+  setEl('l-email-app',emApp.map(o=>card(o,btn('btn-p',B.mail,'Review &amp; Approve Email',`openEmailReview('${o.id}')`))).join('')||emp('No email drafts'));
+
+  // ALL ORDERS
+  const soPend=orders.filter(o=>['ORDER_RECEIVED','SO_ASSIGNED'].includes(o.st));
+  const inProg=orders.filter(o=>['SO_CREATED','IN_DISPATCH','PICKING','GOODS_UPLOADED','PACKING_APPROVED','CORRECTION_REQD'].includes(o.st));
+  const awaitAct=orders.filter(o=>['INV_GENERATED','INV_APPROVED','DISPATCHED','EMAIL_DRAFT'].includes(o.st));
+  setCnt('c-so-pend',soPend.length);setCnt('c-inprog',inProg.length);setCnt('c-await',awaitAct.length);
+  setEl('l-so-pend',soPend.map(o=>card(o,btn('btn-o',B.doc,'Upload SO',`openUSO('${o.id}')`))).join('')||emp('No orders pending SO'));
+  setEl('l-inprog',inProg.map(o=>card(o)).join('')||emp('All orders past SO stage'));
+  setEl('l-await',awaitAct.map(o=>card(o)).join('')||emp('Nothing awaiting action'));
+
+  // OFFICE TASKS
+  const soCr=orders.filter(o=>['ORDER_RECEIVED','SO_ASSIGNED'].includes(o.st));
+  const carbPick=orders.filter(o=>o.st==='IN_DISPATCH'&&hasCarb(o));
+  const invG=orders.filter(o=>o.st==='PACKING_APPROVED');
+  const courPack=orders.filter(o=>o.st==='INV_APPROVED'&&o.dispCat==='Courier');
+  const emDr=orders.filter(o=>o.st==='DISPATCHED');
+  setCnt('c-so-cr',soCr.length);setCnt('c-carb',carbPick.length);setCnt('c-inv-g',invG.length);setCnt('c-cour-pk',courPack.length);setCnt('c-em-dr',emDr.length);
+  setEl('l-so-cr',soCr.map(o=>card(o,btn('btn-p',B.doc,'Upload SO PDF',`openUSO('${o.id}')`))).join('')||emp('No SO creation tasks'));
+  setEl('l-carb',carbPick.map(o=>card(o,btn('btn-p',B.cam,'Upload Goods Photos',`openGoodsPhotoUpload('${o.id}')`))).join('')||emp('No carbide picking tasks'));
+  setEl('l-inv-g',invG.map(o=>card(o,btn('btn-p',B.doc,'Link Invoice',`openInvSheet('${o.id}')`))).join('')||emp('No invoices to generate'));
+  setEl('l-cour-pk',courPack.map(o=>card(o,btn('btn-s',B.truck,'Start Courier Packing',`openCourierPacking('${o.id}')`))).join('')||emp('No courier packing tasks'));
+  setEl('l-em-dr',emDr.map(o=>card(o,btn('btn-p',B.mail,'Draft Dispatch Email',`openEmailDraft('${o.id}')`))).join('')||emp('No emails to draft'));
+
+  // DISPATCH PICKING — FIX: show IN_DISPATCH status (not PICKING)
+  const dpPick=orders.filter(o=>o.st==='IN_DISPATCH'&&hasMT(o));
+  setEl('l-dp-pick',dpPick.map(o=>{
+    const mixNote=hasCarb(o)?`<span class="badge b-purple" style="font-size:10px;margin-right:4px">Office picks carbide too</span>`:'';
+    return card(o,mixNote+btn('btn-p',B.cam,'Upload Goods Photos',`openGoodsPhotoUpload('${o.id}')`)+btn('btn-d',B.flag,'Flag Exception',`openHoldSheet('${o.id}')`));
+  }).join('')||emp('No items in picking queue','Check back shortly'));
+
+  // DISPATCH PACKING
+  const dpPack=orders.filter(o=>o.st==='INV_APPROVED'&&['Builty','Local','RRToolStore'].includes(o.dispCat));
+  setCnt('c-dp-pack',dpPack.length);
+  setEl('l-dp-pack',dpPack.map(o=>card(o,o.dispCat==='Builty'?btn('btn-p',B.truck,'Builty Marking',`openBuilty('${o.id}')`):btn('btn-s',B.chk,'Confirm Dispatch',`openCourierPacking('${o.id}')`))).join('')||emp('Nothing to pack yet'));
+
+  // HOLD / HISTORY
+  setEl('l-hold',held.map(o=>`<div class="hold-card" onclick="openDet('${o.id}')">
+    <div class="c-stripe" style="background:#be1d1d"></div>
+    <div class="c-body"><div class="c-top"><div><div class="c-id">#${o.id.toUpperCase()}</div><div class="c-name">${o.manualClient}</div></div>${bdg(o.st)}</div>
+    ${o.holdReason?`<div class="a-err" style="margin-bottom:8px"><strong>Hold Reason</strong>${o.holdReason}</div>`:''}
+    </div>
+    <div class="c-acts" onclick="event.stopPropagation()">
+      ${btn('btn-s',B.chk,'Release to Queue',`releaseHold('${o.id}')`)}
+      ${btn('btn-d',B.x,'Cancel Order',`cancelOrder('${o.id}')`)}
+    </div></div>`).join('')||emp('No exceptions','All orders flowing normally'));
+  setEl('l-history',done.concat(orders.filter(o=>o.st==='CANCELLED')).map(o=>card(o)).join('')||emp('No completed orders yet'));
   buildNav();
 }
-const SN=['Created','SO Linked','In Queue','Picked','Packing','Invoice','Dispatched'];
-const SIDX={'Created':0,'SO Linked':1,'Pending SO Approval':1,'In Dispatch Queue':2,'Picked Pending Review':3,'Approved For Packing':4,'Packed Pending Invoice':4,'Invoiced - Pending Approval':5,'Approved - Ready for Dispatch':5,'Dispatched':6};
+
+// ════════════════════════════════════
+// ORDER DETAIL
+// ════════════════════════════════════
+const STAGES=['Ordered','SO Created','In Queue','Picking','Packing','Invoice','Dispatched','Complete'];
+const SIDX={ORDER_RECEIVED:0,SO_ASSIGNED:0,SO_CREATED:1,IN_DISPATCH:2,PICKING:3,GOODS_UPLOADED:3,PACKING_APPROVED:4,CORRECTION_REQD:4,INV_GENERATED:5,INV_APPROVED:5,DISPATCHED:6,EMAIL_DRAFT:6,COMPLETE:7};
+
 function openDet(id){
+  currentOrderId=id;
   const o=orders.find(x=>x.id===id);if(!o)return;
-  document.getElementById('d-ti').textContent=o.cl;
-  document.getElementById('d-ba').innerHTML=bdg(o.st);
+  document.getElementById('det-title').textContent=o.manualClient;
+  document.getElementById('det-badge').innerHTML=bdg(o.st);
   const si=SIDX[o.st]??0;
-  const stpH=SN.map((nm,i)=>{const dn=i<si,ac=i===si;return(i>0?`<div class="sli ${i<=si?'dn':''}"></div>`:'')+(dn?`<div class="sno"><div class="sci dn"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div><span class="snm">${nm}</span></div>`:`<div class="sno"><div class="sci ${ac?'ac':''}">${i+1}</div><span class="snm ${ac?'ac':''}">${nm}</span></div>`);}).join('');
-  const ig=[['Order ID',`<span class="dv mo">#${o.id.toUpperCase()}</span>`],['Date',o.dt],['Category',o.cat],['Dispatch Via',`${CI[o.dc]} ${o.dc}`],['Sender',o.sndr],o.so?['Sales Order',`<span class="pc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="12" height="12"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>${o.so}</span>`]:['Sales Order','—'],o.wt?['Weight',`${o.wt.toFixed(3)} kg`]:null,o.pk?['Packets',`${o.pk} pkt`]:null,o.sc?['Scanning Req.',`<span style="color:var(--amber);font-weight:600">Yes</span>`]:null,o.stk?['Stock Transfer',`<span style="color:var(--amber);font-weight:600">Yes</span>`]:null].filter(Boolean);
-  const au=[['Created by',o.cby],['SO Approved by',o.soby],['Picked by',o.piby],['Goods Approved by',o.gaby],['Packed by',o.paby],['Invoiced by',o.ivby],['Inv. Approved by',o.iaby]].filter(r=>r[1]);
-  document.getElementById('d-bo').innerHTML=`<div class="stp">${stpH}</div>${o.hr?`<div class="hal"><strong>Hold Reason</strong>${o.hr}</div>`:''}<div class="dig">${ig.map(([k,v])=>`<div class="dc"><div class="dk">${k}</div><div class="dv">${v}</div></div>`).join('')}</div>${o.ph>0?`<div class="dsh">Inspection Photos (${o.ph})</div><div class="phg">${Array.from({length:Math.min(o.ph,6)},(_,i)=>`<div class="pht">📷<div class="phl">${i<2?'SO':'Goods'}</div></div>`).join('')}</div>`:''} ${au.length?`<div class="dsh">Audit Trail</div>${au.map(([k,v])=>`<div class="ar"><span class="ak">${k}</span><span class="av">${v}</span></div>`).join('')}`:''}`;
-  let fo='';const r=role;
-  if((r==='accounts'||r==='admin')&&(o.st==='Created'||o.st==='SO Linked'))fo=`<button class="btn btn-g" onclick="closeSh('sh-det')">Close</button><button class="btn btn-p" style="flex:1;justify-content:center" onclick="reqApp('${o.id}');closeSh('sh-det')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>Request SO Approval</button>`;
-  else if((r==='office'||r==='admin')&&o.st==='Pending SO Approval')fo=`<button class="btn btn-d" onclick="rejSO('${o.id}')">Reject</button><button class="btn btn-s" style="flex:1;justify-content:center" onclick="appSO('${o.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>Approve &amp; Send</button>`;
-  else if((r==='office'||r==='admin')&&o.st==='Picked Pending Review')fo=`<button class="btn btn-d" onclick="rejGd('${o.id}')">Recount</button><button class="btn btn-s" style="flex:1;justify-content:center" onclick="appGd('${o.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>Approve Packing</button>`;
-  else if((r==='office'||r==='admin')&&o.st==='Invoiced - Pending Approval')fo=`<button class="btn btn-g" onclick="closeSh('sh-det')">Close</button><button class="btn btn-s" style="flex:1;justify-content:center" onclick="appBill('${o.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>Approve Invoice</button>`;
-  else if((r==='dispatch'||r==='admin')&&o.st==='In Dispatch Queue')fo=`<button class="btn btn-o" onclick="addPhoto('${o.id}')">Add Photo</button><button class="btn btn-p" style="flex:1;justify-content:center" onclick="subRev('${o.id}')">Submit for Review</button>`;
-  else if((r==='dispatch'||r==='admin')&&o.st==='Approved For Packing')fo=`<button class="btn btn-g" onclick="closeSh('sh-det')">Close</button><button class="btn btn-p" style="flex:1;justify-content:center" onclick="openPack('${o.id}')">Enter Weights &amp; Seal</button>`;
-  else if((r==='accounts'||r==='admin')&&o.st==='Packed Pending Invoice')fo=`<button class="btn btn-g" onclick="closeSh('sh-det')">Close</button><button class="btn btn-p" style="flex:1;justify-content:center" onclick="linkInv('${o.id}')">Link Invoice</button>`;
-  else if((r==='accounts'||r==='admin')&&o.st==='Approved - Ready for Dispatch')fo=`<button class="btn btn-g" onclick="closeSh('sh-det')">Close</button><button class="btn btn-s" style="flex:1;justify-content:center" onclick="markDisp('${o.id}')">Mark Dispatched</button>`;
-  else fo=`<button class="btn btn-o btn-bl" onclick="closeSh('sh-det')">Close</button>`;
-  document.getElementById('d-fo').innerHTML=fo;
-  openSh('sh-det');
+  const stepH=STAGES.map((nm,i)=>{
+    const dn=i<si,ac=i===si,fl=o.st==='HOLD'&&i===si;
+    const c=dn?`<div class="sc2 dn"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>`:
+      fl?`<div class="sc2 fl">!</div>`:
+      `<div class="sc2 ${ac?'ac':''}">${i+1}</div>`;
+    return(i>0?`<div class="sl2 ${i<=si?'dn':''}"></div>`:'')+(
+      `<div class="sn">${c}<span class="snm ${ac?'ac':''}">${nm}</span></div>`);
+  }).join('');
+
+  // SO and Invoice PDF links
+  const soPdf=o.soLink?`<a class="pdf-chip" href="${o.soLink}" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="12" height="12"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>${o.so}</a>`:(o.so||'—');
+  const invPdf=o.invoiceLink?`<a class="pdf-chip" href="${o.invoiceLink}" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="12" height="12"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>${o.invoice}</a>`:o.invoice||'—';
+
+  const ig=[
+    ['Order ID',`<span class="iv mo">#${o.id.toUpperCase()}</span>`],
+    ['Date',o.dt],
+    ['Manual Client',o.manualClient],
+    ['System Client',o.sysClient||'—'],
+    ['Dispatch Via',`${CI[o.dispCat]} ${o.dispCat}`],
+    ['Categories',ocats(o)],
+    ['Sender',o.sender||'—'],
+    ['Sales Order',soPdf],
+    ['Invoice',invPdf],
+    o.awb?['AWB / LR',o.awb]:null,
+    o.courierName?['Courier',o.courierName]:null,
+    o.wt?['Weight',`${o.wt.toFixed(3)} kg × ${o.pkts} pkt`]:null,
+    o.scanning?['Scanning Req.','<span style="color:var(--amber);font-weight:600">Yes</span>']:null,
+    o.notes?['Notes',o.notes]:null,
+  ].filter(Boolean);
+
+  let aiH='';
+  if(o.aiCheck1)aiH+=aiCard(o.aiCheck1,'Goods vs SO Verification');
+  if(o.aiCheck2)aiH+=aiCard(o.aiCheck2,'Invoice vs SO Verification');
+  if(o.corrNote)aiH+=`<div class="a-warn"><strong>Admin Correction Note</strong>${o.corrNote}</div>`;
+
+  let photoH='';
+  if(o.photos&&o.photos.length){
+    photoH=`<div class="dsec">Photos (${o.photos.length}) <span style="font-size:10px;color:var(--blue);font-weight:600;cursor:pointer" onclick="pvOpen('${id}',0)">View all →</span></div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:4px">
+      ${o.photos.slice(0,6).map((ph,i)=>`<div style="aspect-ratio:1;border-radius:8px;background:var(--bg);border:1px solid var(--bd);overflow:hidden;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:20px;color:var(--t3);position:relative" onclick="pvOpen('${id}',${i})">
+        ${ph.data?`<img src="${ph.data}" style="width:100%;height:100%;object-fit:cover" alt="">`:' 📷'}
+        <div class="pthumb-lbl">${ph.label}</div>
+      </div>`).join('')}
+    </div>`;
+  }
+  const au=[['Created by',o.cby],['SO by',o.soBy],['Picked by',o.pickedBy],['Goods approved by',o.goodsBy],['Packed by',o.packedBy],['Invoice by',o.invBy],['Inv. approved by',o.invAppBy],['Dispatched by',o.dispBy]].filter(r=>r[1]);
+
+  document.getElementById('det-body').innerHTML=`
+    <div class="stepper">${stepH}</div>
+    ${o.holdReason?`<div class="a-err"><strong>Hold Reason</strong>${o.holdReason}</div>`:''}
+    ${aiH}
+    <div class="info-grid">${ig.map(([k,v])=>`<div class="ic"><div class="ik">${k}</div><div class="iv">${v}</div></div>`).join('')}</div>
+    ${photoH}
+    ${au.length?`<div class="dsec">Audit Trail</div>${au.map(([k,v])=>`<div class="arow"><span class="ak">${k}</span><span class="av">${v}</span></div>`).join('')}`:''}
+  `;
+
+  // footer based on role + status
+  let fo='';
+  const r=currentUser?currentUser.roles:[];
+  const isAdmin=r.includes('admin');
+  const isOffice=r.includes('office');
+  const isDispatch=r.includes('dispatch');
+  if((isAdmin||isOffice)&&['ORDER_RECEIVED','SO_ASSIGNED'].includes(o.st))
+    fo=btn('btn-g','','Close',`closeSheet('sh-det')`)+btn('btn-p',B.doc,'Upload SO',`openUSO('${o.id}');closeSheet('sh-det')`);
+  else if(isAdmin&&o.st==='SO_CREATED')
+    fo=btn('btn-d',B.x,'Reject',`rejectSO('${o.id}')`)+btn('btn-s',B.chk,'Approve SO',`approveSO('${o.id}')`);
+  else if(isAdmin&&o.st==='GOODS_UPLOADED')
+    fo=btn('btn-o',B.cam,'Review Photos',`openGoodsViewer('${o.id}')`)+btn('btn-p',B.chk,'Approve Packing',`approveGoods('${o.id}')`);
+  else if(isAdmin&&o.st==='INV_GENERATED')
+    fo=btn('btn-d',B.x,'Reject',`rejectInvoice('${o.id}')`)+btn('btn-s',B.chk,'Approve Invoice',`approveInvoice('${o.id}')`);
+  else if(isAdmin&&o.st==='EMAIL_DRAFT')
+    fo=btn('btn-o',B.mail,'Review Draft',`openEmailReview('${o.id}')`)+btn('btn-s',B.chk,'Approve &amp; Send',`approveEmail('${o.id}')`);
+  else if((isOffice||isDispatch||isAdmin)&&o.st==='IN_DISPATCH')
+    fo=btn('btn-d',B.flag,'Flag Exception',`openHoldSheet('${o.id}')`)+btn('btn-p',B.cam,'Upload Goods Photos',`openGoodsPhotoUpload('${o.id}');closeSheet('sh-det')`);
+  else if(isOffice&&o.st==='PACKING_APPROVED')
+    fo=btn('btn-g','','Close',`closeSheet('sh-det')`)+btn('btn-p',B.doc,'Link Invoice',`openInvSheet('${o.id}')`);
+  else if((isOffice||isDispatch||isAdmin)&&o.st==='INV_APPROVED')
+    fo=o.dispCat==='Builty'?btn('btn-p',B.truck,'Builty Marking',`openBuilty('${o.id}')`):btn('btn-s',B.truck,'Start Courier Packing',`openCourierPacking('${o.id}')`);
+  else if(isOffice&&o.st==='DISPATCHED')
+    fo=btn('btn-g','','Close',`closeSheet('sh-det')`)+btn('btn-p',B.mail,'Draft Email',`openEmailDraft('${o.id}')`);
+  else if(o.st==='CORRECTION_REQD')
+    fo=btn('btn-amber',B.cam,'Re-upload Photos',`openGoodsPhotoUpload('${o.id}');closeSheet('sh-det')`);
+  else
+    fo=btn('btn-o btn-block','','Close',`closeSheet('sh-det')`);
+
+  document.getElementById('det-footer').innerHTML=fo;
+  openSheet('sh-det');
 }
-function g(id){return orders.find(x=>x.id===id);}
-function rf(m,t){renderAll();if(m)toast(m,t||'s');}
-function reqApp(id){const o=g(id);if(!o.so){toast('Link a Sales Order first','e');return;}o.st='Pending SO Approval';closeSh('sh-det');rf('Order sent to Office for SO approval');}
-function appSO(id){const o=g(id);o.st='In Dispatch Queue';o.soby=role==='office'?'Ayush':'Manan';closeSh('sh-det');rf('SO approved — sent to dispatch floor');}
-function rejSO(id){const o=g(id);o.st='Created';closeSh('sh-det');rf('Order rejected — returned to Accounts','i');}
-function appGd(id){const o=g(id);o.st='Approved For Packing';o.gaby='Ayush';closeSh('sh-det');rf('Goods approved — packing authorized');}
-function rejGd(id){const o=g(id);o.st='In Dispatch Queue';closeSh('sh-det');rf('Sent back for recount','i');}
-function addPhoto(id){const o=g(id);o.ph=(o.ph||0)+1;closeSh('sh-det');rf(`Photo added (${o.ph} total)`,'i');}
-function subRev(id){const o=g(id);if(!o.ph||o.ph<1){toast('Upload at least one photo first','e');return;}o.st='Picked Pending Review';o.piby='Desraj';closeSh('sh-det');rf('Submitted for Office review');}
-function revPick(id){const o=g(id);o.st='In Dispatch Queue';rf('Reverted to picking queue','i');}
-function openPack(id){pkId=id;const o=g(id);document.getElementById('pk-ti').textContent=o.cl;document.getElementById('pk-su').textContent='#'+o.id.toUpperCase()+' · '+o.cat;['pk-kg','pk-gm','pk-ct'].forEach(i=>document.getElementById(i).value='');document.getElementById('pk-ph-n').textContent='';closeSh('sh-det');openSh('sh-pack');}
-function sealBox(){const kg=parseFloat(document.getElementById('pk-kg').value)||0,gm=parseFloat(document.getElementById('pk-gm').value)||0,ct=parseInt(document.getElementById('pk-ct').value)||0;if(kg===0&&gm===0){toast('Enter weight before sealing','e');return;}if(ct<1){toast('Enter packet count','e');return;}const o=g(pkId);o.wt=kg+gm/1000;o.pk=ct;o.st='Packed Pending Invoice';o.paby='Desraj';closeSh('sh-pack');rf(`Box sealed — ${o.wt.toFixed(3)} kg, ${ct} packet(s)`);}
-function linkInv(id){const o=g(id);o.st='Invoiced - Pending Approval';o.ivby='Sunny';closeSh('sh-det');rf('Invoice linked — awaiting Office approval','i');}
-function appBill(id){const o=g(id);o.st='Approved - Ready for Dispatch';o.iaby='Ayush';closeSh('sh-det');rf('Invoice approved — ready for courier');}
-function markDisp(id){const o=g(id);o.st='Dispatched';closeSh('sh-det');rf('Order marked as dispatched!');}
-function relHold(id){const o=g(id);o.st='In Dispatch Queue';o.hr=null;rf('Order released to dispatch queue');}
-function canOrd(id){const o=g(id);o.st='Cancelled';rf('Order cancelled','i');}
-let selCat='Courier';
-function pickCat(el){document.querySelectorAll('.cci').forEach(c=>c.classList.remove('on'));el.classList.add('on');selCat=el.dataset.cat;document.getElementById('fg-sh').style.display=selCat==='RRToolStore'?'block':'none';}
-function createOrder(){const cl=document.getElementById('f-cl').value.trim(),cat=document.getElementById('f-cat').value;if(!cl){toast('Enter client name','e');return;}if(!cat){toast('Select order category','e');return;}const sv=document.getElementById('f-so').value;const soText=sv?document.getElementById('f-so').options[document.getElementById('f-so').selectedIndex].text.split(' — ')[0]:null;const o={id:Math.random().toString(36).substr(2,8),dt:new Date().toISOString().split('T')[0],cl,cat,dc:selCat,st:sv?'SO Linked':'Created',so:soText,sndr:'D.M. Impex',sc:document.getElementById('f-sc').checked,stk:document.getElementById('f-st').checked,wt:null,pk:null,ph:0,hr:null,cby:role==='admin'?'Manan':'Sunny',soby:null,piby:null,gaby:null,paby:null,ivby:null,iaby:null};orders.unshift(o);closeSh('sh-no');['f-cl','f-so'].forEach(i=>document.getElementById(i).value='');document.getElementById('f-cat').value='';['f-sc','f-st'].forEach(i=>document.getElementById(i).checked=false);rf('Order created successfully');}
-function openSh(id){document.getElementById(id).classList.add('on');document.body.style.overflow='hidden';}
-function closeSh(id){document.getElementById(id).classList.remove('on');document.body.style.overflow='';}
-document.querySelectorAll('.sov').forEach(ov=>ov.addEventListener('click',e=>{if(e.target===ov)closeSh(ov.id);}));
-function showU(inp,lbl){const f=document.getElementById(inp).files[0];if(f)document.getElementById(lbl).textContent='✓ '+f.name;}
+
+function aiCard(ai,title){
+  if(!ai)return'';
+  const cls=ai.pass?'ai-pass':ai.confidence<70?'ai-warn':'ai-flag';
+  const icon=ai.pass?'✓':ai.confidence<70?'⚠':'✗';
+  const discH=ai.discrepancies&&ai.discrepancies.length?`<div class="disc-list">${ai.discrepancies.map(d=>`<div class="disc-item"><div class="disc-dot"></div><div>${d}</div></div>`).join('')}</div>`:'';
+  const confH=`<div class="conf-bar"><div class="conf-fill" style="width:${ai.confidence}%;background:${ai.pass?'var(--green)':ai.confidence<70?'var(--amber)':'var(--red)'}"></div></div><div style="font-size:10px;color:var(--t3);margin-top:3px">Confidence: ${ai.confidence}%</div>`;
+  return`<div class="ai-card ${cls}"><div class="ai-card-hdr"><span class="ai-title">AI ${icon} ${title}</span></div><div class="ai-body">${ai.summary}${discH}${confH}</div></div>`;
+}
+
+// ════════════════════════════════════
+// PHOTO VIEWER (WhatsApp style)
+// ════════════════════════════════════
+function pvOpen(orderId,startIdx,onApprove,onReject){
+  const o=orders.find(x=>x.id===orderId);if(!o||!o.photos.length)return;
+  pvPhotos=o.photos;pvIdx=startIdx||0;pvOnApprove=onApprove||null;pvOnReject=onReject||null;
+  pvRender();document.getElementById('pv').classList.add('on');pvSwipe();
+}
+function openGoodsViewer(id){
+  pvOpen(id,0,()=>{approveGoods(id);pvClose();},()=>{openHoldSheet(id);pvClose();});
+}
+function pvRender(){
+  const ph=pvPhotos[pvIdx];
+  const main=document.getElementById('pv-main');
+  main.innerHTML=(ph&&ph.data?`<img class="pv-img" src="${ph.data}" alt="">`:`<div class="pv-placeholder">📷</div>`)+
+    (pvIdx>0?`<button class="pv-prev" onclick="pvNav(-1)">‹</button>`:'')+
+    (pvIdx<pvPhotos.length-1?`<button class="pv-next" onclick="pvNav(1)">›</button>`:'');
+  document.getElementById('pv-title').textContent=ph?ph.label:'Photo';
+  document.getElementById('pv-cnt').textContent=`${pvIdx+1} / ${pvPhotos.length}`;
+  document.getElementById('pv-lbl').textContent=ph?ph.label:'';
+  document.getElementById('pv-dots').innerHTML=pvPhotos.map((_,i)=>`<div class="pv-dot ${i===pvIdx?'on':''}"></div>`).join('');
+  const acts=document.getElementById('pv-acts');
+  if(pvOnApprove&&pvIdx===pvPhotos.length-1){
+    acts.innerHTML=`<button class="pv-approve" onclick="pvOnApprove()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" width="16" height="16"><polyline points="20 6 9 17 4 12"/></svg>Approve Packing</button><button class="pv-reject" onclick="pvOnReject()">Request Correction</button>`;
+  }else if(pvOnApprove&&pvIdx<pvPhotos.length-1){
+    acts.innerHTML=`<button class="pv-next-btn" onclick="pvNav(1)">Next Photo →</button>`;
+  }else{acts.innerHTML='';}
+}
+function pvNav(d){pvIdx=Math.max(0,Math.min(pvPhotos.length-1,pvIdx+d));pvRender();}
+function pvClose(){document.getElementById('pv').classList.remove('on');}
+function pvSwipe(){
+  const el=document.getElementById('pv-main');let sx=0;
+  el.ontouchstart=e=>{sx=e.touches[0].clientX;};
+  el.ontouchend=e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>50)pvNav(dx<0?1:-1);};
+}
+
+// ════════════════════════════════════
+// ACTIONS
+// ════════════════════════════════════
+function getO(id){return orders.find(x=>x.id===id);}
+function rf(m,t='s'){renderAll();if(m)toast(m,t);}
+
+function approveSO(id){const o=getO(id);o.st='IN_DISPATCH';o.soBy=o.soBy||currentUser.name;closeSheet('sh-det');rf('SO approved — order sent to dispatch queue');}
+function rejectSO(id){const o=getO(id);o.st='SO_ASSIGNED';closeSheet('sh-det');rf('SO rejected — returned to Office','i');}
+function approveGoods(id){const o=getO(id);o.st='PACKING_APPROVED';o.goodsBy=currentUser.name;closeSheet('sh-det');rf('Packing approved — Office can generate invoice');}
+function rejectGoods(id,note){const o=getO(id);o.st='CORRECTION_REQD';o.corrNote=note||'Please re-upload corrected photos';closeSheet('sh-det');rf('Correction requested','i');}
+function approveInvoice(id){const o=getO(id);o.st='INV_APPROVED';o.invAppBy=currentUser.name;closeSheet('sh-det');rf('Invoice approved — ready for final packing');}
+function rejectInvoice(id){const o=getO(id);o.st='PACKING_APPROVED';closeSheet('sh-det');rf('Invoice rejected — returned to Office','i');}
+function releaseHold(id){const o=getO(id);o.st='IN_DISPATCH';o.holdReason=null;rf('Released to dispatch queue');}
+function cancelOrder(id){const o=getO(id);o.st='CANCELLED';rf('Order cancelled','i');}
+function approveEmail(id){
+  const o=getO(id);o.st='COMPLETE';o.dispBy=o.dispBy||currentUser.name;
+  closeSheet('sh-det');closeSheet('sh-email');
+  if(o.emailDraft){window.open(`mailto:${o.emailDraft.to||''}?subject=${encodeURIComponent(o.emailDraft.subj||'')}&body=${encodeURIComponent(o.emailDraft.body||'')}`);}
+  rf('Email approved — order complete!');
+}
+
+// HOLD
+function openHoldSheet(id){holdTargetId=id;document.getElementById('hold-reason').value='';openSheet('sh-hold');}
+function confirmHold(){
+  const reason=document.getElementById('hold-reason').value.trim();
+  if(!reason){toast('Please describe the issue','e');return;}
+  const o=getO(holdTargetId);o.st='HOLD';o.holdReason=reason;
+  closeSheet('sh-hold');closeSheet('sh-det');rf('Order moved to Hold Desk','i');
+}
+
+// UPLOAD SO
+function openUSO(id){
+  currentOrderId=id;const o=getO(id);
+  document.getElementById('uso-sub').textContent=`${o.manualClient} · ${o.dt}`;
+  document.getElementById('uso-party').value='';document.getElementById('uso-sender').value='';
+  document.getElementById('uso-so-id').value='';document.getElementById('uso-so-text').value='';
+  document.getElementById('uso-so-link').value='';document.getElementById('uso-notes').value='';
+  loadSOPicker('uso-list','Sales Order',(item)=>{
+    document.getElementById('uso-so-id').value=item.id;
+    document.getElementById('uso-so-text').value=item.text;
+    document.getElementById('uso-so-link').value=item.link||'';
+    // AUTO-FILL: system client name and sender from DriveFiles row
+    document.getElementById('uso-party').value=item.partyName||'';
+    document.getElementById('uso-sender').value=item.sender||'';
+  });
+  openSheet('sh-uso');
+}
+function submitSO(){
+  const soText=document.getElementById('uso-so-text').value;
+  if(!soText){toast('Please select a Sales Order','e');return;}
+  const o=getO(currentOrderId);
+  o.so=soText.split('—')[0].trim();
+  o.soLink=document.getElementById('uso-so-link').value||null;
+  // Apply auto-filled values to order
+  o.sysClient=document.getElementById('uso-party').value||o.sysClient;
+  o.sender=document.getElementById('uso-sender').value||o.sender;
+  o.st='SO_CREATED';o.soBy=currentUser.name;
+  closeSheet('sh-uso');rf('SO uploaded — sent to Admin for check');
+}
+
+// GOODS PHOTOS
+function openGoodsPhotoUpload(id){
+  currentOrderId=id;const o=getO(id);
+  const uploaderType=hasCarb(o)&&!hasMT(o)?'office':'dispatch';
+  document.getElementById('gp-sub').textContent=`${o.manualClient} · ${o.dt}`;
+  document.getElementById('gp-info').textContent=uploaderType==='office'?
+    'Upload corrected SO photo and carbide goods photos. AI will verify before sending to Admin.':
+    'Upload corrected SO photo and machine tools goods photos. AI will verify before sending to Admin.';
+  document.getElementById('so-ph-prev').innerHTML='';document.getElementById('gds-ph-prev').innerHTML='';
+  document.getElementById('so-ph-store').value='';document.getElementById('gds-ph-store').value='[]';
+  openSheet('sh-gp');
+}
+function submitGoodsPhotos(){
+  const soPh=document.getElementById('so-ph-store').value;
+  const gdsPh=JSON.parse(document.getElementById('gds-ph-store').value||'[]');
+  if(!soPh){toast('Upload corrected SO photo first','e');return;}
+  if(!gdsPh.length){toast('Upload at least one goods photo','e');return;}
+  const o=getO(currentOrderId);
+  const uploaderLabel=hasCarb(o)&&!hasMT(o)?'Office':'Dispatch';
+  const existing=o.photos.filter(p=>!['Corrected SO','Goods - Office','Goods - Dispatch'].includes(p.label));
+  o.photos=[...existing,{label:'Corrected SO',data:soPh},...gdsPh.map(ph=>({label:`Goods - ${uploaderLabel}`,data:ph.data}))];
+  o.st='GOODS_UPLOADED';o.pickedBy=currentUser.name;
+  closeSheet('sh-gp');runAIGoodsCheck(o);toast('Photos uploaded — running AI check…','i');
+}
+
+// INVOICE
+function openInvSheet(id){
+  currentOrderId=id;const o=getO(id);
+  document.getElementById('inv-sub').textContent=`${o.manualClient} · ${o.so}`;
+  document.getElementById('inv-id').value='';document.getElementById('inv-text').value='';document.getElementById('inv-link').value='';
+  loadSOPicker('inv-list','Invoice',(item)=>{
+    document.getElementById('inv-id').value=item.id;
+    document.getElementById('inv-text').value=item.text;
+    document.getElementById('inv-link').value=item.link||'';
+  });
+  openSheet('sh-inv');
+}
+function submitInvoice(){
+  const invText=document.getElementById('inv-text').value;
+  if(!invText){toast('Please select an Invoice','e');return;}
+  const o=getO(currentOrderId);
+  o.invoice=invText.split('—')[0].trim();
+  o.invoiceLink=document.getElementById('inv-link').value||null;
+  o.invBy=currentUser.name;o.st='INV_GENERATED';
+  closeSheet('sh-inv');runAIInvoiceCheck(o);rf('Invoice linked — running AI verification…','i');
+}
+
+// COURIER PACKING
+function openCourierPacking(id){
+  currentOrderId=id;const o=getO(id);
+  document.getElementById('cp-sub').textContent=`${o.manualClient} · ${o.so}`;
+  ['cp-kg','cp-gm','cp-pkts','cp-courier','cp-awb'].forEach(i=>document.getElementById(i).value='');
+  document.getElementById('cp-ph-prev').innerHTML='';document.getElementById('cp-ph-store').value='';
+  document.getElementById('cp-ai-result').innerHTML='';
+  openSheet('sh-courier');
+}
+function submitCourier(){
+  const photo=document.getElementById('cp-ph-store').value;
+  const awb=document.getElementById('cp-awb').value.trim();
+  const kg=parseFloat(document.getElementById('cp-kg').value)||0;
+  const gm=parseFloat(document.getElementById('cp-gm').value)||0;
+  const pkts=parseInt(document.getElementById('cp-pkts').value)||0;
+  if(!photo){toast('Upload courier photo first','e');return;}
+  if(!awb){toast('Enter AWB number','e');return;}
+  if(kg===0&&gm===0){toast('Enter weight','e');return;}
+  if(pkts<1){toast('Enter packet count','e');return;}
+  const o=getO(currentOrderId);
+  o.wt=kg+gm/1000;o.pkts=pkts;o.awb=awb;o.courierName=document.getElementById('cp-courier').value;
+  o.photos.push({label:'Final Courier Parcel',data:photo});
+  o.st='DISPATCHED';o.dispBy=currentUser.name;
+  closeSheet('sh-courier');rf('Dispatched! Office to draft client email');
+}
+
+// BUILTY
+function openBuilty(id){
+  currentOrderId=id;const o=getO(id);
+  document.getElementById('bt-sub').textContent=`${o.manualClient} · ${o.so}`;
+  document.getElementById('bt-to-name').value=o.sysClient||o.manualClient;
+  ['bt-station','bt-id','bt-cartons'].forEach(i=>document.getElementById(i).value='');
+  document.getElementById('lr-prev').innerHTML='';document.getElementById('lr-store').value='';
+  openSheet('sh-builty');
+}
+function submitBuilty(){
+  const toName=document.getElementById('bt-to-name').value.trim();
+  const station=document.getElementById('bt-station').value.trim();
+  if(!toName||!station){toast('Fill in To Name and Station','e');return;}
+  const o=getO(currentOrderId);
+  const lr=document.getElementById('lr-store').value;
+  if(lr)o.photos.push({label:'LR/GR Copy',data:lr});
+  o.st='DISPATCHED';o.dispBy=currentUser.name;
+  o.awb=document.getElementById('bt-id').value||'Builty';
+  closeSheet('sh-builty');rf('Builty dispatched! Office to draft client email');
+}
+
+// EMAIL
+function openEmailDraft(id){
+  currentOrderId=id;const o=getO(id);
+  const subj=`Dispatch Confirmation — ${o.invoice||o.so} | ${o.manualClient}`;
+  const body=`Dear Sir/Madam,\n\nWe are pleased to inform you that your order has been dispatched.\n\nOrder Details:\n• Client: ${o.sysClient||o.manualClient}\n• Invoice No.: ${o.invoice||'—'}\n• Sales Order: ${o.so||'—'}\n• Dispatch Date: ${o.dt}\n• Dispatch Via: ${o.dispCat}${o.awb&&o.awb!=='Builty'?`\n• AWB / Tracking No.: ${o.awb}`:''}\n${o.courierName?`• Courier: ${o.courierName}\n`:''}\nKindly arrange receipt of goods at the earliest.\n\nRegards,\n${o.sender||'D.M. Impex'}\nLudhiana, Punjab`;
+  o.emailDraft={to:'',subj,body};
+  document.getElementById('em-sub').textContent=`${o.manualClient} · Draft for review`;
+  document.getElementById('em-to').value='';
+  document.getElementById('em-subj').value=subj;
+  document.getElementById('em-body').value=body;
+  document.getElementById('em-info').textContent='Auto-drafted from order details. Edit if needed, then submit to Admin for approval.';
+  document.getElementById('em-footer').innerHTML=btn('btn-g','','Cancel',`closeSheet('sh-email')`)+btn('btn-p',B.send,'Submit to Admin',`submitEmailDraft()`).replace('class="btn btn-p"','class="btn btn-p" style="flex:1;justify-content:center"');
+  openSheet('sh-email');
+}
+function openEmailReview(id){
+  currentOrderId=id;const o=getO(id);if(!o.emailDraft)return;
+  document.getElementById('em-sub').textContent=`${o.manualClient} · Admin Review`;
+  document.getElementById('em-to').value=o.emailDraft.to||'';
+  document.getElementById('em-subj').value=o.emailDraft.subj||'';
+  document.getElementById('em-body').value=o.emailDraft.body||'';
+  document.getElementById('em-info').textContent='Review the email draft from Office. Approve to send, or request corrections.';
+  document.getElementById('em-footer').innerHTML=btn('btn-g','','Cancel',`closeSheet('sh-email')`)+btn('btn-s',B.chk,'Approve &amp; Send',`approveEmail('${id}')`).replace('class="btn btn-s"','class="btn btn-s" style="flex:1;justify-content:center"');
+  openSheet('sh-email');
+}
+function submitEmailDraft(){
+  const o=getO(currentOrderId);
+  o.emailDraft={to:document.getElementById('em-to').value,subj:document.getElementById('em-subj').value,body:document.getElementById('em-body').value};
+  o.st='EMAIL_DRAFT';closeSheet('sh-email');rf('Email draft submitted to Admin for approval');
+}
+
+// ════════════════════════════════════
+// NEW ORDER
+// ════════════════════════════════════
+function openNewOrder(){
+  selDCat='Courier';selOCats=[];
+  document.querySelectorAll('#ocat-chips .mchip').forEach(c=>c.classList.remove('on'));
+  document.querySelectorAll('#dcat-grid .dcat').forEach(c=>c.classList.remove('on'));
+  document.querySelector('#dcat-grid .dcat').classList.add('on');
+  ['f-manual','f-shopify','f-notes'].forEach(i=>document.getElementById(i).value='');
+  document.getElementById('f-sys-client').value='';document.getElementById('f-sender').value='';
+  document.getElementById('f-so-id').value='';document.getElementById('f-so-text').value='';document.getElementById('f-so-link').value='';
+  document.getElementById('f-scan').checked=false;document.getElementById('f-stk').checked=false;
+  document.getElementById('wa-ss-prev').innerHTML='';document.getElementById('wa-ss-store').value='';
+  document.getElementById('fg-shopify').style.display='none';
+  document.getElementById('pick-note').style.display='none';
+  loadSOPicker('no-so-list','Sales Order',(item)=>{
+    document.getElementById('f-so-id').value=item.id;
+    document.getElementById('f-so-text').value=item.text;
+    document.getElementById('f-so-link').value=item.link||'';
+    // AUTO-FILL system client and sender
+    document.getElementById('f-sys-client').value=item.partyName||'';
+    document.getElementById('f-sender').value=item.sender||'';
+  });
+  openSheet('sh-new-order');
+}
+function pickDCat(el){
+  document.querySelectorAll('#dcat-grid .dcat').forEach(c=>c.classList.remove('on'));
+  el.classList.add('on');selDCat=el.dataset.cat;
+  document.getElementById('fg-shopify').style.display=selDCat==='RRToolStore'?'block':'none';
+}
+function toggleCat(el){
+  el.classList.toggle('on');
+  selOCats=Array.from(document.querySelectorAll('#ocat-chips .mchip.on')).map(c=>c.dataset.c);
+  const n=document.getElementById('pick-note');
+  if(!selOCats.length){n.style.display='none';return;}
+  const mt=selOCats.some(c=>MT_CATS.includes(c));const cb=selOCats.some(c=>CARB_CATS.includes(c));
+  n.textContent=mt&&cb?'📦 Dispatch picks machine tools · 🧪 Office picks carbide items — both upload photos separately':
+    cb?'🧪 Office team picks and uploads photos for carbide items':'📦 Dispatch team picks and uploads photos';
+  n.style.display='block';
+}
+function createOrder(){
+  const mc=document.getElementById('f-manual').value.trim();
+  if(!mc){toast('Enter manual client name','e');return;}
+  if(!selOCats.length){toast('Select at least one order category','e');return;}
+  const soId=document.getElementById('f-so-id').value;
+  const soText=document.getElementById('f-so-text').value;
+  const soLink=document.getElementById('f-so-link').value;
+  const sysClient=document.getElementById('f-sys-client').value;
+  const sender=document.getElementById('f-sender').value;
+  const o={
+    id:'o'+Date.now().toString(36),dt:new Date().toISOString().split('T')[0],
+    manualClient:mc,sysClient:sysClient||mc,
+    dispCat:selDCat,cats:selOCats,
+    st:soId?'SO_CREATED':'SO_ASSIGNED',
+    so:soText?soText.split('—')[0].trim():null,
+    soLink:soLink||null,
+    sender:sender||null,
+    scanning:document.getElementById('f-scan').checked,
+    stk:document.getElementById('f-stk').checked,
+    wt:null,pkts:null,photos:[],
+    aiCheck1:null,aiCheck2:null,aiCheck3:null,
+    corrNote:null,holdReason:null,invoice:null,invoiceLink:null,
+    awb:null,courierName:null,emailDraft:null,
+    notes:document.getElementById('f-notes').value,
+    waSS:document.getElementById('wa-ss-store').value||null,
+    cby:currentUser.name,soBy:soId?currentUser.name:null,
+    pickedBy:null,goodsBy:null,packedBy:null,invBy:null,invAppBy:null,dispBy:null,
+  };
+  orders.unshift(o);closeSheet('sh-new-order');rf('Order created and assigned to Office');
+}
+
+// ════════════════════════════════════
+// SO PICKER (with auto-fill callback)
+// ════════════════════════════════════
+function loadSOPicker(containerId,fileType,onSelect){
+  const container=document.getElementById(containerId);if(!container)return;
+  const loadWrap=document.getElementById('so-load-wrap');
+  const fallbackSO=[
+    {id:'so1',docNumber:'SO/406/DE/25-26',partyName:'M/S Dhankot Traders',sender:'D.M. Engineering',docDate:'27-12-2025',link:'https://drive.google.com/file/d/demo_so1'},
+    {id:'so2',docNumber:'SO/631/DE/25-26',partyName:'M/S Versatile Tools',sender:'D.M. Engineering',docDate:'15-01-2026',link:'https://drive.google.com/file/d/demo_so2'},
+    {id:'so3',docNumber:'12323/DI/25-26',partyName:'M/S Shaurya Industrial',sender:'D.M. Impex',docDate:'10-03-2026',link:null},
+  ];
+  const fallbackINV=[
+    {id:'inv1',docNumber:'INV/891/DE/25-26',partyName:'M/S Dhankot Traders',sender:'D.M. Engineering',docDate:'21-03-2026',link:'https://drive.google.com/file/d/demo_inv1'},
+    {id:'inv2',docNumber:'INV/892/DI/25-26',partyName:'M/S Shaurya Industrial',sender:'D.M. Impex',docDate:'22-03-2026',link:null},
+  ];
+  let items;
+  if(gsUrl&&driveFiles.length){
+    const ft=fileType==='Sales Order'?'Sales Order':'Invoice';
+    items=driveFiles.filter(f=>(f.FileType||f.fileType||'')===ft&&(f.Status||f.status||'Allocation Pending')==='Allocation Pending')
+      .map(f=>({id:f.FileId||f.fileId||f['File ID'],docNumber:f.DocNumber||f.docNumber||f['Doc Number'],partyName:f.PartyName||f.partyName||f['Party Name (Consignee)'],sender:f.Sender||f.sender,docDate:f.DocDate||f.docDate||f['Document Date'],link:f.FileLink||f.fileLink||f['File Link']}));
+  }else{
+    items=fileType==='Invoice'?fallbackINV:fallbackSO;
+  }
+  if(loadWrap)loadWrap.style.display='none';
+  container.style.display='block';
+  container.innerHTML=items.length?items.map(f=>`
+    <div class="so-item" data-id="${f.id}" data-text="${f.docNumber||''} — ${f.partyName||''}" data-link="${f.link||''}" data-party="${f.partyName||''}" data-sender="${f.sender||''}">
+      <div class="so-doc">${f.docNumber||'—'}</div>
+      <div class="so-party">${f.partyName||'—'}</div>
+      <div class="so-meta">
+        <span>${f.sender||''} · ${f.docDate||''}</span>
+        ${f.link?`<a class="so-pdf-btn" href="${f.link}" target="_blank" onclick="event.stopPropagation()">📄 View PDF</a>`:''}
+      </div>
+    </div>`).join(''):`<div style="padding:16px;text-align:center;font-size:12px;color:var(--t3)">No ${fileType} files with Allocation Pending status</div>`;
+  container.querySelectorAll('.so-item').forEach(item=>{
+    item.addEventListener('click',()=>{
+      container.querySelectorAll('.so-item').forEach(i=>i.classList.remove('on'));
+      item.classList.add('on');
+      onSelect({
+        id:item.dataset.id,text:item.dataset.text,
+        link:item.dataset.link,partyName:item.dataset.party,sender:item.dataset.sender
+      });
+    });
+  });
+}
+
+// ════════════════════════════════════
+// GOOGLE SHEETS
+// ════════════════════════════════════
+function loadDriveFiles(){
+  if(!gsUrl)return;
+  fetch(`${gsUrl}?sheet=DriveFiles`).then(r=>r.json()).then(data=>{driveFiles=data;toast(`${data.length} files loaded from Sheets`,'i');}).catch(()=>{});
+}
+function saveConfig(){
+  gsUrl=document.getElementById('cfg-gs').value.trim();
+  apiKey=document.getElementById('cfg-api').value.trim();
+  localStorage.setItem('dt_gs_url',gsUrl);localStorage.setItem('dt_api_key',apiKey);
+  document.getElementById('gs-status-txt').textContent=gsUrl?'Connected ✓':'Not connected';
+  document.getElementById('ai-status-txt').textContent=apiKey?'API key set ✓':'No API key';
+  closeSheet('sh-config');toast('Settings saved');if(gsUrl)loadDriveFiles();
+}
+function testGS(){
+  const url=document.getElementById('cfg-gs').value.trim();
+  const st=document.getElementById('cfg-gs-status');if(!url){toast('Enter URL first','e');return;}
+  st.style.display='block';st.style.color='var(--amber)';st.textContent='Testing…';
+  fetch(url+'?sheet=DriveFiles').then(r=>r.json()).then(d=>{st.style.color='var(--green)';st.textContent=`✓ Connected — ${d.length} files found`;}).catch(()=>{st.style.color='var(--red)';st.textContent='✗ Connection failed';});
+}
+
+// ════════════════════════════════════
+// AI CHECKS
+// ════════════════════════════════════
+async function runAIGoodsCheck(o){
+  if(!apiKey){
+    setTimeout(()=>{o.aiCheck1={pass:true,confidence:88,summary:'AI check complete (demo mode). Connect API key for real verification. Sample: All visible items appear to match corrected SO quantities.',discrepancies:[]};rf('AI goods check complete — review in Admin inbox');},1500);return;
+  }
+  const soPh=o.photos.find(p=>p.label==='Corrected SO');
+  const gdsPhs=o.photos.filter(p=>p.label.startsWith('Goods'));
+  if(!soPh||!gdsPhs.length)return;
+  try{
+    const content=[
+      {type:'image',source:{type:'base64',media_type:'image/jpeg',data:soPh.data.split(',')[1]}},
+      ...gdsPhs.map(ph=>({type:'image',source:{type:'base64',media_type:'image/jpeg',data:ph.data.split(',')[1]}})),
+      {type:'text',text:'Image 1 is a Sales Order with handwritten corrections in red/blue pen. Crossed-out items are OOS. Corrected quantities are written next to originals. Remaining images show picked goods. Cross-check. Respond ONLY in JSON: {"items":[{"name":"","so_qty":"","visible_qty":"","match":true}],"discrepancies":[],"confidence":85,"overall_pass":true,"summary":""}'},
+    ];
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content}]})});
+    const data=await res.json();
+    const json=JSON.parse(data.content.map(c=>c.text||'').join('').replace(/```json|```/g,'').trim());
+    o.aiCheck1={pass:json.overall_pass,confidence:json.confidence,summary:json.summary,discrepancies:json.discrepancies||[]};
+    rf('AI goods check complete — review in Admin inbox');
+  }catch(e){o.aiCheck1={pass:null,confidence:0,summary:'AI check failed — please verify manually.',discrepancies:[]};rf('AI check failed','i');}
+}
+async function runAIInvoiceCheck(o){
+  if(!apiKey){setTimeout(()=>{o.aiCheck2={pass:true,confidence:95,summary:'Invoice AI check (demo mode). Client name, GSTIN, and all line items appear to match the corrected SO.',discrepancies:[]};renderAll();},1800);return;}
+  const soPh=o.photos.find(p=>p.label==='Corrected SO');if(!soPh)return;
+  try{
+    const content=[
+      {type:'image',source:{type:'base64',media_type:'image/jpeg',data:soPh.data.split(',')[1]}},
+      {type:'text',text:`Compare this corrected SO image with invoice data. Invoice: ${o.invoice}, Client: ${o.sysClient||o.manualClient}. Check: 1) Client name and GSTIN match. 2) Every line item matches corrected SO (not crossed-out items). 3) Pricing consistent. Respond ONLY in JSON: {"client_match":true,"gst_match":true,"discrepancies":[],"confidence":90,"overall_pass":true,"summary":""}`},
+    ];
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:800,messages:[{role:'user',content}]})});
+    const data=await res.json();
+    const json=JSON.parse(data.content.map(c=>c.text||'').join('').replace(/```json|```/g,'').trim());
+    o.aiCheck2={pass:json.overall_pass,confidence:json.confidence,summary:json.summary,discrepancies:json.discrepancies||[]};
+    renderAll();
+  }catch(e){o.aiCheck2={pass:null,confidence:0,summary:'AI invoice check failed — verify manually.',discrepancies:[]};renderAll();}
+}
+async function runAICourierCheck(){
+  const photo=document.getElementById('cp-ph-store').value;if(!photo)return;
+  document.getElementById('cp-ai-result').innerHTML=`<div class="ai-spin"><div class="spinner"></div><div style="font-size:12px;color:var(--t2)">AI reading courier label…</div></div>`;
+  if(!apiKey){
+    setTimeout(()=>{
+      document.getElementById('cp-courier').value='Shree Maruti Courier';
+      document.getElementById('cp-awb').value='SM'+Math.floor(Math.random()*9000000+1000000);
+      document.getElementById('cp-ai-result').innerHTML=`<div class="ai-card ai-pass"><div class="ai-card-hdr"><span class="ai-title">AI ✓ Label Verified (Demo)</span></div><div class="ai-body">AWB and courier name auto-filled. Verify the values above are correct.</div></div>`;
+    },1500);return;
+  }
+  try{
+    const o=getO(currentOrderId);
+    const content=[
+      {type:'image',source:{type:'base64',media_type:'image/jpeg',data:photo.split(',')[1]}},
+      {type:'text',text:`Extract from this courier parcel photo: 1) Courier company name. 2) AWB/tracking number. 3) Shipping address. 4) Mobile number. Expected client: ${o?o.sysClient||o.manualClient:''}. Respond ONLY in JSON: {"courier_name":"","awb_number":"","label_address":"","label_mobile":"","address_match":true,"overall_pass":true,"summary":""}`},
+    ];
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:500,messages:[{role:'user',content}]})});
+    const data=await res.json();
+    const json=JSON.parse(data.content.map(c=>c.text||'').join('').replace(/```json|```/g,'').trim());
+    if(json.courier_name)document.getElementById('cp-courier').value=json.courier_name;
+    if(json.awb_number)document.getElementById('cp-awb').value=json.awb_number;
+    if(o)o.aiCheck3={pass:json.overall_pass,confidence:90,summary:json.summary,discrepancies:json.address_match?[]:['Shipping address may not match invoice']};
+    const cls=json.overall_pass?'ai-pass':'ai-warn';
+    document.getElementById('cp-ai-result').innerHTML=`<div class="ai-card ${cls}"><div class="ai-card-hdr"><span class="ai-title">AI ${json.overall_pass?'✓':'⚠'} Courier Label</span></div><div class="ai-body">${json.summary}</div></div>`;
+  }catch(e){document.getElementById('cp-ai-result').innerHTML=`<div class="a-warn">AI label check failed — verify AWB manually.</div>`;}
+}
+
+// ════════════════════════════════════
+// PHOTO UPLOAD HELPERS
+// ════════════════════════════════════
+function singlePhoto(input,prevId,storeId){
+  const f=input.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=e=>{
+    document.getElementById(storeId).value=e.target.result;
+    document.getElementById(prevId).innerHTML=`<div class="pthumb"><img src="${e.target.result}" alt=""><div class="pthumb-del" onclick="document.getElementById('${storeId}').value='';document.getElementById('${prevId}').innerHTML=''">✕</div></div>`;
+    // if courier photo upload — trigger AI check after short delay
+    if(storeId==='cp-ph-store')setTimeout(runAICourierCheck,300);
+  };
+  r.readAsDataURL(f);
+}
+function multiPhoto(input,prevId,storeId,label){
+  const files=Array.from(input.files);if(!files.length)return;
+  const existing=JSON.parse(document.getElementById(storeId).value||'[]');
+  let loaded=0;
+  files.forEach(f=>{
+    const r=new FileReader();
+    r.onload=e=>{
+      existing.push({data:e.target.result,label});loaded++;
+      if(loaded===files.length){
+        document.getElementById(storeId).value=JSON.stringify(existing);
+        document.getElementById(prevId).innerHTML=existing.map((_,i)=>`<div class="pthumb"><img src="${existing[i].data}" alt=""><div class="pthumb-del" onclick="rmMulti(${i},'${storeId}','${prevId}')">✕</div><div class="pthumb-lbl">${existing[i].label}</div></div>`).join('');
+      }
+    };r.readAsDataURL(f);
+  });
+}
+function rmMulti(idx,storeId,prevId){
+  let ph=JSON.parse(document.getElementById(storeId).value||'[]');ph.splice(idx,1);
+  document.getElementById(storeId).value=JSON.stringify(ph);
+  document.getElementById(prevId).innerHTML=ph.map((_,i)=>`<div class="pthumb"><img src="${ph[i].data}" alt=""><div class="pthumb-del" onclick="rmMulti(${i},'${storeId}','${prevId}')">✕</div><div class="pthumb-lbl">${ph[i].label}</div></div>`).join('');
+}
+
+// ════════════════════════════════════
+// SHEET HELPERS
+// ════════════════════════════════════
+function openSheet(id){document.getElementById(id).classList.add('on');document.body.style.overflow='hidden';}
+function closeSheet(id){document.getElementById(id).classList.remove('on');document.body.style.overflow='';}
+document.querySelectorAll('.sov').forEach(ov=>ov.addEventListener('click',e=>{if(e.target===ov)closeSheet(ov.id);}));
+
+// ════════════════════════════════════
+// TOAST
+// ════════════════════════════════════
 let toastTm;
-function toast(m,t='s'){const el=document.getElementById('toast');el.textContent=m;el.className=`toast on t${t}`;clearTimeout(toastTm);toastTm=setTimeout(()=>el.classList.remove('on'),3000);}
-function doSync(){let r=0;const sv=document.getElementById('fab').querySelector('svg');const id=setInterval(()=>{r+=15;sv.style.transform=`rotate(${r}deg)`;if(r>=360){clearInterval(id);sv.style.transform='';}},20);toast('Syncing Drive files…','i');setTimeout(()=>toast('2 new files found and processed'),2000);}
+function toast(m,t='s'){const el=document.getElementById('toast');el.textContent=m;el.className=`toast on t-${t}`;clearTimeout(toastTm);toastTm=setTimeout(()=>el.classList.remove('on'),3200);}
 </script>
 </body>
 </html>
